@@ -1,0 +1,52 @@
+server {
+    listen 80;
+    server_name _;
+    root /var/www/starsandpines;
+    index index.html;
+
+    # ── URL Rewrites ──
+    location / {
+        try_files /index.html =404;
+    }
+    location /portal {
+        try_files /guest-portal.html =404;
+    }
+    location /staff {
+        try_files /employee-app.html =404;
+    }
+    location /dashboard {
+        try_files /dashboard.html =404;
+    }
+    location /entry {
+        try_files /guest-entry.html =404;
+    }
+
+    # ── Headers ──
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+
+    # ── Caching ──
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+    location ~* \.html$ {
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+    }
+
+    # ── Compression ──
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml text/javascript;
+    gzip_min_length 1000;
+
+    # ── PHP (for future use) ──
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+
+    # ── Security ──
+    location ~ /\. { deny all; }
+    location ~ ~\$ { deny all; }
+}

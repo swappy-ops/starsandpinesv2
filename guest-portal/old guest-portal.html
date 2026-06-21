@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#131a12" />
+  <title>The Ridge — Stars & Pines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:    #1a1714;
+  --pine:   #1f2f1d;
+  --pine2:  #2d4030;
+  --bark:   #4a3a26;
+  --earth:  #7a6248;
+  --mist:   #e8e2d8;
+  --paper:  #f0ebe3;
+  --cream:  #f6f1ea;
+  --gold:   #c4a55a;
+  --warm:   #d4b880;
+  --smoke:  #b0a898;
+  --night:  #131a12;
+  --forest: #253422;
+  --sage:   #4a6340;
+  --alert:  #d4885a;
+  --green:  #4a8a62;
+  --red-soft: #b05050;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── ACCESS SCREEN ─── */
+#access-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(19,26,18,0.9), rgba(19,26,18,0.95)),
+    linear-gradient(160deg, #1f2f1d 0%, #131a12 50%, #0f1410 100%);
+}
+
+.access-mountains { width: 100%; max-width: 280px; margin-bottom: 48px; opacity: 0.6; }
+
+.access-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.access-sub {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm);
+  opacity: 0.7;
+  margin-bottom: 48px;
+}
+
+.access-prompt {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: rgba(232,226,216,0.7);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 300px;
+}
+
+.access-input-wrap { width: 100%; max-width: 260px; margin-bottom: 20px; }
+
+.access-input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(184,151,74,0.2);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.access-input:focus { border-color: var(--warm); }
+.access-input::placeholder { color: rgba(232,226,216,0.45); font-size: 0.8rem; letter-spacing: 0.15em; }
+
+.access-enter-btn {
+  width: 100%;
+  max-width: 260px;
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.access-enter-btn:hover { background: var(--gold); }
+
+.access-error {
+  margin-top: 16px;
+  font-size: 0.72rem;
+  color: var(--alert);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.access-error.visible { opacity: 1; }
+
+.access-footer {
+  margin-top: 60px;
+  font-size: 0.55rem;
+  color: rgba(232,226,216,0.5);
+  letter-spacing: 0.1em;
+}
+
+.access-footer a { color: rgba(196,165,90,0.65); text-decoration: none; }
+
+/* ─── PORTAL SCREEN ─── */
+#portal-screen { display: none; flex-direction: column; min-height: 100vh; }
+#portal-screen.active { display: flex; }
+
+.portal-header {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--night);
+}
+
+.portal-greeting {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--cream);
+}
+
+.portal-greeting em { font-style: italic; color: var(--warm); }
+
+.portal-room {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.7);
+  margin-top: 2px;
+}
+
+.portal-token-display {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: rgba(196,165,90,0.6);
+  font-family: monospace;
+  background: rgba(184,151,74,0.06);
+  padding: 6px 12px;
+  border: 1px solid rgba(184,151,74,0.1);
+}
+
+/* ─── TAB BAR ─── */
+.portal-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+  background: var(--night);
+}
+
+.portal-tabs::-webkit-scrollbar { display: none; }
+
+.p-tab {
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.6);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.p-tab.active { border-bottom-color: var(--warm); color: var(--warm); }
+
+/* ─── TAB CONTENT ─── */
+.portal-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+.portal-content::-webkit-scrollbar { display: none; }
+
+.p-panel { display: none; padding: 20px 16px; }
+.p-panel.active { display: block; }
+
+/* ─── SECTION LABEL ─── */
+.sec-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.7);
+  margin-bottom: 12px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sec-label:first-child { margin-top: 0; }
+.sec-label::before { content: ''; width: 16px; height: 1px; background: rgba(184,151,74,0.3); }
+
+/* ─── SEARCH BAR ─── */
+.search-bar {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--mist);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.3s;
+  margin-bottom: 16px;
+}
+
+.search-bar:focus { border-color: var(--warm); }
+.search-bar::placeholder { color: rgba(232,226,216,0.5); }
+
+/* ─── CATEGORY FILTERS ─── */
+.cat-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.cat-filters::-webkit-scrollbar { display: none; }
+
+.cat-filter {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(232,226,216,0.75);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cat-filter.active {
+  border-color: var(--warm);
+  color: var(--warm);
+  background: rgba(184,151,74,0.08);
+}
+
+/* ─── KITCHEN STATUS ─── */
+.kitchen-status {
+  background: rgba(184,151,74,0.04);
+  border: 1px solid rgba(184,151,74,0.1);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kitchen-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.kitchen-dot.open { background: var(--green); }
+.kitchen-dot.closed { background: var(--red-soft); }
+
+.kitchen-text { font-size: 0.82rem; color: var(--mist); }
+.kitchen-text small { display: block; font-size: 0.65rem; color: rgba(232,226,216,0.65); margin-top: 2px; }
+
+/* ─── SPECIALS ─── */
+.specials-card {
+  background: rgba(184,151,74,0.06);
+  border: 1px solid rgba(184,151,74,0.12);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.specials-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 8px;
+}
+
+.specials-item {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.specials-desc {
+  font-size: 0.72rem;
+  color: rgba(232,226,216,0.75);
+  line-height: 1.5;
+}
+
+.specials-price { font-size: 0.68rem; color: var(--warm); margin-top: 4px; }
+
+/* ─── MENU ─── */
+.menu-category { margin-bottom: 20px; }
+
+.cat-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(184,151,74,0.5);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.menu-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.menu-item:active { transform: scale(0.97); }
+.menu-item.selected { border-color: var(--warm); background: rgba(184,151,74,0.08); }
+.menu-item.hidden { display: none; }
+
+.mi-name { font-size: 0.85rem; color: var(--cream); margin-bottom: 2px; line-height: 1.3; }
+.mi-price { font-size: 0.68rem; color: rgba(184,151,74,0.5); }
+.mi-prep { font-size: 0.55rem; color: rgba(232,226,216,0.55); margin-top: 2px; }
+
+.mi-qty {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background: var(--warm);
+  color: var(--pine);
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.mi-qty.visible { display: flex; }
+
+/* ─── NOTES FIELD ─── */
+.notes-field {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--mist);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  padding: 12px 14px;
+  outline: none;
+  resize: none;
+  min-height: 56px;
+  line-height: 1.6;
+  transition: border-color 0.3s;
+  margin-bottom: 16px;
+}
+
+.notes-field:focus { border-color: var(--warm); }
+.notes-field::placeholder { color: rgba(232,226,216,0.45); }
+
+/* ─── CART BAR ─── */
+.cart-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--pine);
+  border-top: 1px solid rgba(184,151,74,0.2);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+
+.cart-bar.visible { transform: translateY(0); }
+.cart-summary { flex: 1; min-width: 0; }
+
+.cart-count {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.75);
+  margin-bottom: 2px;
+}
+
+.cart-items-text {
+  font-size: 0.82rem;
+  color: var(--mist);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-send {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 11px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.cart-send:hover { background: var(--gold); }
+
+/* ─── ORDER STATUS TRACKER ─── */
+.order-tracker {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.ot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ot-id {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: rgba(196,165,90,0.7);
+  font-family: monospace;
+}
+
+.ot-status {
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+.ot-status.pending { background: rgba(196,120,74,0.2); color: var(--alert); }
+.ot-status.preparing { background: rgba(184,151,74,0.15); color: var(--warm); }
+.ot-status.ready { background: rgba(61,122,82,0.2); color: #6fba8a; }
+.ot-status.delivered { background: rgba(61,122,82,0.15); color: #6fba8a; }
+
+.ot-items {
+  font-size: 0.85rem;
+  color: var(--mist);
+  margin-bottom: 8px;
+}
+
+.ot-progress {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.ot-step {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+}
+
+.ot-step.done { background: var(--warm); }
+
+/* ─── HOUSE REQUESTS ─── */
+.request-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.request-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 18px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.request-card:active { transform: scale(0.96); }
+
+.request-card.sent {
+  border-color: rgba(61,122,82,0.3);
+  background: rgba(61,122,82,0.08);
+}
+
+.request-card.sent::after {
+  content: '✓ Sent';
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: #6fba8a;
+  text-transform: uppercase;
+}
+
+.request-icon { font-size: 1.6rem; }
+.request-name { font-size: 0.75rem; color: var(--cream); line-height: 1.3; }
+.request-desc { font-size: 0.58rem; color: rgba(232,226,216,0.65); text-align: center; line-height: 1.5; }
+
+/* ─── GRIEVANCES ─── */
+.grievance-types { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+
+.grievance-type-btn {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.grievance-type-btn:active { transform: scale(0.98); }
+.grievance-type-btn.selected { border-color: var(--alert); background: rgba(196,120,74,0.08); }
+
+.gt-icon { font-size: 1.2rem; flex-shrink: 0; }
+.gt-info { flex: 1; }
+.gt-name { font-size: 0.85rem; color: var(--cream); margin-bottom: 2px; }
+.gt-desc { font-size: 0.65rem; color: rgba(232,226,216,0.65); }
+
+.urgency-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.urgency-btn {
+  flex: 1;
+  padding: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(232,226,216,0.75);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.urgency-btn.active { border-color: var(--alert); color: var(--alert); background: rgba(196,120,74,0.08); }
+
+.grievance-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--mist);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  padding: 14px 16px;
+  outline: none;
+  resize: none;
+  min-height: 100px;
+  line-height: 1.6;
+  transition: border-color 0.3s;
+  margin-bottom: 16px;
+}
+
+.grievance-textarea:focus { border-color: var(--warm); }
+.grievance-textarea::placeholder { color: rgba(232,226,216,0.45); }
+
+.grievance-submit {
+  width: 100%;
+  background: var(--alert);
+  color: var(--cream);
+  border: none;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.grievance-submit.ready { opacity: 1; pointer-events: auto; }
+.grievance-submit.ready:hover { background: #b06840; }
+
+/* ─── GUIDE ─── */
+.guide-section { margin-bottom: 28px; }
+
+.guide-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.08rem;
+  color: var(--cream);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.guide-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.guide-item:last-child { border-bottom: none; }
+
+.gi-name { font-size: 0.85rem; color: var(--mist); margin-bottom: 3px; }
+.gi-desc { font-size: 0.72rem; color: rgba(232,226,216,0.65); line-height: 1.6; }
+.gi-dist { font-size: 0.62rem; color: rgba(184,151,74,0.4); margin-top: 4px; letter-spacing: 0.05em; }
+
+.gi-bookmark {
+  background: none;
+  border: none;
+  color: rgba(196,165,90,0.6);
+  font-size: 1rem;
+  cursor: pointer;
+  float: right;
+  margin-top: -20px;
+}
+
+.gi-bookmark.saved { color: var(--warm); }
+
+/* ─── EXPERIENCES ─── */
+.experience-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.exp-icon { font-size: 1.5rem; flex-shrink: 0; }
+.exp-info { flex: 1; }
+.exp-name { font-size: 0.88rem; color: var(--cream); margin-bottom: 2px; }
+.exp-desc { font-size: 0.65rem; color: rgba(232,226,216,0.65); line-height: 1.5; }
+
+.exp-request-btn {
+  background: rgba(184,151,74,0.1);
+  border: 1px solid rgba(184,151,74,0.2);
+  color: var(--warm);
+  padding: 7px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.exp-request-btn:hover { background: rgba(184,151,74,0.2); }
+.exp-request-btn.requested { background: rgba(61,122,82,0.15); border-color: rgba(61,122,82,0.25); color: #6fba8a; }
+
+/* ─── CONCIERGE ─── */
+.concierge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.concierge-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 18px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.concierge-card:active { transform: scale(0.96); }
+
+.concierge-card.sent {
+  border-color: rgba(61,122,82,0.3);
+  background: rgba(61,122,82,0.08);
+}
+
+.concierge-card.sent::after {
+  content: '✓ Requested';
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 0.45rem;
+  letter-spacing: 0.1em;
+  color: #6fba8a;
+  text-transform: uppercase;
+}
+
+.concierge-icon { font-size: 1.5rem; }
+.concierge-name { font-size: 0.75rem; color: var(--cream); }
+
+/* ─── YOUR STAY ─── */
+.stay-info {
+  background: rgba(184,151,74,0.04);
+  border: 1px solid rgba(184,151,74,0.1);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.stay-room-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.7);
+  margin-bottom: 4px;
+}
+
+.stay-room-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--cream);
+}
+
+.stay-guest { font-size: 0.75rem; color: rgba(232,226,216,0.75); margin-top: 4px; }
+
+.stay-section { margin-bottom: 24px; }
+
+.stay-order {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+}
+
+.so-status {
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.so-status.pending { color: var(--alert); }
+.so-status.preparing { color: var(--warm); }
+.so-status.ready { color: #6fba8a; }
+.so-status.delivered { color: #6fba8a; }
+.so-status.cancelled { color: var(--red-soft); }
+
+.so-items { font-size: 0.85rem; color: var(--mist); margin-bottom: 4px; }
+
+.so-meta {
+  font-size: 0.62rem;
+  color: rgba(232,226,216,0.65);
+  display: flex;
+  justify-content: space-between;
+}
+
+.empty-stay {
+  text-align: center;
+  padding: 32px 20px;
+  color: rgba(232,226,216,0.5);
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,19,12,0.85);
+  z-index: 500;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.visible { display: flex; }
+
+.modal-sheet {
+  background: var(--pine);
+  width: 100%;
+  max-width: 480px;
+  padding: 28px 24px;
+  border-top: 1px solid rgba(184,151,74,0.2);
+  padding-bottom: calc(28px + var(--safe-bottom));
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(184,151,74,0.45);
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.modal-desc {
+  font-size: 0.82rem;
+  color: rgba(232,226,216,0.75);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.modal-cost {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(184,151,74,0.12);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-cost-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(232,226,216,0.65);
+}
+
+.modal-cost-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--warm);
+}
+
+.modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.modal-confirm {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-confirm:hover { background: var(--gold); }
+
+.modal-cancel {
+  background: transparent;
+  color: rgba(232,226,216,0.75);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-cancel:hover { border-color: rgba(255,255,255,0.15); color: var(--mist); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--pine2);
+  border: 1px solid rgba(184,151,74,0.2);
+  color: var(--mist);
+  padding: 10px 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  z-index: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ─── FOOTER ─── */
+.portal-footer {
+  padding: 24px 16px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  margin-top: 32px;
+}
+
+.portal-footer p { font-size: 0.58rem; color: rgba(232,226,216,0.5); letter-spacing: 0.1em; }
+.portal-footer a { color: rgba(196,165,90,0.6); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  ACCESS SCREEN
+═══════════════════════════════════════ -->
+<div id="access-screen">
+  <svg class="access-mountains" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="amg1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#253422" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#131a12" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,80 L30,55 L60,65 L100,35 L140,50 L180,28 L220,45 L260,60 L280,70 L280,120 L0,120 Z" fill="url(#amg1)"/>
+    <g fill="#0a0f09" opacity="0.7">
+      <polygon points="15,80 22,62 30,80"/>
+      <polygon points="40,82 48,65 56,82"/>
+      <polygon points="240,78 248,60 256,78"/>
+      <polygon points="260,80 268,63 276,80"/>
+    </g>
+  </svg>
+
+  <div class="access-brand">Stars & Pines</div>
+  <div class="access-sub">The Ridge · Guest Portal</div>
+
+  <p class="access-prompt">Your access code was shared at check-in.<br>Enter it below to open your field guide.</p>
+
+  <div class="access-input-wrap">
+    <input type="text" class="access-input" id="access-code" placeholder="ABX72K" maxlength="6" autocomplete="off" />
+  </div>
+
+  <button class="access-enter-btn" id="access-enter-btn">Enter the ridge</button>
+
+  <div class="access-error" id="access-error">That code doesn't match our records. Check with the desk.</div>
+
+  <div class="access-footer">
+    <p>Need help? <a href="https://www.instagram.com/starsandpiness" target="_blank">@starsandpiness</a></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  PORTAL SCREEN
+═══════════════════════════════════════ -->
+<div id="portal-screen">
+
+  <!-- Header -->
+  <div class="portal-header">
+    <div>
+      <div class="portal-greeting" id="portal-greeting">Welcome, <em>Guest</em></div>
+      <div class="portal-room" id="portal-room">—</div>
+    </div>
+    <div class="portal-token-display" id="portal-token">—</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="portal-tabs">
+    <button class="p-tab active" data-tab="food">Food</button>
+    <button class="p-tab" data-tab="requests">Requests</button>
+    <button class="p-tab" data-tab="grievances">Concerns</button>
+    <button class="p-tab" data-tab="guide">Guide</button>
+    <button class="p-tab" data-tab="experiences">Experiences</button>
+    <button class="p-tab" data-tab="concierge">Concierge</button>
+    <button class="p-tab" data-tab="stay">Your Stay</button>
+  </div>
+
+  <!-- Content -->
+  <div class="portal-content">
+
+    <!-- ─── FOOD & DRINK ─── -->
+    <div class="p-panel active" id="panel-food">
+
+      <!-- Kitchen status -->
+      <div class="kitchen-status" id="kitchen-status">
+        <div class="kitchen-dot open"></div>
+        <div class="kitchen-text">
+          Kitchen is open
+          <small id="kitchen-hours">Breakfast until 10 AM · Lunch 12:30–3 PM · Dinner 7–9:30 PM</small>
+        </div>
+      </div>
+
+      <!-- Today's specials -->
+      <div class="sec-label">Today's specials</div>
+      <div id="specials-list">
+        <div class="specials-card">
+          <div class="specials-label">Breakfast special</div>
+          <div class="specials-item">Peculiar Poha</div>
+          <div class="specials-desc">A mountain-café take on the classic — bright with fresh herbs, roasted peanuts, and a few unexpected twists from the chef's mood.</div>
+          <div class="specials-price">₹120</div>
+        </div>
+        <div class="specials-card">
+          <div class="specials-label">Firepit evening</div>
+          <div class="specials-item">Shakshouka</div>
+          <div class="specials-desc">Eggs gently poached in rich, spiced tomato sauce. Best enjoyed at the firepit after sunset, bubbling hot.</div>
+          <div class="specials-price">₹160</div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="sec-label">Menu</div>
+      <input type="text" class="search-bar" id="menu-search" placeholder="Search the menu…" />
+
+      <!-- Category filters -->
+      <div class="cat-filters" id="cat-filters">
+        <button class="cat-filter active" data-cat="all">All</button>
+        <button class="cat-filter" data-cat="breakfast">Breakfast</button>
+        <button class="cat-filter" data-cat="burgers">Burgers</button>
+        <button class="cat-filter" data-cat="sandwiches">Sandwiches</button>
+        <button class="cat-filter" data-cat="small-plates">Small Plates</button>
+        <button class="cat-filter" data-cat="large-plates">Large Plates</button>
+        <button class="cat-filter" data-cat="soups">Soups & Salads</button>
+        <button class="cat-filter" data-cat="beverages">Beverages</button>
+      </div>
+
+      <!-- Menu items -->
+      <div id="menu-container">
+
+        <div class="menu-category" data-category="breakfast">
+          <div class="cat-label">Breakfast</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Peculiar Poha" data-price="120" data-prep="12 min" data-cat="breakfast">
+              <div class="mi-name">Peculiar Poha</div>
+              <div class="mi-price">₹120</div>
+              <div class="mi-prep">~12 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Shakshouka" data-price="160" data-prep="15 min" data-cat="breakfast">
+              <div class="mi-name">Shakshouka</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~15 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="burgers">
+          <div class="cat-label">Burgers</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Garden Fresh Burger" data-price="180" data-prep="15 min" data-cat="burgers">
+              <div class="mi-name">Garden Fresh</div>
+              <div class="mi-price">₹180</div>
+              <div class="mi-prep">~15 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Potato vs Paneer Burger" data-price="190" data-prep="15 min" data-cat="burgers">
+              <div class="mi-name">Potato vs Paneer</div>
+              <div class="mi-price">₹190</div>
+              <div class="mi-prep">~15 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Achaari Chicken Burger" data-price="220" data-prep="18 min" data-cat="burgers">
+              <div class="mi-name">Achaari Chicken</div>
+              <div class="mi-price">₹220</div>
+              <div class="mi-prep">~18 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="sandwiches">
+          <div class="cat-label">Sandwiches</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Chilli Cheesewich" data-price="160" data-prep="10 min" data-cat="sandwiches">
+              <div class="mi-name">Chilli Cheesewich</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Habibi Sandwich" data-price="170" data-prep="10 min" data-cat="sandwiches">
+              <div class="mi-name">Habibi</div>
+              <div class="mi-price">₹170</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Creamy Shroomwich" data-price="160" data-prep="10 min" data-cat="sandwiches">
+              <div class="mi-name">Creamy Shroomwich</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Creamy Chickenwich" data-price="190" data-prep="12 min" data-cat="sandwiches">
+              <div class="mi-name">Creamy Chickenwich</div>
+              <div class="mi-price">₹190</div>
+              <div class="mi-prep">~12 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="small-plates">
+          <div class="cat-label">Small plates</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Patata Balota" data-price="140" data-prep="12 min" data-cat="small-plates">
+              <div class="mi-name">Patata Balota</div>
+              <div class="mi-price">₹140</div>
+              <div class="mi-prep">~12 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Herb Whisperers" data-price="130" data-prep="10 min" data-cat="small-plates">
+              <div class="mi-name">Herb Whisperers</div>
+              <div class="mi-price">₹130</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Cheesy Aubergine" data-price="160" data-prep="15 min" data-cat="small-plates">
+              <div class="mi-name">Cheesy Aubergine</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~15 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Falafel Chips" data-price="140" data-prep="10 min" data-cat="small-plates">
+              <div class="mi-name">Falafel Chips</div>
+              <div class="mi-price">₹140</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Falafel Wrap" data-price="170" data-prep="12 min" data-cat="small-plates">
+              <div class="mi-name">Falafel Wrap</div>
+              <div class="mi-price">₹170</div>
+              <div class="mi-prep">~12 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Pizza Toasties" data-price="130" data-prep="8 min" data-cat="small-plates">
+              <div class="mi-name">Pizza Toasties</div>
+              <div class="mi-price">₹130</div>
+              <div class="mi-prep">~8 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="large-plates">
+          <div class="cat-label">Large plates</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Coconut Quinoa Bowl" data-price="240" data-prep="18 min" data-cat="large-plates">
+              <div class="mi-name">Coconut Quinoa Bowl</div>
+              <div class="mi-price">₹240</div>
+              <div class="mi-prep">~18 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Velvet Stroganov" data-price="280" data-prep="20 min" data-cat="large-plates">
+              <div class="mi-name">Velvet Stroganov</div>
+              <div class="mi-price">₹280</div>
+              <div class="mi-prep">~20 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Penne Divino" data-price="260" data-prep="18 min" data-cat="large-plates">
+              <div class="mi-name">Penne Divino</div>
+              <div class="mi-price">₹260</div>
+              <div class="mi-prep">~18 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="The Grand Hummus Spread" data-price="320" data-prep="15 min" data-cat="large-plates">
+              <div class="mi-name">Grand Hummus Spread</div>
+              <div class="mi-price">₹320</div>
+              <div class="mi-prep">~15 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Kumauni Thali" data-price="300" data-prep="20 min" data-cat="large-plates">
+              <div class="mi-name">Kumauni Thali</div>
+              <div class="mi-price">₹300</div>
+              <div class="mi-prep">~20 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="soups">
+          <div class="cat-label">Soups & Salads</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Tomatina Soup" data-price="120" data-prep="8 min" data-cat="soups">
+              <div class="mi-name">Tomatina</div>
+              <div class="mi-price">₹120</div>
+              <div class="mi-prep">~8 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Hearty Supreme Soup" data-price="140" data-prep="10 min" data-cat="soups">
+              <div class="mi-name">Hearty Supreme</div>
+              <div class="mi-price">₹140</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Fruity Fantasy Salad" data-price="160" data-prep="8 min" data-cat="soups">
+              <div class="mi-name">Fruity Fantasy</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~8 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Bodhi Bowl" data-price="200" data-prep="12 min" data-cat="soups">
+              <div class="mi-name">Bodhi Bowl</div>
+              <div class="mi-price">₹200</div>
+              <div class="mi-prep">~12 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="The Himalayan Salad" data-price="180" data-prep="10 min" data-cat="soups">
+              <div class="mi-name">The Himalayan</div>
+              <div class="mi-price">₹180</div>
+              <div class="mi-prep">~10 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-category" data-category="beverages">
+          <div class="cat-label">Beverages</div>
+          <div class="menu-grid">
+            <div class="menu-item" data-name="Lime Wire" data-price="120" data-prep="5 min" data-cat="beverages">
+              <div class="mi-name">Lime Wire</div>
+              <div class="mi-price">₹120</div>
+              <div class="mi-prep">~5 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Rhodo Lover" data-price="140" data-prep="5 min" data-cat="beverages">
+              <div class="mi-name">Rhodo Lover</div>
+              <div class="mi-price">₹140</div>
+              <div class="mi-prep">~5 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Apple Gingerina" data-price="130" data-prep="5 min" data-cat="beverages">
+              <div class="mi-name">Apple Gingerina</div>
+              <div class="mi-price">₹130</div>
+              <div class="mi-prep">~5 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Thicc Shake" data-price="160" data-prep="8 min" data-cat="beverages">
+              <div class="mi-name">Thicc Shake</div>
+              <div class="mi-price">₹160</div>
+              <div class="mi-prep">~8 min</div>
+              <div class="mi-qty"></div>
+            </div>
+            <div class="menu-item" data-name="Cold Kaapi" data-price="120" data-prep="5 min" data-cat="beverages">
+              <div class="mi-name">Cold Kaapi</div>
+              <div class="mi-price">₹120</div>
+              <div class="mi-prep">~5 min</div>
+              <div class="mi-qty"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Notes -->
+      <div class="sec-label">Notes for the kitchen</div>
+      <textarea class="notes-field" id="order-notes" placeholder="Less spicy, extra chutney, dietary needs…"></textarea>
+
+      <div style="height: 80px"></div>
+    </div>
+
+    <!-- ─── HOUSE REQUESTS ─── -->
+    <div class="p-panel" id="panel-requests">
+      <div class="sec-label">Quick requests — no cost</div>
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
+        Tap what you need. It goes straight to the desk.
+      </p>
+
+      <div class="request-grid">
+        <div class="request-card" data-type="Extra blanket" data-msg="An extra blanket coming right up.">
+          <div class="request-icon">🛏️</div>
+          <div class="request-name">Extra blanket</div>
+          <div class="request-desc">Mountain nights are cold</div>
+        </div>
+        <div class="request-card" data-type="Extra towels" data-msg="Fresh towels on the way.">
+          <div class="request-icon">🛁</div>
+          <div class="request-name">Extra towels</div>
+          <div class="request-desc">Fresh ones, right away</div>
+        </div>
+        <div class="request-card" data-type="Water refill" data-msg="Bringing fresh drinking water now.">
+          <div class="request-icon">💧</div>
+          <div class="request-name">Water refill</div>
+          <div class="request-desc">Drinking water top-up</div>
+        </div>
+        <div class="request-card" data-type="Room cleaning" data-msg="We'll tidy up within 20 minutes.">
+          <div class="request-icon">🧹</div>
+          <div class="request-name">Room clean</div>
+          <div class="request-desc">Quick tidy-up</div>
+        </div>
+        <div class="request-card" data-type="Firepit setup" data-msg="We'll get the firepit ready for you.">
+          <div class="request-icon">🔥</div>
+          <div class="request-name">Firepit setup</div>
+          <div class="request-desc">Evening fire, arranged</div>
+        </div>
+        <div class="request-card" data-type="Tea to room" data-msg="Tea is on its way to your room.">
+          <div class="request-icon">☕</div>
+          <div class="request-name">Tea to room</div>
+          <div class="request-desc">Hot chai, delivered</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── GRIEVANCES ─── -->
+    <div class="p-panel" id="panel-grievances">
+      <div class="sec-label">Something wrong?</div>
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
+        If something isn't right, tell us. We'll take care of it. This goes directly to the team with priority.
+      </p>
+
+      <div class="grievance-types" id="grievance-types">
+        <div class="grievance-type-btn" data-type="food">
+          <span class="gt-icon">🍽️</span>
+          <div class="gt-info">
+            <div class="gt-name">Food</div>
+            <div class="gt-desc">Quality, timing, or order issue</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="room">
+          <span class="gt-icon">🏠</span>
+          <div class="gt-info">
+            <div class="gt-name">Room</div>
+            <div class="gt-desc">Something in the room needs attention</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="cleanliness">
+          <span class="gt-icon">🧹</span>
+          <div class="gt-info">
+            <div class="gt-name">Cleanliness</div>
+            <div class="gt-desc">Housekeeping or hygiene concern</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="water">
+          <span class="gt-icon">💧</span>
+          <div class="gt-info">
+            <div class="gt-name">Water</div>
+            <div class="gt-desc">No hot water, low pressure, leakage</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="electricity">
+          <span class="gt-icon">💡</span>
+          <div class="gt-info">
+            <div class="gt-name">Electricity</div>
+            <div class="gt-desc">Power outage, faulty outlets, lighting</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="internet">
+          <span class="gt-icon">📶</span>
+          <div class="gt-info">
+            <div class="gt-name">Internet</div>
+            <div class="gt-desc">Wi-Fi not working or too slow</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="noise">
+          <span class="gt-icon">🔊</span>
+          <div class="gt-info">
+            <div class="gt-name">Noise</div>
+            <div class="gt-desc">Disturbance from nearby rooms or outside</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="staff_assistance">
+          <span class="gt-icon">🛎️</span>
+          <div class="gt-info">
+            <div class="gt-name">Staff Assistance</div>
+            <div class="gt-desc">Something about the service fell short</div>
+          </div>
+        </div>
+        <div class="grievance-type-btn" data-type="other">
+          <span class="gt-icon">📝</span>
+          <div class="gt-info">
+            <div class="gt-name">Other</div>
+            <div class="gt-desc">Something else we should know about</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-label">Urgency</div>
+      <div class="urgency-selector" id="urgency-selector">
+        <button class="urgency-btn" data-level="low">Low</button>
+        <button class="urgency-btn active" data-level="medium">Medium</button>
+        <button class="urgency-btn" data-level="high">High</button>
+        <button class="urgency-btn" data-level="urgent">Urgent</button>
+      </div>
+
+      <textarea class="grievance-textarea" id="grievance-message" placeholder="Tell us what's happening…"></textarea>
+
+      <button class="grievance-submit" id="grievance-submit">Send to the team</button>
+    </div>
+
+    <!-- ─── THE RIDGE GUIDE ─── -->
+    <div class="p-panel" id="panel-guide">
+      <div class="sec-label">The Ridge Guide</div>
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:24px;">
+        What you need to know while you're here. Not the tourist circuit — the actual ridge.
+      </p>
+
+      <div class="guide-section">
+        <div class="guide-section-title">Places</div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="kasar-devi">☆</button>
+          <div class="gi-name">Kasar Devi Temple</div>
+          <div class="gi-desc">Go early, before 7 AM. The silence in the compound at dawn is different from anywhere else on the ridge.</div>
+          <div class="gi-dist">0.1 km from the house</div>
+        </div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="chitai-temple">☆</button>
+          <div class="gi-name">Chitai Temple (Gollu Devata)</div>
+          <div class="gi-desc">Thousands of bells and handwritten wishes. Strange, beautiful, and deeply Kumaoni.</div>
+          <div class="gi-dist">5 km</div>
+        </div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="almora-bazaar">☆</button>
+          <div class="gi-name">Almora Bazaar</div>
+          <div class="gi-desc">Old hill-town bazaar with copper shops, wool sellers, and bal mithai better than anywhere else in Kumaon.</div>
+          <div class="gi-dist">5 km</div>
+        </div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="binsar">☆</button>
+          <div class="gi-name">Binsar Wildlife Sanctuary</div>
+          <div class="gi-desc">Dense oak forest, zero-light zone, panoramic Himalayan views from the rest house at the top.</div>
+          <div class="gi-dist">35 km · Full day</div>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">Trails & Viewpoints</div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="ridge-walk">☆</button>
+          <div class="gi-name">The Ridge Walk (unmarked)</div>
+          <div class="gi-desc">Ask at the desk for the route. Not on Maps. Takes about two hours. Ends somewhere with a view.</div>
+          <div class="gi-dist">Starts at the gate</div>
+        </div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="sunrise-terrace">☆</button>
+          <div class="gi-name">Sunrise point — the terrace</div>
+          <div class="gi-desc">On clear days, October through March, the Nanda Devi range appears in full. Don't sleep through it.</div>
+          <div class="gi-dist">In the house · 5:45 AM</div>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">Eat & Drink Nearby</div>
+        <div class="guide-item">
+          <button class="gi-bookmark" data-place="cranks-cafe">☆</button>
+          <div class="gi-name">Crank's Ridge Café</div>
+          <div class="gi-desc">The one that's been here forever. Order the momos. Stay for the chai.</div>
+          <div class="gi-dist">5 min walk</div>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">Contacts</div>
+        <div class="guide-item">
+          <div class="gi-name">Emergency</div>
+          <div class="gi-desc">Police: 100 · Ambulance: 108 · Fire: 101</div>
+        </div>
+        <div class="guide-item">
+          <div class="gi-name">Local taxi</div>
+          <div class="gi-desc">Ask at the desk for the current driver on the ridge. They know the roads better than anyone.</div>
+        </div>
+        <div class="guide-item">
+          <div class="gi-name">Nearest hospital</div>
+          <div class="gi-desc">District Hospital, Almora — 5 km from the ridge</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── EXPERIENCES ─── -->
+    <div class="p-panel" id="panel-experiences">
+      <div class="sec-label">Experiences on the ridge</div>
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
+        Request something special. We'll arrange it.
+      </p>
+
+      <div class="experience-card">
+        <span class="exp-icon">🔥</span>
+        <div class="exp-info">
+          <div class="exp-name">Bonfire Evening</div>
+          <div class="exp-desc">Firepit setup with seating. Best after sunset. Maggi and chai included.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="bonfire">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">🥾</span>
+        <div class="exp-info">
+          <div class="exp-name">Local Guide</div>
+          <div class="exp-desc">A local guide for the ridge trails, hidden temples, and viewpoints most miss.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="local-guide">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">📸</span>
+        <div class="exp-info">
+          <div class="exp-name">Photography Session</div>
+          <div class="exp-desc">Golden hour on the ridge. Someone who knows the best spots will take you there.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="photography">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">🏘️</span>
+        <div class="exp-info">
+          <div class="exp-name">Village Walk</div>
+          <div class="exp-desc">Walk through the villages above the ridge. Meet locals, see daily life, hear stories.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="village-walk">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">🦅</span>
+        <div class="exp-info">
+          <div class="exp-name">Bird Watching</div>
+          <div class="exp-desc">Early morning bird walk. Himalayan monal, eagles, and the quieter ones you'll only hear.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="bird-watching">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">✨</span>
+        <div class="exp-info">
+          <div class="exp-name">Stargazing</div>
+          <div class="exp-desc">Zero light pollution. The Milky Way is not metaphorical from here. Blankets provided.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="stargazing">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">🚗</span>
+        <div class="exp-info">
+          <div class="exp-name">Transportation</div>
+          <div class="exp-desc">Need a taxi to Almora, Kathgodam, or anywhere? We'll arrange it.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="transportation">Request</button>
+      </div>
+
+      <div class="experience-card">
+        <span class="exp-icon">🍳</span>
+        <div class="exp-info">
+          <div class="exp-name">Special Meal</div>
+          <div class="exp-desc">Something off-menu? A birthday cake? A specific regional dish? Ask and we'll try.</div>
+        </div>
+        <button class="exp-request-btn" data-exp="special-meal">Request</button>
+      </div>
+    </div>
+
+    <!-- ─── DIGITAL CONCIERGE ─── -->
+    <div class="p-panel" id="panel-concierge">
+      <div class="sec-label">Service requests</div>
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
+        Need something? Tap and it's noted.
+      </p>
+
+      <div class="concierge-grid">
+        <div class="concierge-card" data-type="Extra blankets">
+          <div class="concierge-icon">🛏️</div>
+          <div class="concierge-name">Extra Blankets</div>
+        </div>
+        <div class="concierge-card" data-type="Room cleaning">
+          <div class="concierge-icon">🧹</div>
+          <div class="concierge-name">Room Cleaning</div>
+        </div>
+        <div class="concierge-card" data-type="Hot water">
+          <div class="concierge-icon">♨️</div>
+          <div class="concierge-name">Hot Water</div>
+        </div>
+        <div class="concierge-card" data-type="Laundry">
+          <div class="concierge-icon">👕</div>
+          <div class="concierge-name">Laundry</div>
+        </div>
+        <div class="concierge-card" data-type="Taxi">
+          <div class="concierge-icon">🚗</div>
+          <div class="concierge-name">Taxi</div>
+        </div>
+        <div class="concierge-card" data-type="Wake-up call">
+          <div class="concierge-icon">⏰</div>
+          <div class="concierge-name">Wake-up Call</div>
+        </div>
+        <div class="concierge-card" data-type="Medical help">
+          <div class="concierge-icon">🏥</div>
+          <div class="concierge-name">Medical Help</div>
+        </div>
+        <div class="concierge-card" data-type="Luggage assistance">
+          <div class="concierge-icon">🧳</div>
+          <div class="concierge-name">Luggage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── YOUR STAY ─── -->
+    <div class="p-panel" id="panel-stay">
+      <div class="sec-label">Your stay</div>
+
+      <div class="stay-info">
+        <div class="stay-room-label">Your room</div>
+        <div class="stay-room-name" id="stay-room-name">—</div>
+        <div class="stay-guest" id="stay-guest-name">—</div>
+      </div>
+
+      <div class="stay-section">
+        <div class="sec-label">Active orders</div>
+        <div id="stay-active-orders">
+          <div class="empty-stay" id="stay-active-empty">No active orders.</div>
+        </div>
+      </div>
+
+      <div class="stay-section">
+        <div class="sec-label">Order history</div>
+        <div id="stay-order-history">
+          <div class="empty-stay" id="stay-history-empty">No past orders.</div>
+        </div>
+      </div>
+
+      <div class="stay-section">
+        <div class="sec-label">Requests</div>
+        <div id="stay-requests">
+          <div class="empty-stay" id="stay-requests-empty">No requests yet.</div>
+        </div>
+      </div>
+
+      <div class="stay-section">
+        <div class="sec-label">Concerns raised</div>
+        <div id="stay-grievances">
+          <div class="empty-stay" id="stay-grievances-empty">Nothing raised.</div>
+        </div>
+      </div>
+
+      <div class="stay-section">
+        <div class="sec-label">Experiences requested</div>
+        <div id="stay-experiences">
+          <div class="empty-stay" id="stay-experiences-empty">None yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="portal-footer">
+      <p>Stars & Pines · Crank's Ridge · Almora · <a href="https://www.instagram.com/starsandpiness" target="_blank">@starsandpiness</a></p>
+    </div>
+
+  </div><!-- end portal-content -->
+
+  <!-- Cart bar -->
+  <div class="cart-bar" id="cart-bar">
+    <div class="cart-summary">
+      <div class="cart-count" id="cart-count">0 items</div>
+      <div class="cart-items-text" id="cart-items-text">—</div>
+    </div>
+    <button class="cart-send" id="cart-send">Send to kitchen →</button>
+  </div>
+</div>
+
+<!-- ─── MODAL ─── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-sheet">
+    <div class="modal-label" id="modal-label">Confirm order</div>
+    <h3 class="modal-title" id="modal-title">Send to kitchen?</h3>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-cost" id="modal-cost-row" style="display:none">
+      <span class="modal-cost-label">Total</span>
+      <span class="modal-cost-val" id="modal-cost-val">₹0</span>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="modal-cancel">Go back</button>
+      <button class="modal-confirm" id="modal-confirm">Confirm & send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+// ─── APP CONFIG
+const APP_CONFIG = {
+  whatsappNumber: 'REPLACE_ME',
+  firebaseConfig: {
+    apiKey: 'AIzaSyAJtVjg6zv1KK2puu57NICrW8mU7OTybUA',
+    authDomain: 'stars-and-pines-ridge.firebaseapp.com',
+    databaseURL: 'https://stars-and-pines-ridge-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'stars-and-pines-ridge',
+    storageBucket: 'stars-and-pines-ridge.firebasestorage.app',
+    messagingSenderId: '8285256236',
+    appId: '1:8285256236:web:e03af2dff72e80eed26f89'
+  }
+};
+
+firebase.initializeApp(APP_CONFIG.firebaseConfig);
+const db = firebase.database();
+
+// ─── STATE
+let guestToken = null;
+let guestData = null;
+let portalCart = {};
+let pendingModalAction = null;
+let initialPortalSync = false;
+let firebasePortalListeners = [];
+let selectedGrievanceType = null;
+let selectedUrgency = 'medium';
+let bookmarkedPlaces = JSON.parse(localStorage.getItem('sp_bookmarks') || '[]');
+
+// ─── ACCESS CODE FROM URL
+function getTokenFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('token');
+}
+
+// ─── VALIDATE TOKEN
+function validateToken(token) {
+  return db.ref('guest_access/' + token).once('value').then((snapshot) => {
+    const data = snapshot.val();
+    if (!data) return null;
+    if (!data.active) return null;
+    if (data.validUntil && Date.now() > data.validUntil) return null;
+    return data;
+  });
+}
+
+// ─── ENTER PORTAL
+function enterPortal(token, data) {
+  guestToken = token;
+  guestData = data;
+
+  document.getElementById('access-screen').style.display = 'none';
+  document.getElementById('portal-screen').classList.add('active');
+
+  const h = new Date().getHours();
+  const tod = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  document.getElementById('portal-greeting').innerHTML = `Good ${tod}, <em>${data.guestName || 'Guest'}</em>`;
+  document.getElementById('portal-room').textContent = data.room || '';
+  document.getElementById('portal-token').textContent = token;
+
+  document.getElementById('stay-room-name').textContent = data.room || '—';
+  document.getElementById('stay-guest-name').textContent = data.guestName || '';
+
+  startPortalListeners();
+  loadStayHistory();
+  restoreBookmarks();
+}
+
+// ─── ACCESS SCREEN LOGIC
+(function() {
+  const urlToken = getTokenFromURL();
+  const input = document.getElementById('access-code');
+  const btn = document.getElementById('access-enter-btn');
+  const error = document.getElementById('access-error');
+
+  if (urlToken) {
+    input.value = urlToken.toUpperCase();
+    attemptAccess(urlToken.toUpperCase());
+  }
+
+  input.addEventListener('input', () => {
+    input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    error.classList.remove('visible');
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') attemptAccess(input.value);
+  });
+
+  btn.addEventListener('click', () => attemptAccess(input.value));
+
+  function attemptAccess(token) {
+    if (!token || token.length < 6) {
+      error.textContent = 'Enter your access code.';
+      error.classList.add('visible');
+      return;
+    }
+
+    btn.textContent = 'Checking…';
+    btn.style.opacity = '0.5';
+
+    validateToken(token).then((data) => {
+      if (data) {
+        enterPortal(token, data);
+      } else {
+        error.textContent = "That code doesn't match our records. Check with the desk.";
+        error.classList.add('visible');
+        btn.textContent = 'Enter the ridge';
+        btn.style.opacity = '1';
+      }
+    }).catch(() => {
+      error.textContent = 'Could not connect. Check your internet and try again.';
+      error.classList.add('visible');
+      btn.textContent = 'Enter the ridge';
+      btn.style.opacity = '1';
+    });
+  }
+})();
+
+// ─── TAB SWITCHING
+document.querySelectorAll('.p-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.p-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+
+    if (tab.dataset.tab === 'food') updateCartBar();
+    else document.getElementById('cart-bar').classList.remove('visible');
+
+    if (tab.dataset.tab === 'stay') loadStayHistory();
+  });
+});
+
+// ─── FIREBASE LISTENERS
+function startPortalListeners() {
+  initialPortalSync = false;
+
+  const ordersRef = db.ref('orders');
+  const ordersListener = ordersRef.on('value', (snapshot) => {
+    if (!initialPortalSync) setTimeout(() => { initialPortalSync = true; }, 500);
+    updateStayOrders(snapshot.val());
+  });
+  firebasePortalListeners.push({ ref: ordersRef, event: 'value', fn: ordersListener });
+
+  const nudgesRef = db.ref('nudges');
+  const nudgesListener = nudgesRef.on('value', (snapshot) => {
+    updateStayRequests(snapshot.val());
+  });
+  firebasePortalListeners.push({ ref: nudgesRef, event: 'value', fn: nudgesListener });
+
+  const grievancesRef = db.ref('grievances');
+  const grievancesListener = grievancesRef.on('value', (snapshot) => {
+    updateStayGrievances(snapshot.val());
+  });
+  firebasePortalListeners.push({ ref: grievancesRef, event: 'value', fn: grievancesListener });
+
+  const experiencesRef = db.ref('experiences');
+  const experiencesListener = experiencesRef.on('value', (snapshot) => {
+    updateStayExperiences(snapshot.val());
+  });
+  firebasePortalListeners.push({ ref: experiencesRef, event: 'value', fn: experiencesListener });
+}
+
+const SP_MENU = [
+  { cat: 'drinks', label: "Drinks (Wyrmie's)", items: [
+    ['Masala Chai', 55], ['Ginger Lemon Honey', 122], ['Americano', 155],
+    ['Cappuccino', 222], ['Mocha', 244], ['Hot Chocolate', 233], ['Latte', 222]
+  ] },
+  { cat: 'breakfast', label: 'Breakfast', items: [
+    ['Peculiar Poha', 111], ['Aalo Puri', 222], ['Omelette (Plain)', 180],
+    ['Omelette (Veg Cheese)', 250], ['Pancake', 355], ['Muesli', 288],
+    ['Paratha (Aloo)', 122], ['Paratha (Paneer)', 144], ['French Toast', 255],
+    ['Crepes', 333], ['Shakshouka', 355], ['Moong Dal Chilla (2 pcs)', 222]
+  ] },
+  { cat: 'burgers', label: 'Burgers', items: [
+    ['Garden Fresh Burger', 255], ['Potato vs Paneer Burger', 333], ['Achaari Chicken Burger', 444]
+  ] },
+  { cat: 'small-plates', label: 'Small Plates', items: [
+    ['Potata Batata', 222], ['Herb Whisperers', 255], ['Cheesy Aubergenie', 299],
+    ['Falafel Chips', 222], ['Falafel Wrap', 299], ['Pizza Toasties', 222],
+    ['Pakoda', 222], ['Fries (Salted)', 166], ['Fries (Peri Peri)', 199]
+  ] },
+  { cat: 'sandwiches', label: 'Sandwiches', items: [
+    ['Chilli Cheeseswich', 255], ['Habibi', 277], ['Creamy Shroomwich', 277], ['Creamy Chickenwich', 355]
+  ] },
+  { cat: 'soups', label: 'Soups & Salads', items: [
+    ['Tomatine', 188], ['Hemp Supreme', 222], ['Creamy Mushroom', 255],
+    ['Fruity Fantasy', 255], ['Bodhi Bowl', 299], ['The Himalayan', 333]
+  ] },
+  { cat: 'coolers', label: 'Coolers', items: [
+    ['Lime Wire', 144], ['Kheera Masala', 166], ['Rhodo Lover', 166],
+    ['Apple Gingerina', 177], ['Thick Shake', 222], ['Cold Kaapi', 222],
+    ['Iced Tea', 177], ['Lassi', 177]
+  ] },
+  { cat: 'large-plates', label: 'Large Plates', items: [
+    ['Coconut Qualia (Veg)', 422], ['Coconut Qualia (Chicken)', 499],
+    ['Velvet Stroganov (Mushroom)', null], ['Velvet Stroganov (Chicken)', null],
+    ['Penne Divino (Veg)', 455], ['Penne Divino (Non-Veg)', 533],
+    ['Alfredo (Veg)', 455], ['Alfredo (Non-Veg)', 533],
+    ['Arrabiata (Veg)', 455], ['Arrabiata (Non-Veg)', 533],
+    ['The Grand Hummus Spread', 555], ['Kumaoni Thali', 444]
+  ] }
+];
+
+function renderPortalMenu() {
+  document.getElementById('cat-filters').innerHTML =
+    '<button class="cat-filter active" data-cat="all">All</button>' +
+    SP_MENU.map(section => `<button class="cat-filter" data-cat="${section.cat}">${section.label}</button>`).join('');
+
+  document.getElementById('menu-container').innerHTML = SP_MENU.map(section => `
+    <div class="menu-category" data-category="${section.cat}">
+      <div class="cat-label">${section.label}</div>
+      <div class="menu-grid">
+        ${section.items.map(([name, price]) => `
+          <div class="menu-item${price === null ? ' hidden-price' : ''}" data-name="${name}" data-price="${price === null ? '' : price}" data-prep="10 min" data-cat="${section.cat}">
+            <div class="mi-name">${name}</div>
+            <div class="mi-price">${price === null ? 'Price TBD' : '₹' + price}</div>
+            <div class="mi-prep">${price === null ? 'Unavailable' : '~10 min'}</div>
+            <div class="mi-qty"></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+renderPortalMenu();
+
+// ─── MENU SEARCH & FILTERS
+document.getElementById('menu-search').addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase();
+  document.querySelectorAll('.menu-item').forEach(item => {
+    const name = item.dataset.name.toLowerCase();
+    item.classList.toggle('hidden', query && !name.includes(query));
+  });
+});
+
+document.querySelectorAll('.cat-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    document.querySelectorAll('.menu-category').forEach(section => {
+      if (cat === 'all') {
+        section.style.display = '';
+        section.querySelectorAll('.menu-item').forEach(i => i.classList.remove('hidden'));
+      } else {
+        section.style.display = section.dataset.category === cat ? '' : 'none';
+      }
+    });
+  });
+});
+
+// ─── MENU / CART
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const name = item.dataset.name;
+    const price = parseInt(item.dataset.price);
+    if (!price) {
+      showToast('Price not set for this item.');
+      return;
+    }
+    if (!portalCart[name]) portalCart[name] = { qty: 0, price };
+    portalCart[name].qty++;
+    item.classList.add('selected');
+    const qtyEl = item.querySelector('.mi-qty');
+    qtyEl.textContent = portalCart[name].qty;
+    qtyEl.classList.add('visible');
+    updateCartBar();
+  });
+});
+
+function updateCartBar() {
+  const items = Object.entries(portalCart).filter(([_, v]) => v.qty > 0);
+  const bar = document.getElementById('cart-bar');
+  const foodPanel = document.getElementById('panel-food');
+  const isFoodTab = foodPanel.classList.contains('active');
+
+  if (items.length === 0 || !isFoodTab) { bar.classList.remove('visible'); return; }
+
+  bar.classList.add('visible');
+  const total = items.reduce((s, [_, v]) => s + v.qty * v.price, 0);
+  const count = items.reduce((s, [_, v]) => s + v.qty, 0);
+  document.getElementById('cart-count').textContent = `${count} item${count > 1 ? 's' : ''} · ₹${total}`;
+  document.getElementById('cart-items-text').textContent =
+    items.map(([n, v]) => v.qty > 1 ? `${n} ×${v.qty}` : n).join(', ');
+}
+
+// ─── SUBMIT ORDER
+document.getElementById('cart-send').addEventListener('click', () => {
+  const items = Object.entries(portalCart).filter(([_, v]) => v.qty > 0);
+  if (!items.length) return;
+
+  const total = items.reduce((s, [_, v]) => s + v.qty * v.price, 0);
+  const itemText = items.map(([n, v]) => v.qty > 1 ? `${n} ×${v.qty}` : n).join(', ');
+  const notes = document.getElementById('order-notes')?.value?.trim() || '';
+
+  document.getElementById('modal-label').textContent = 'Order — billed to your room';
+  document.getElementById('modal-title').textContent = 'Send to kitchen?';
+  document.getElementById('modal-desc').textContent = itemText + (notes ? `\nNote: ${notes}` : '');
+  document.getElementById('modal-cost-val').textContent = `₹${total}`;
+  document.getElementById('modal-cost-row').style.display = 'flex';
+  document.getElementById('modal').classList.add('visible');
+});
+
+document.getElementById('modal-confirm').addEventListener('click', () => { submitPortalOrder(); document.getElementById('modal').classList.remove('visible'); });
+document.getElementById('modal-cancel').addEventListener('click', () => { document.getElementById('modal').classList.remove('visible'); });
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+
+function submitPortalOrder() {
+  const items = Object.entries(portalCart).filter(([_, v]) => v.qty > 0);
+  const total = items.reduce((s, [_, v]) => s + v.qty * v.price, 0);
+  const notes = document.getElementById('order-notes')?.value?.trim() || '';
+  const now = Date.now();
+
+  const orderData = {
+    id: 'order_' + now,
+    room: guestData.room || 'Unknown',
+    items: items.map(([name, v]) => ({ name, qty: v.qty, price: v.price })),
+    total,
+    status: 'pending',
+    source: 'portal',
+    guestToken,
+    guestName: guestData.guestName || '',
+    createdAt: now,
+    updatedAt: now,
+    notes,
+    statusHistory: [{ status: 'pending', at: now }]
+  };
+
+  db.ref('orders').push(orderData)
+    .then(() => {
+      portalCart = {};
+      document.querySelectorAll('.menu-item').forEach(el => {
+        el.classList.remove('selected');
+        const q = el.querySelector('.mi-qty');
+        q.textContent = '';
+        q.classList.remove('visible');
+      });
+      const notesEl = document.getElementById('order-notes');
+      if (notesEl) notesEl.value = '';
+      updateCartBar();
+      showToast('Order sent to the kitchen');
+    })
+    .catch(() => { showToast('Could not send order. Please try again.'); });
+}
+
+// ─── HOUSE REQUESTS
+document.querySelectorAll('.request-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (card.classList.contains('sent')) return;
+    card.classList.add('sent');
+
+    const type = card.dataset.type;
+    const msg = card.dataset.msg;
+    const now = Date.now();
+
+    db.ref('nudges').push({
+      id: 'nudge_' + now,
+      room: guestData.room || 'Unknown',
+      type: type.toLowerCase().replace(/\s+/g, '_'),
+      message: msg,
+      status: 'sent',
+      source: 'portal',
+      guestToken,
+      guestName: guestData.guestName || '',
+      createdAt: now
+    }).then(() => showToast(`${type} noted`))
+      .catch(() => showToast('Could not send request. Please try again.'));
+
+    setTimeout(() => card.classList.remove('sent'), 4000);
+  });
+});
+
+// ─── GRIEVANCES
+document.querySelectorAll('.grievance-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.grievance-type-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedGrievanceType = btn.dataset.type;
+    updateGrievanceSubmit();
+  });
+});
+
+document.querySelectorAll('.urgency-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.urgency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedUrgency = btn.dataset.level;
+  });
+});
+
+document.getElementById('grievance-message').addEventListener('input', updateGrievanceSubmit);
+
+function updateGrievanceSubmit() {
+  const msg = document.getElementById('grievance-message').value.trim();
+  const btn = document.getElementById('grievance-submit');
+  if (selectedGrievanceType && msg.length > 0) btn.classList.add('ready');
+  else btn.classList.remove('ready');
+}
+
+document.getElementById('grievance-submit').addEventListener('click', () => {
+  if (!selectedGrievanceType) return;
+  const msg = document.getElementById('grievance-message').value.trim();
+  if (!msg) return;
+
+  const now = Date.now();
+  db.ref('grievances').push({
+    id: 'grievance_' + now,
+    room: guestData.room || 'Unknown',
+    type: selectedGrievanceType,
+    message: msg,
+    severity: selectedUrgency,
+    status: 'open',
+    source: 'portal',
+    guestToken,
+    guestName: guestData.guestName || '',
+    createdAt: now,
+    updatedAt: now,
+    statusHistory: [{ status: 'open', at: now }]
+  }).then(() => {
+    showToast("Your concern has been noted. We'll take care of it.");
+    document.getElementById('grievance-message').value = '';
+    document.querySelectorAll('.grievance-type-btn').forEach(b => b.classList.remove('selected'));
+    selectedGrievanceType = null;
+    updateGrievanceSubmit();
+  }).catch(() => { showToast('Could not send. Please try again or speak to the desk.'); });
+});
+
+// ─── EXPERIENCES
+document.querySelectorAll('.exp-request-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('requested')) return;
+    btn.classList.add('requested');
+    btn.textContent = 'Requested';
+
+    const exp = btn.dataset.exp;
+    const now = Date.now();
+
+    db.ref('experiences').push({
+      id: 'exp_' + now,
+      type: exp,
+      room: guestData.room || 'Unknown',
+      guestToken,
+      guestName: guestData.guestName || '',
+      status: 'requested',
+      createdAt: now,
+      updatedAt: now
+    }).then(() => showToast('Experience requested')).catch(() => {
+      btn.classList.remove('requested');
+      btn.textContent = 'Request';
+    });
+  });
+});
+
+// ─── CONCIERGE
+document.querySelectorAll('.concierge-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (card.classList.contains('sent')) return;
+    card.classList.add('sent');
+
+    const type = card.dataset.type;
+    const now = Date.now();
+
+    db.ref('concierge').push({
+      id: 'concierge_' + now,
+      type: type.toLowerCase().replace(/\s+/g, '_'),
+      room: guestData.room || 'Unknown',
+      guestToken,
+      guestName: guestData.guestName || '',
+      status: 'requested',
+      createdAt: now
+    }).then(() => showToast(`${type} requested`)).catch(() => {
+      card.classList.remove('sent');
+    });
+
+    setTimeout(() => card.classList.remove('sent'), 4000);
+  });
+});
+
+// ─── BOOKMARKS
+function restoreBookmarks() {
+  bookmarkedPlaces.forEach(place => {
+    const btn = document.querySelector(`.gi-bookmark[data-place="${place}"]`);
+    if (btn) { btn.textContent = '★'; btn.classList.add('saved'); }
+  });
+}
+
+document.querySelectorAll('.gi-bookmark').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const place = btn.dataset.place;
+    const idx = bookmarkedPlaces.indexOf(place);
+    if (idx > -1) {
+      bookmarkedPlaces.splice(idx, 1);
+      btn.textContent = '☆';
+      btn.classList.remove('saved');
+    } else {
+      bookmarkedPlaces.push(place);
+      btn.textContent = '★';
+      btn.classList.add('saved');
+    }
+    localStorage.setItem('sp_bookmarks', JSON.stringify(bookmarkedPlaces));
+  });
+});
+
+// ─── YOUR STAY — ORDERS
+function updateStayOrders(orders) {
+  if (!orders) return;
+
+  const myOrders = Object.values(orders)
+    .filter(o => o.guestToken === guestToken)
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const active = myOrders.filter(o => ['pending', 'preparing', 'ready'].includes(o.status));
+  const done = myOrders.filter(o => ['delivered', 'cancelled'].includes(o.status));
+
+  const activeContainer = document.getElementById('stay-active-orders');
+  const activeEmpty = document.getElementById('stay-active-empty');
+  if (active.length === 0) {
+    if (activeEmpty) activeEmpty.style.display = 'block';
+    activeContainer.querySelectorAll('.stay-order').forEach(el => el.remove());
+  } else {
+    if (activeEmpty) activeEmpty.style.display = 'none';
+    activeContainer.querySelectorAll('.stay-order').forEach(el => el.remove());
+    active.forEach(o => {
+      const itemText = (o.items || []).map(i => i.qty > 1 ? `${i.name} ×${i.qty}` : i.name).join(', ');
+      const timeStr = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
+      const statusLabel = o.status === 'ready' ? 'Ready for pickup' : o.status === 'preparing' ? 'Preparing' : 'Pending';
+      activeContainer.insertAdjacentHTML('beforeend', `
+        <div class="stay-order">
+          <div class="so-status ${o.status}">${statusLabel}</div>
+          <div class="so-items">${itemText}</div>
+          <div class="so-meta"><span>₹${o.total}</span><span>${timeStr}</span></div>
+        </div>`);
+    });
+  }
+
+  const historyContainer = document.getElementById('stay-order-history');
+  const historyEmpty = document.getElementById('stay-history-empty');
+  if (done.length === 0) {
+    if (historyEmpty) historyEmpty.style.display = 'block';
+    historyContainer.querySelectorAll('.stay-order').forEach(el => el.remove());
+  } else {
+    if (historyEmpty) historyEmpty.style.display = 'none';
+    historyContainer.querySelectorAll('.stay-order').forEach(el => el.remove());
+    done.forEach(o => {
+      const itemText = (o.items || []).map(i => i.qty > 1 ? `${i.name} ×${i.qty}` : i.name).join(', ');
+      const timeStr = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
+      historyContainer.insertAdjacentHTML('beforeend', `
+        <div class="stay-order">
+          <div class="so-status ${o.status}">${o.status === 'delivered' ? 'Delivered' : 'Cancelled'}</div>
+          <div class="so-items">${itemText}</div>
+          <div class="so-meta"><span>₹${o.total}</span><span>${timeStr}</span></div>
+        </div>`);
+    });
+  }
+}
+
+// ─── YOUR STAY — REQUESTS
+function updateStayRequests(nudges) {
+  if (!nudges) return;
+  const myRequests = Object.values(nudges).filter(n => n.guestToken === guestToken).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const container = document.getElementById('stay-requests');
+  const emptyEl = document.getElementById('stay-requests-empty');
+
+  if (myRequests.length === 0) {
+    if (emptyEl) emptyEl.style.display = 'block';
+    container.querySelectorAll('.stay-request').forEach(el => el.remove());
+  } else {
+    if (emptyEl) emptyEl.style.display = 'none';
+    container.querySelectorAll('.stay-request').forEach(el => el.remove());
+    myRequests.forEach(n => {
+      const timeStr = n.createdAt ? new Date(n.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
+      const iconMap = { 'extra_blanket': '🛏️', 'extra_towels': '🛁', 'water_refill': '💧', 'room_cleaning': '🧹', 'firepit_setup': '🔥', 'tea_to_room': '☕' };
+      container.insertAdjacentHTML('beforeend', `
+        <div class="stay-request">
+          <span class="sr-icon">${iconMap[n.type] || '📋'}</span>
+          <div class="sr-info">
+            <div class="sr-type">${n.type.replace(/_/g, ' ')}</div>
+            <div class="sr-time">${timeStr} · ${n.status === 'sent' ? 'Noted' : n.status}</div>
+          </div>
+        </div>`);
+    });
+  }
+}
+
+// ─── YOUR STAY — GRIEVANCES
+function updateStayGrievances(grievances) {
+  if (!grievances) return;
+  const myGrievances = Object.values(grievances).filter(g => g.guestToken === guestToken).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const container = document.getElementById('stay-grievances');
+  const emptyEl = document.getElementById('stay-grievances-empty');
+
+  if (myGrievances.length === 0) {
+    if (emptyEl) emptyEl.style.display = 'block';
+    container.querySelectorAll('.stay-grievance').forEach(el => el.remove());
+  } else {
+    if (emptyEl) emptyEl.style.display = 'none';
+    container.querySelectorAll('.stay-grievance').forEach(el => el.remove());
+    myGrievances.forEach(g => {
+      const timeStr = g.createdAt ? new Date(g.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '';
+      const typeLabel = g.type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      container.insertAdjacentHTML('beforeend', `
+        <div class="stay-grievance">
+          <div class="sg-status ${g.status}">${g.status === 'open' ? 'Open — being looked into' : g.status === 'acknowledged' ? 'Acknowledged' : 'Resolved'}</div>
+          <div class="sg-type">${typeLabel}</div>
+          <div class="sg-message">${g.message}</div>
+          <div class="sg-time">${timeStr}</div>
+        </div>`);
+    });
+  }
+}
+
+// ─── YOUR STAY — EXPERIENCES
+function updateStayExperiences(experiences) {
+  if (!experiences) return;
+  const myExps = Object.values(experiences).filter(e => e.guestToken === guestToken).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const container = document.getElementById('stay-experiences');
+  const emptyEl = document.getElementById('stay-experiences-empty');
+
+  if (myExps.length === 0) {
+    if (emptyEl) emptyEl.style.display = 'block';
+    container.querySelectorAll('.stay-experience').forEach(el => el.remove());
+  } else {
+    if (emptyEl) emptyEl.style.display = 'none';
+    container.querySelectorAll('.stay-experience').forEach(el => el.remove());
+    myExps.forEach(e => {
+      const timeStr = e.createdAt ? new Date(e.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '';
+      const typeLabel = e.type.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      container.insertAdjacentHTML('beforeend', `
+        <div class="stay-experience">
+          <div class="so-status ${e.status}">${e.status}</div>
+          <div class="so-items">${typeLabel}</div>
+          <div class="so-meta"><span>${timeStr}</span></div>
+        </div>`);
+    });
+  }
+}
+
+// ─── LOAD STAY HISTORY
+function loadStayHistory() {
+  if (!guestToken) return;
+  db.ref('orders').once('value').then(s => updateStayOrders(s.val()));
+  db.ref('nudges').once('value').then(s => updateStayRequests(s.val()));
+  db.ref('grievances').once('value').then(s => updateStayGrievances(s.val()));
+  db.ref('experiences').once('value').then(s => updateStayExperiences(s.val()));
+}
+
+// ─── KITCHEN HOURS
+(function() {
+  const h = new Date().getHours();
+  const el = document.getElementById('kitchen-hours');
+  const statusEl = document.getElementById('kitchen-status');
+  const dotEl = statusEl.querySelector('.kitchen-dot');
+  const textEl = statusEl.querySelector('.kitchen-text');
+
+  let message = '', isOpen = false;
+  if (h >= 7 && h < 10) { message = 'Breakfast is being served until 10 AM'; isOpen = true; }
+  else if (h >= 10 && h < 12) { message = 'Breakfast closed. Lunch starts at 12:30 PM'; isOpen = false; }
+  else if (h >= 12 && h < 15) { message = 'Lunch is being served until 3 PM'; isOpen = true; }
+  else if (h >= 15 && h < 19) { message = 'Kitchen closed. Dinner starts at 7 PM'; isOpen = false; }
+  else if (h >= 19 && h < 21.5) { message = 'Dinner is being served until 9:30 PM'; isOpen = true; }
+  else { message = 'Kitchen is closed. Breakfast starts at 7 AM'; isOpen = false; }
+
+  el.textContent = message;
+  dotEl.className = 'kitchen-dot ' + (isOpen ? 'open' : 'closed');
+  textEl.innerHTML = message + '<small>Breakfast 7–10 AM · Lunch 12:30–3 PM · Dinner 7–9:30 PM</small>';
+})();
+
+// ─── TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('visible'), 2500);
+}
+</script>
+
+</body>
+</html>

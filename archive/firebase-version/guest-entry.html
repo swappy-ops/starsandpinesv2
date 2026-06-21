@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#131a12" />
+  <title>Guest Entry — Stars & Pines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:    #1a1714;
+  --pine:   #1f2f1d;
+  --pine2:  #2d4030;
+  --bark:   #4a3a26;
+  --earth:  #7a6248;
+  --mist:   #e8e2d8;
+  --paper:  #f0ebe3;
+  --cream:  #f6f1ea;
+  --gold:   #c4a55a;
+  --warm:   #d4b880;
+  --smoke:  #b0a898;
+  --night:  #131a12;
+  --forest: #253422;
+  --sage:   #4a6340;
+  --alert:  #d4885a;
+  --green:  #4a8a62;
+  --red-soft: #b05050;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--night);
+  color: var(--mist);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ─── SCREENS ─── */
+.screen { display: none; flex-direction: column; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ─── STAFF SCREEN: QR GENERATOR ─── */
+#screen-staff {
+  padding: 32px 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 32px;
+}
+
+.entry-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+}
+
+.entry-sub {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm);
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.entry-prompt {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: rgba(232,226,216,0.7);
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+.entry-form {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.entry-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.entry-field label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.75);
+}
+
+.entry-field input,
+.entry-field select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(184,151,74,0.15);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+.entry-field input:focus,
+.entry-field select:focus {
+  border-color: var(--warm);
+}
+
+.entry-field select option {
+  background: var(--pine);
+  color: var(--cream);
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.entry-submit {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.entry-submit:hover { background: var(--gold); }
+
+/* ─── QR DISPLAY ─── */
+#screen-qr {
+  padding: 32px 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.qr-card {
+  background: var(--cream);
+  padding: 32px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qr-card canvas {
+  border-radius: 8px;
+}
+
+.qr-guest-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--pine);
+}
+
+.qr-room {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--earth);
+}
+
+.qr-token {
+  font-family: monospace;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  color: var(--pine);
+  background: rgba(184,151,74,0.1);
+  padding: 8px 20px;
+  border-radius: 6px;
+}
+
+.qr-instruction {
+  font-size: 0.72rem;
+  color: var(--earth);
+  line-height: 1.6;
+}
+
+.qr-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.qr-btn {
+  flex: 1;
+  padding: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  text-decoration: none;
+}
+
+.qr-btn-primary {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+}
+
+.qr-btn-secondary {
+  background: transparent;
+  color: var(--mist);
+  border: 1px solid rgba(184,151,74,0.2);
+}
+
+/* ─── GUEST REGISTRATION SCREEN ─── */
+#screen-register {
+  padding: 32px 20px;
+  gap: 24px;
+}
+
+.reg-header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.reg-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--cream);
+}
+
+.reg-sub {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm);
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reg-section-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(196,165,90,0.7);
+  margin-top: 16px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reg-section-label::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: rgba(184,151,74,0.3);
+}
+
+.reg-submit {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 16px;
+}
+
+.reg-submit:hover { background: var(--gold); }
+
+/* ─── WELCOME SCREEN ─── */
+#screen-welcome {
+  padding: 32px 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.welcome-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.welcome-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--cream);
+}
+
+.welcome-room {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+  opacity: 0.6;
+}
+
+.welcome-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(221,215,204,0.5);
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+.welcome-enter {
+  background: var(--warm);
+  color: var(--pine);
+  border: none;
+  padding: 14px 40px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.welcome-enter:hover { background: var(--gold); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--pine2);
+  border: 1px solid rgba(184,151,74,0.2);
+  color: var(--mist);
+  padding: 10px 20px;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  z-index: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  STAFF: QR GENERATOR
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-staff">
+  <div>
+    <div class="entry-brand">Stars & Pines</div>
+    <div class="entry-sub">Guest Entry · Staff</div>
+  </div>
+
+  <p class="entry-prompt">Create a guest entry QR. Share it at check-in or send via WhatsApp.</p>
+
+  <div class="entry-form">
+    <div class="entry-field">
+      <label for="staff-booking-id">Booking ID</label>
+      <input type="text" id="staff-booking-id" placeholder="SP-2026-001" />
+    </div>
+    <div class="entry-row">
+      <div class="entry-field">
+        <label for="staff-guest-name">Guest Name</label>
+        <input type="text" id="staff-guest-name" placeholder="Priya K." />
+      </div>
+      <div class="entry-field">
+        <label for="staff-room">Room</label>
+        <select id="staff-room">
+          <option value="">— select —</option>
+          <option value="Six-Bed Dorm">Six-Bed Dorm</option>
+          <option value="Mountain Double">Mountain Double</option>
+          <option value="Deluxe Twin">Deluxe Twin</option>
+        </select>
+      </div>
+    </div>
+    <div class="entry-row">
+      <div class="entry-field">
+        <label for="staff-checkin">Check-in</label>
+        <input type="date" id="staff-checkin" />
+      </div>
+      <div class="entry-field">
+        <label for="staff-checkout">Check-out</label>
+        <input type="date" id="staff-checkout" />
+      </div>
+    </div>
+    <div class="entry-field">
+      <label for="staff-phone">Phone</label>
+      <input type="tel" id="staff-phone" placeholder="+91 98765 43210" />
+    </div>
+    <button class="entry-submit" id="staff-generate-btn">Generate QR Code</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  QR DISPLAY
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-qr">
+  <div>
+    <div class="entry-brand">Stars & Pines</div>
+    <div class="entry-sub">Guest Entry QR</div>
+  </div>
+
+  <div class="qr-card">
+    <canvas id="qr-canvas"></canvas>
+    <div class="qr-guest-name" id="qr-guest-name">—</div>
+    <div class="qr-room" id="qr-room">—</div>
+    <div class="qr-token" id="qr-token">—</div>
+  </div>
+
+  <p class="qr-instruction">Guest scans this QR to register and access their portal.</p>
+
+  <div class="qr-actions">
+    <button class="qr-btn qr-btn-secondary" id="qr-new-btn">New Guest</button>
+    <button class="qr-btn qr-btn-primary" id="qr-share-btn">Share via WhatsApp</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  GUEST: REGISTRATION
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-register">
+  <div class="reg-header">
+    <div class="reg-brand">Stars & Pines</div>
+    <div class="reg-sub">Welcome to the Ridge</div>
+  </div>
+
+  <p style="font-family:'Playfair Display',serif;font-size:0.95rem;font-style:italic;color:rgba(221,215,204,0.5);line-height:1.7;text-align:center;">
+    Tell us a bit about yourself. Your ridge experience starts here.
+  </p>
+
+  <div class="reg-form">
+    <div class="reg-section-label">Your Details</div>
+
+    <div class="entry-field">
+      <label for="reg-name">Full Name</label>
+      <input type="text" id="reg-name" placeholder="Your name" />
+    </div>
+
+    <div class="entry-row">
+      <div class="entry-field">
+        <label for="reg-phone">Phone</label>
+        <input type="tel" id="reg-phone" placeholder="+91 ..." />
+      </div>
+      <div class="entry-field">
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" placeholder="you@email.com" />
+      </div>
+    </div>
+
+    <div class="entry-row">
+      <div class="entry-field">
+        <label for="reg-guests">No. of Guests</label>
+        <select id="reg-guests">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5+">5+</option>
+        </select>
+      </div>
+      <div class="entry-field">
+        <label for="reg-nationality">Nationality</label>
+        <input type="text" id="reg-nationality" placeholder="Indian" />
+      </div>
+    </div>
+
+    <div class="reg-section-label">Your Stay</div>
+
+    <div class="entry-field">
+      <label for="reg-booking-id">Booking ID</label>
+      <input type="text" id="reg-booking-id" placeholder="SP-2026-001" />
+    </div>
+
+    <div class="entry-row">
+      <div class="entry-field">
+        <label for="reg-checkin">Check-in</label>
+        <input type="date" id="reg-checkin" />
+      </div>
+      <div class="entry-field">
+        <label for="reg-checkout">Check-out</label>
+        <input type="date" id="reg-checkout" />
+      </div>
+    </div>
+
+    <div class="reg-section-label">Emergency & Preferences</div>
+
+    <div class="entry-field">
+      <label for="reg-emergency">Emergency Contact</label>
+      <input type="tel" id="reg-emergency" placeholder="+91 ..." />
+    </div>
+
+    <div class="entry-field">
+      <label for="reg-arrival">Arrival Method</label>
+      <select id="reg-arrival">
+        <option value="">— select —</option>
+        <option value="Taxi from Kathgodam">Taxi from Kathgodam</option>
+        <option value="Taxi from Pantnagar">Taxi from Pantnagar</option>
+        <option value="Self Drive">Self Drive</option>
+        <option value="Bus to Almora">Bus to Almora</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="entry-field">
+      <label for="reg-special">Special Requirements</label>
+      <input type="text" id="reg-special" placeholder="Dietary needs, accessibility, etc." />
+    </div>
+
+    <button class="reg-submit" id="reg-submit-btn">Enter the Ridge</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  WELCOME
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-welcome">
+  <div class="welcome-icon">🏔️</div>
+  <div class="welcome-name" id="welcome-name">Welcome</div>
+  <div class="welcome-room" id="welcome-room">—</div>
+  <p class="welcome-msg">Your field guide to the ridge is ready. Food, requests, the guide, and everything in between.</p>
+  <button class="welcome-enter" id="welcome-enter-btn">Open Your Portal</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+const APP_CONFIG = {
+  whatsappNumber: '917982523582',
+  firebaseConfig: {
+    apiKey: 'AIzaSyAJtVjg6zv1KK2puu57NICrW8mU7OTybUA',
+    authDomain: 'stars-and-pines-ridge.firebaseapp.com',
+    databaseURL: 'https://stars-and-pines-ridge-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'stars-and-pines-ridge',
+    storageBucket: 'stars-and-pines-ridge.firebasestorage.app',
+    messagingSenderId: '8285256236',
+    appId: '1:8285256236:web:e03af2dff72e80eed26f89'
+  }
+};
+
+firebase.initializeApp(APP_CONFIG.firebaseConfig);
+const db = firebase.database();
+
+// ─── STATE
+let currentToken = null;
+let currentGuest = null;
+
+// ─── SCREEN MANAGEMENT
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── TOKEN GENERATOR
+function generateToken() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let token = '';
+  for (let i = 0; i < 6; i++) token += chars[Math.floor(Math.random() * chars.length)];
+  return token;
+}
+
+// ─── STAFF: GENERATE QR
+document.getElementById('staff-generate-btn').addEventListener('click', () => {
+  const bookingId = document.getElementById('staff-booking-id').value.trim();
+  const guestName = document.getElementById('staff-guest-name').value.trim();
+  const room = document.getElementById('staff-room').value;
+  const checkin = document.getElementById('staff-checkin').value;
+  const checkout = document.getElementById('staff-checkout').value;
+  const phone = document.getElementById('staff-phone').value.trim();
+
+  if (!bookingId || !guestName || !room) {
+    showToast('Fill in booking ID, name, and room');
+    return;
+  }
+
+  const token = generateToken();
+  const now = Date.now();
+  const checkoutDate = checkout ? new Date(checkout).getTime() : now + (7 * 24 * 60 * 60 * 1000);
+
+  const guestData = {
+    token,
+    bookingId,
+    guestName,
+    room,
+    phone,
+    checkin: checkin ? new Date(checkin).getTime() : now,
+    checkout: checkoutDate,
+    active: true,
+    validUntil: checkoutDate + (24 * 60 * 60 * 1000),
+    createdAt: now,
+    status: 'checked-in',
+    source: 'staff-qr'
+  };
+
+  db.ref('guest_access/' + token).set(guestData).then(() => {
+    currentToken = token;
+    currentGuest = guestData;
+    generateQR(token);
+    showScreen('screen-qr');
+  }).catch(() => {
+    showToast('Could not create guest entry. Check connection.');
+  });
+});
+
+// ─── GENERATE QR CODE
+function generateQR(token) {
+  const portalUrl = window.location.origin + window.location.pathname + '?token=' + token + '&mode=guest';
+
+  document.getElementById('qr-guest-name').textContent = currentGuest.guestName;
+  document.getElementById('qr-room').textContent = currentGuest.room;
+  document.getElementById('qr-token').textContent = token;
+
+  const canvas = document.getElementById('qr-canvas');
+  if (typeof QRCode !== 'undefined') {
+    QRCode.toCanvas(canvas, portalUrl, {
+      width: 200,
+      margin: 2,
+      color: { dark: '#131a12', light: '#f6f1ea' }
+    });
+  }
+}
+
+// ─── QR ACTIONS
+document.getElementById('qr-new-btn').addEventListener('click', () => {
+  showScreen('screen-staff');
+});
+
+document.getElementById('qr-share-btn').addEventListener('click', () => {
+  const portalUrl = window.location.origin + window.location.pathname + '?token=' + currentToken + '&mode=guest';
+  const msg = `Welcome to Stars & Pines, ${currentGuest.guestName}!\n\nScan this link to access your guest portal:\n${portalUrl}\n\nYour token: ${currentToken}\nRoom: ${currentGuest.room}`;
+  const phone = currentGuest.phone ? currentGuest.phone.replace(/[^0-9]/g, '') : APP_CONFIG.whatsappNumber;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+// ─── GUEST: CHECK URL FOR TOKEN
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const mode = params.get('mode');
+
+  if (token && mode === 'guest') {
+    // Guest scanning QR — show registration
+    document.getElementById('reg-booking-id').value = '';
+    showScreen('screen-register');
+
+    document.getElementById('reg-submit-btn').addEventListener('click', () => {
+      const name = document.getElementById('reg-name').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const guests = document.getElementById('reg-guests').value;
+      const nationality = document.getElementById('reg-nationality').value.trim();
+      const checkin = document.getElementById('reg-checkin').value;
+      const checkout = document.getElementById('reg-checkout').value;
+      const emergency = document.getElementById('reg-emergency').value.trim();
+      const arrival = document.getElementById('reg-arrival').value;
+      const special = document.getElementById('reg-special').value.trim();
+
+      if (!name) {
+        showToast('Please enter your name');
+        return;
+      }
+
+      // Update guest record with registration details
+      db.ref('guest_access/' + token).update({
+        guestName: name,
+        phone,
+        email,
+        guests,
+        nationality,
+        checkin: checkin ? new Date(checkin).getTime() : undefined,
+        checkout: checkout ? new Date(checkout).getTime() : undefined,
+        emergencyContact: emergency,
+        arrivalMethod: arrival,
+        specialRequirements: special,
+        registeredAt: Date.now(),
+        status: 'registered'
+      }).then(() => {
+        document.getElementById('welcome-name').textContent = `Welcome, ${name}`;
+        db.ref('guest_access/' + token).once('value').then(s => {
+          const d = s.val();
+          document.getElementById('welcome-room').textContent = d.room || '';
+        });
+        currentToken = token;
+        showScreen('screen-welcome');
+      }).catch(() => {
+        showToast('Could not complete registration. Try again.');
+      });
+    });
+  } else if (token) {
+    // Direct token access (old format) — validate and go to portal
+    db.ref('guest_access/' + token).once('value').then(snapshot => {
+      const data = snapshot.val();
+      if (data && data.active && (!data.validUntil || Date.now() <= data.validUntil)) {
+        // Redirect to guest portal
+        window.location.href = 'guest-portal.html?token=' + token;
+      } else {
+        showToast('This access code is no longer valid.');
+      }
+    });
+  }
+})();
+
+// ─── WELCOME: ENTER PORTAL
+document.getElementById('welcome-enter-btn').addEventListener('click', () => {
+  window.location.href = 'guest-portal.html?token=' + currentToken;
+});
+
+// ─── TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('visible'), 2500);
+}
+</script>
+
+</body>
+</html>

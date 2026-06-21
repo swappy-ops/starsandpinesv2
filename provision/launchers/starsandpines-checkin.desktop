@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Guest Check-In
+Comment=Guest check-in and access codes
+Exec=firefox --class "CheckIn" --new-window "http://localhost/entry"
+Icon=starsandpines-checkin
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=CheckIn

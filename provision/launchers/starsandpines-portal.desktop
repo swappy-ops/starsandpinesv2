@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Guest Portal
+Comment=Active guest sessions and billing
+Exec=firefox --class "GuestPortal" --new-window "http://localhost/portal"
+Icon=starsandpines-portal
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=GuestPortal

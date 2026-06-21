@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#f8f8f6" />
+  <title>Stars & Pines — Family Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #1a1714;
+      --pine:   #1f2f1d;
+      --pine2:  #2d4030;
+      --bark:   #4a3a26;
+      --earth:  #7a6248;
+      --mist:   #e8e2d8;
+      --paper:  #f0ebe3;
+      --cream:  #f6f1ea;
+      --gold:   #c4a55a;
+      --warm:   #d4b880;
+      --smoke:  #b0a898;
+      --night:  #131a12;
+      --forest: #253422;
+      --sage:   #4a6340;
+      --alert:  #d4885a;
+      --green:  #4a8a62;
+      --red-soft: #b05050;
+    }
+
+    html, body {
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: #f8f8f6;
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    /* ─── HEADER ─── */
+    .dash-header {
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid rgba(122,98,72,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--pine);
+    }
+    .dash-header .sub {
+      font-size: 0.6rem;
+      color: var(--earth);
+      letter-spacing: 0.1em;
+    }
+    .refresh-btn {
+      background: none;
+      border: 1px solid rgba(122,98,72,0.18);
+      color: var(--earth);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .refresh-btn:hover { border-color: var(--warm); }
+
+    /* ─── TAB BAR ─── */
+    .tab-bar {
+      display: flex;
+      background: white;
+      border-bottom: 1px solid rgba(122,98,72,0.12);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--earth);
+      transition: all 0.2s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab-btn.active { border-bottom-color: var(--warm); color: var(--pine); font-weight: 500; }
+
+    .tab-content { display: none; padding: 16px; }
+    .tab-content.active { display: block; }
+
+    /* ─── STAT CARDS ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid rgba(122,98,72,0.12);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--pine);
+    }
+    .stat-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--earth);
+      margin-top: 4px;
+    }
+    .stat-card.warning .stat-value { color: var(--alert); }
+    .stat-card.success .stat-value { color: var(--green); }
+    .stat-card.danger .stat-value { color: var(--red-soft); }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: white;
+      border: 1px solid rgba(122,98,72,0.12);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--pine);
+      margin-bottom: 10px;
+    }
+    .card-subtitle { font-size: 0.65rem; color: var(--earth); }
+
+    /* ─── ROOM/BED GRID ─── */
+    .room-grid { display: flex; flex-direction: column; gap: 10px; }
+    .room-card {
+      background: white;
+      border: 1px solid rgba(122,98,72,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .room-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f8f6;
+    }
+    .room-header .name { font-weight: 500; }
+    .room-header .type { font-size: 0.6rem; color: var(--earth); letter-spacing: 0.1em; text-transform: uppercase; }
+    .room-header .badge {
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .room-header .badge.occupied { background: rgba(176,80,80,0.12); color: var(--red-soft); }
+    .room-header .badge.available { background: rgba(74,138,98,0.12); color: var(--green); }
+    .beds-row {
+      padding: 8px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .bed-chip {
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(122,98,72,0.12);
+    }
+    .bed-chip.occupied {
+      background: rgba(176,80,80,0.08);
+      border-color: rgba(176,80,80,0.2);
+      color: var(--red-soft);
+    }
+    .bed-chip.free {
+      background: rgba(74,138,98,0.08);
+      border-color: rgba(74,138,98,0.2);
+      color: var(--green);
+    }
+    .bed-chip .guest { font-size: 0.6rem; color: var(--earth); display: block; }
+
+    /* ─── KITCHEN QUEUE ─── */
+    .order-card {
+      background: white;
+      border: 1px solid rgba(122,98,72,0.12);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .order-card.pending { border-left: 3px solid var(--alert); }
+    .order-card.preparing { border-left: 3px solid var(--gold); }
+    .order-card.served { border-left: 3px solid var(--green); opacity: 0.6; }
+    .order-status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .order-status.pending { background: rgba(212,136,90,0.15); color: var(--alert); }
+    .order-status.preparing { background: rgba(196,165,90,0.15); color: var(--gold); }
+    .order-status.served { background: rgba(74,138,98,0.15); color: var(--green); }
+    .order-actions { display: flex; gap: 6px; margin-top: 8px; }
+    .order-actions button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-start { background: var(--gold); color: var(--pine); }
+    .btn-serve { background: var(--green); color: white; }
+    .btn-cancel { background: rgba(176,80,80,0.12); color: var(--red-soft); }
+
+    /* ─── INVENTORY ─── */
+    .inv-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(122,98,72,0.08);
+    }
+    .inv-item:last-child { border-bottom: none; }
+    .inv-item .name { font-weight: 500; }
+    .inv-item .stock { font-size: 0.82rem; }
+    .inv-item .stock.low { color: var(--red-soft); font-weight: 500; }
+    .inv-item .stock.ok { color: var(--green); }
+    .inv-btn {
+      padding: 4px 10px;
+      border: 1px solid rgba(122,98,72,0.18);
+      border-radius: 6px;
+      background: none;
+      font-size: 0.6rem;
+      cursor: pointer;
+      color: var(--earth);
+    }
+    .inv-btn:hover { border-color: var(--warm); color: var(--pine); }
+
+    /* ─── SECTION ─── */
+    .section-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--earth);
+      margin-bottom: 12px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label:first-child { margin-top: 0; }
+    .section-label::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--earth);
+      opacity: 0.3;
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--pine);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 32px rgba(19,26,18,0.2);
+    }
+    .toast.visible { transform: translateX(-50%) translateY(0); }
+
+    /* ─── LOADING ─── */
+    .loading { text-align: center; padding: 40px; color: var(--earth); }
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(122,98,72,0.12);
+      border-top-color: var(--warm);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── BILL ─── */
+    .bill-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(122,98,72,0.08);
+      font-size: 0.88rem;
+    }
+    .bill-line:last-child { border-bottom: none; }
+    .bill-line .desc { color: var(--ink); }
+    .bill-line .amount { font-weight: 500; }
+    .bill-line.payment .amount { color: var(--green); }
+    .bill-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      border-top: 2px solid var(--pine);
+      margin-top: 8px;
+    }
+
+    /* ─── FORMS ─── */
+    .form-group { margin-bottom: 12px; }
+    .form-label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--earth);
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(122,98,72,0.18);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: 'DM Sans', sans-serif;
+      background: #f8f8f6;
+      color: var(--ink);
+      outline: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--warm); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary { background: var(--pine); color: white; }
+    .btn-primary:hover { background: var(--pine2); }
+    .btn-success { background: var(--green); color: white; }
+    .btn-warning { background: var(--alert); color: white; }
+    .btn-danger { background: var(--red-soft); color: white; }
+    .btn-full { width: 100%; }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<div class="dash-header">
+  <div>
+    <h1>Stars & Pines</h1>
+    <div class="sub">Family Dashboard</div>
+  </div>
+  <button class="refresh-btn" onclick="refreshAll()">Refresh</button>
+</div>
+
+<!-- ─── TAB BAR ─── -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('dashboard', this)">Dashboard</button>
+  <button class="tab-btn" onclick="switchTab('kitchen', this)">Kitchen</button>
+  <button class="tab-btn" onclick="switchTab('inventory', this)">Inventory</button>
+  <button class="tab-btn" onclick="switchTab('checkout', this)">Checkout</button>
+</div>
+
+<!-- ─── DASHBOARD TAB ─── -->
+<div class="tab-content active" id="panel-dashboard">
+  <div class="stats-row" id="stats-row">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+
+  <div class="section-label">Room & Bed Grid</div>
+  <div class="room-grid" id="room-grid">
+    <div class="loading"><div class="spinner"></div>Loading rooms...</div>
+  </div>
+
+  <div class="section-label">Active Stays</div>
+  <div id="active-stays">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ─── KITCHEN TAB ─── -->
+<div class="tab-content" id="panel-kitchen">
+  <div class="stats-row" id="kitchen-stats">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+
+  <div class="section-label">Kitchen Queue</div>
+  <div id="kitchen-queue">
+    <div class="loading"><div class="spinner"></div>Loading orders...</div>
+  </div>
+</div>
+
+<!-- ─── INVENTORY TAB ─── -->
+<div class="tab-content" id="panel-inventory">
+  <div id="inventory-content">
+    <div class="loading"><div class="spinner"></div>Loading inventory...</div>
+  </div>
+</div>
+
+<!-- ─── CHECKOUT TAB ─── -->
+<div class="tab-content" id="panel-checkout">
+  <div class="section-label">Active Stays</div>
+  <div id="checkout-stays">
+    <div class="loading"><div class="spinner"></div>Loading...</div>
+  </div>
+  <div id="checkout-bill" style="display:none"></div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<script src="../shared/api.js"></script>
+<script>
+// ─── STATE ───
+let dashboardData = null;
+let refreshInterval = null;
+
+// ─── INIT ───
+refreshAll();
+refreshInterval = setInterval(refreshAll, 30000);
+
+// ─── TABS ───
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'checkout') loadCheckoutStays();
+}
+
+// ─── REFRESH ALL ───
+async function refreshAll() {
+  try {
+    dashboardData = await API.getDashboard();
+    renderDashboard();
+    renderKitchen();
+    renderInventory();
+  } catch (e) {
+    // Silently fail on refresh
+  }
+}
+
+// ─── DASHBOARD ───
+function renderDashboard() {
+  const d = dashboardData;
+  if (!d) return;
+
+  const occ = d.occupancy?.property || {};
+  const rev = d.revenue || {};
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-value">${occ.occupancy_rate || 0}%</div>
+      <div class="stat-label">Occupancy</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-value">${occ.occupied_beds || 0}/${occ.total_beds || 0}</div>
+      <div class="stat-label">Beds</div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-value">₹${(rev.food_orders?.total || 0).toFixed(0)}</div>
+      <div class="stat-label">Food</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">₹${(rev.payments_received?.total || 0).toFixed(0)}</div>
+      <div class="stat-label">Payments</div>
+    </div>
+    ${d.inventory?.low_stock_count > 0 ? `
+    <div class="stat-card danger">
+      <div class="stat-value">${d.inventory.low_stock_count}</div>
+      <div class="stat-label">Low Stock</div>
+    </div>` : ''}
+  `;
+
+  // Room grid
+  const rooms = d.occupancy?.rooms || [];
+  document.getElementById('room-grid').innerHTML = rooms.map(r => {
+    const bedsHtml = r.beds && r.beds.length > 0
+      ? r.beds.map(b => `
+          <div class="bed-chip ${b.is_occupied ? 'occupied' : 'free'}">
+            ${b.label}
+            ${b.guest_name ? `<span class="guest">${b.guest_name}</span>` : ''}
+          </div>
+        `).join('')
+      : (r.guest ? `<div class="bed-chip occupied">${r.guest.guest_name || 'Guest'}</div>` : '<div class="bed-chip free">Vacant</div>');
+
+    return `
+      <div class="room-card">
+        <div class="room-header">
+          <div>
+            <div class="name">${r.name}</div>
+            <div class="type">${r.type} · ₹${r.base_price}</div>
+          </div>
+          <span class="badge ${r.is_occupied ? 'occupied' : 'available'}">
+            ${r.is_occupied ? `${r.occupied_beds}/${r.total_beds}` : 'Vacant'}
+          </span>
+        </div>
+        <div class="beds-row">${bedsHtml}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Active stays
+  const stays = d.departures || [];
+  document.getElementById('active-stays').innerHTML = stays.length > 0
+    ? stays.map(s => `
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div class="card-title">${s.guest_name}</div>
+              <div class="card-subtitle">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''} · ${s.guest_phone}</div>
+            </div>
+          </div>
+        </div>
+      `).join('')
+    : '<div style="text-align:center;padding:20px;color:var(--earth)">No active stays</div>';
+}
+
+// ─── KITCHEN ───
+function renderKitchen() {
+  const d = dashboardData;
+  if (!d) return;
+
+  const stats = d.kitchen?.stats || {};
+  document.getElementById('kitchen-stats').innerHTML = `
+    <div class="stat-card warning">
+      <div class="stat-value">${stats.pending || 0}</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${stats.preparing || 0}</div>
+      <div class="stat-label">Preparing</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-value">${stats.served || 0}</div>
+      <div class="stat-label">Served</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">₹${(stats.total_revenue || 0).toFixed(0)}</div>
+      <div class="stat-label">Revenue</div>
+    </div>
+  `;
+
+  const queue = d.kitchen?.queue || [];
+  document.getElementById('kitchen-queue').innerHTML = queue.length > 0
+    ? queue.map(o => `
+        <div class="order-card ${o.status}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div>
+              <div style="font-weight:500;">${o.table_label || o.room_name || 'Walk-in'}</div>
+              <div style="font-size:0.65rem;color:var(--earth);">${new Date(o.created_at).toLocaleTimeString()}</div>
+            </div>
+            <span class="order-status ${o.status}">${o.status}</span>
+          </div>
+          ${o.items.map(i => `
+            <div style="font-size:0.82rem;padding:2px 0;">${i.quantity}x ${i.item_name}${i.notes ? ' (' + i.notes + ')' : ''}</div>
+          `).join('')}
+          <div class="order-actions">
+            ${o.status === 'pending' ? `<button class="btn-start" onclick="updateOrder('${o.id}', 'preparing')">Start</button>` : ''}
+            ${o.status === 'preparing' ? `<button class="btn-serve" onclick="updateOrder('${o.id}', 'served')">Served</button>` : ''}
+            <button class="btn-cancel" onclick="updateOrder('${o.id}', 'cancelled')">Cancel</button>
+          </div>
+        </div>
+      `).join('')
+    : '<div style="text-align:center;padding:40px;color:var(--earth)">No pending orders</div>';
+}
+
+async function updateOrder(orderId, status) {
+  try {
+    await API.updateOrderStatus(orderId, status, 'Staff');
+    showToast(`Order ${status}`);
+    refreshAll();
+  } catch (e) {
+    showToast(`Failed: ${e.message}`);
+  }
+}
+
+// ─── INVENTORY ───
+function renderInventory() {
+  const d = dashboardData;
+  if (!d) return;
+
+  const inv = d.inventory || {};
+  let html = '';
+
+  if (inv.low_stock_count > 0) {
+    html += `<div class="card" style="border-color:rgba(176,80,80,0.3);">
+      <div class="card-title" style="color:var(--red-soft);">⚠ Low Stock (${inv.low_stock_count})</div>
+      ${inv.low_stock.map(i => `
+        <div class="inv-item">
+          <div class="name">${i.name}</div>
+          <div class="stock low">${i.current_stock} / ${i.threshold} ${i.unit}</div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  for (const [catName, catData] of Object.entries(inv.categories || {})) {
+    html += `<div class="card">
+      <div class="card-title">${catName}</div>
+      ${catData.items.map(i => `
+        <div class="inv-item">
+          <div>
+            <div class="name">${i.name}</div>
+            <div style="font-size:0.65rem;color:var(--earth);">${i.current_stock} ${i.unit} (min: ${i.threshold})</div>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <button class="inv-btn" onclick="restockItem('${i.id}', '${i.name}')">+ Restock</button>
+            <button class="inv-btn" onclick="consumeItem('${i.id}', '${i.name}')">- Use</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  document.getElementById('inventory-content').innerHTML = html || '<div style="text-align:center;padding:40px;color:var(--earth)">No inventory data</div>';
+}
+
+async function restockItem(itemId, itemName) {
+  const qty = prompt(`Restock ${itemName} — quantity?`);
+  if (!qty || isNaN(qty)) return;
+  try {
+    await API.restockItem({ item_id: itemId, quantity: parseFloat(qty), logged_by: 'Staff' });
+    showToast(`${itemName} restocked +${qty}`);
+    refreshAll();
+  } catch (e) {
+    showToast(`Failed: ${e.message}`);
+  }
+}
+
+async function consumeItem(itemId, itemName) {
+  const qty = prompt(`Consume ${itemName} — quantity?`);
+  if (!qty || isNaN(qty)) return;
+  try {
+    await API.consumeItem({ item_id: itemId, quantity: parseFloat(qty), logged_by: 'Staff' });
+    showToast(`${itemName} consumed -${qty}`);
+    refreshAll();
+  } catch (e) {
+    showToast(`Failed: ${e.message}`);
+  }
+}
+
+// ─── CHECKOUT ───
+async function loadCheckoutStays() {
+  try {
+    const data = await API.getDepartures();
+    const container = document.getElementById('checkout-stays');
+    if (data.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--earth)">No active stays</div>';
+      return;
+    }
+    container.innerHTML = data.map(s => `
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="card-title">${s.guest_name}</div>
+            <div class="card-subtitle">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''} · Since ${new Date(s.check_in).toLocaleDateString()}</div>
+          </div>
+          <button class="btn btn-warning" onclick="showCheckoutBill('${s.id}', '${s.guest_name}')">Checkout</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('checkout-stays').innerHTML = '<div style="color:var(--red-soft)">Failed to load stays</div>';
+  }
+}
+
+async function showCheckoutBill(stayId, guestName) {
+  try {
+    const bill = await API.getBill(stayId);
+    const container = document.getElementById('checkout-bill');
+    container.style.display = 'block';
+
+    let lines = bill.entries.map(e => `
+      <div class="bill-line ${e.entry_type === 'payment' ? 'payment' : ''}">
+        <span class="desc">${e.description}</span>
+        <span class="amount">${e.amount >= 0 ? '₹' + e.amount.toFixed(0) : '-₹' + Math.abs(e.amount).toFixed(0)}</span>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="card">
+        <div class="card-title">Bill — ${guestName}</div>
+        <div class="section-label">Ledger</div>
+        ${lines || '<div style="color:var(--earth);font-size:0.82rem">No entries yet</div>'}
+        <div class="bill-total">
+          <span>Balance</span>
+          <span>₹${bill.balance.toFixed(0)}</span>
+        </div>
+        <div class="section-label">Record Payment</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Amount</label>
+            <input class="form-input" id="pay-amount" type="number" value="${bill.balance}" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Method</label>
+            <select class="form-select" id="pay-method">
+              <option value="cash">Cash</option>
+              <option value="upi">UPI</option>
+              <option value="card">Card</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-success btn-full" onclick="recordPayment('${stayId}')">Record Payment</button>
+        <div style="margin-top:10px">
+          <button class="btn btn-danger btn-full" onclick="confirmCheckout('${stayId}', '${guestName}')">Complete Checkout</button>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    showToast(`Failed to load bill: ${e.message}`);
+  }
+}
+
+async function recordPayment(stayId) {
+  const amount = parseFloat(document.getElementById('pay-amount').value);
+  const method = document.getElementById('pay-method').value;
+  try {
+    await API.recordPayment({ stay_id: stayId, amount, method, collected_by: 'Staff' });
+    showToast('Payment recorded');
+    showCheckoutBill(stayId, '');
+  } catch (e) {
+    showToast(`Payment failed: ${e.message}`);
+  }
+}
+
+function confirmCheckout(stayId, guestName) {
+  if (!confirm(`Checkout ${guestName}? This will close the stay and deactivate their portal.`)) return;
+  API.checkout(stayId, 'Staff').then(() => {
+    showToast(`${guestName} checked out`);
+    document.getElementById('checkout-bill').style.display = 'none';
+    loadCheckoutStays();
+    refreshAll();
+  }).catch(e => showToast(`Checkout failed: ${e.message}`));
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('visible'), 3000);
+}
+</script>
+</body>
+</html>
