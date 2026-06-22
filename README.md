@@ -52,7 +52,7 @@ Front desk only. Staff enters guest details, assigns room, generates access toke
 Guest scans QR → sees room details, orders food, requests cleaning, views running bill.
 
 ### 3. Family Dashboard (`family-dashboard.html`)
-Operations hub for Rajat, Mona, Raman, kitchen staff. Kitchen queue, order dispatch, guest requests, cleaning, checkout, inventory, logs.
+Operations hub for Mona, Raman, kitchen staff. Kitchen queue, order dispatch, guest requests, cleaning, checkout, inventory, logs.
 
 ## Database
 
@@ -89,7 +89,7 @@ uvicorn api.main:app --reload --port 8000
 
 1. **Local-first** — Kasar Devi network is unreliable. SQLite on disk.
 2. **Single file** — One `.db` file. Nightly backup to Google Drive.
-3. **No ORM** — Rajat should be able to read raw SQL at 11 PM during peak season.
+3. **No ORM** — Raman should be able to read raw SQL at 11 PM during peak season.
 4. **Append-only billing** — Ledger entries are never deleted. Soft deletes everywhere.
 5. **Timestamps UTC** — Frontend converts to IST for display.
 
