@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Reservations
+Comment=Guest reservation management
+Exec=firefox --class "Reservations" --new-window "http://localhost/staff"
+Icon=starsandpines-reservations
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=Reservations

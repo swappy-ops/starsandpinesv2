@@ -1,0 +1,25 @@
+[project]
+name = "stars-pines-v2"
+version = "2.0.0"
+description = "Stars & Pines — Local-first hospitality operations system"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "python-dotenv>=1.0.1",
+    "pydantic>=2.10.0",
+    "schedule>=1.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "httpx>=0.28.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.setuptools.packages.find]
+include = ["api*"]

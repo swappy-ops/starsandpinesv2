@@ -1,0 +1,62 @@
+# Stars & Pines V2 — Git Ignore
+
+# Database
+*.db
+*.db-journal
+*.db-wal
+
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups (keep directory, ignore contents)
+backups/*
+!backups/.gitkeep
+
+# Assets uploads (keep directory structure, ignore uploaded files)
+assets/menu/*
+assets/guide/*
+assets/rooms/*
+assets/dogs/*
+assets/art/*
+assets/scans/*
+!assets/menu/.gitkeep
+!assets/guide/.gitkeep
+!assets/rooms/.gitkeep
+!assets/dogs/.gitkeep
+!assets/art/.gitkeep
+!assets/scans/.gitkeep
+
+# Logs
+*.log

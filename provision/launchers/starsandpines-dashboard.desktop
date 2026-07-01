@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Operations Dashboard
+Comment=Main operations dashboard
+Exec=firefox --class "StarsPines" --new-window "http://localhost/dashboard"
+Icon=starsandpines-dashboard
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=StarsPines

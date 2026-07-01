@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stars & Pines — Guest Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#131a12;--pine:#1f2f1d;--pine-light:#2a3f28;--pine-dark:#162214;
+  --gold:#d4b880;--gold-dim:rgba(212,184,128,0.15);--gold-border:rgba(212,184,128,0.2);
+  --cream:#f6f1ea;--mist:#e8e2d8;--mist-dim:rgba(232,226,216,0.6);
+  --alert:#d4885a;--green:#4a8a62;--red:#c45a5a;
+  --radius:12px;--radius-lg:16px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--night);color:var(--cream);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600}
+.serif{font-family:'EB Garamond',serif}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;font-size:16px;background:var(--pine-light);color:var(--cream);border:1px solid var(--gold-border);border-radius:8px;padding:12px 16px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{font-size:13px;color:var(--mist);margin-bottom:4px;display:block}
+
+/* ─── Access Screen ─── */
+.access-screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.access-logo{width:64px;height:64px;margin-bottom:20px}
+.access-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:8px}
+.access-sub{font-size:14px;color:var(--mist-dim);margin-bottom:32px;max-width:280px;line-height:1.6}
+.access-form{width:100%;max-width:320px}
+.access-form .form-group{margin-bottom:16px}
+.access-form .code-input{font-family:'DM Mono',monospace;font-size:28px;text-align:center;letter-spacing:8px;text-transform:uppercase;padding:16px}
+
+/* ─── Portal Screen ─── */
+.portal-screen{display:none;padding-bottom:80px}
+.portal-screen.active{display:block}
+
+/* ─── Header ─── */
+.portal-header{padding:24px 16px 16px;text-align:center;border-bottom:1px solid var(--gold-border)}
+.portal-greeting{font-family:'EB Garamond',serif;font-size:22px;color:var(--gold);font-style:italic;margin-bottom:4px}
+.portal-room{font-size:14px;color:var(--mist)}
+.portal-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--mist);margin-top:4px;opacity:0.6}
+
+/* ─── Tab Bar ─── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--night);border-top:1px solid var(--gold-border);display:flex;overflow-x:auto;padding:6px 0 env(safe-area-inset-bottom,6px);-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;background:none;color:var(--mist-dim);font-size:9px;transition:color 0.2s;white-space:nowrap}
+.tab-btn.active{color:var(--gold)}
+.tab-btn .tab-icon{font-size:18px}
+
+/* ─── Tab Content ─── */
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block}
+
+/* ─── Cards ─── */
+.card{background:var(--pine);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid var(--gold-border)}
+.card-title{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.card-body{font-size:14px;color:var(--mist);line-height:1.5}
+.card-meta{font-size:12px;color:var(--mist-dim);margin-top:8px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+
+/* ─── Badges ─── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase}
+.badge-paid,.badge-resolved,.badge-completed{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-pending,.badge-acknowledged,.badge-preparing{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-overdue,.badge-open,.badge-requested{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-delivered,.badge-in_progress{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-dismissed,.badge-cancelled{background:rgba(176,168,152,0.15);color:var(--mist-dim)}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;min-height:44px}
+.btn-primary{background:var(--gold);color:var(--night)}
+.btn-primary:active{background:#c4a55a}
+.btn-secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-sm{padding:8px 14px;font-size:12px;min-height:36px}
+.btn-block{width:100%}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ─── Running Bill ─── */
+.bill-summary{background:var(--pine);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.bill-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gold-border);font-size:14px}
+.bill-line:last-child{border-bottom:none}
+.bill-label{color:var(--mist)}
+.bill-value{color:var(--cream);font-weight:600}
+.bill-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--gold);font-size:18px;font-weight:700}
+.bill-total .bill-label{color:var(--gold)}
+.bill-total .bill-value{color:var(--gold)}
+.bill-outstanding{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--alert);font-size:20px;font-weight:700}
+.bill-outstanding .bill-label{color:var(--alert)}
+.bill-outstanding .bill-value{color:var(--alert)}
+
+/* ─── Menu ─── */
+.menu-category{margin-bottom:20px}
+.menu-cat-title{font-size:16px;font-weight:600;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gold-border)}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.menu-item:active{background:var(--pine-light)}
+.menu-item-name{font-size:14px;font-weight:500;color:var(--cream)}
+.menu-item-desc{font-size:12px;color:var(--mist-dim);margin-top:2px}
+.menu-item-price{font-size:14px;font-weight:600;color:var(--gold);white-space:nowrap;margin-left:12px}
+.menu-item-qty{display:flex;align-items:center;gap:8px}
+.qty-btn{width:32px;height:32px;border-radius:50%;background:var(--pine-light);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold-border)}
+
+/* ─── Cart Bar ─── */
+.cart-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:99;background:var(--gold);color:var(--night);border-radius:var(--radius);padding:12px 16px;display:none;align-items:center;justify-content:space-between;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.cart-bar.visible{display:flex}
+
+/* ─── Grievance Types ─── */
+.grievance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.grievance-type-btn{padding:16px 12px;background:var(--pine);border-radius:var(--radius);text-align:center;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.grievance-type-btn.selected{border-color:var(--gold);background:var(--pine-light)}
+.grievance-type-btn .gt-icon{font-size:24px;margin-bottom:4px}
+.grievance-type-btn .gt-name{font-size:12px;color:var(--cream)}
+
+/* ─── Payment Options ─── */
+.payment-option{display:flex;align-items:center;gap:12px;padding:16px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
+.payment-option:active{border-color:var(--gold)}
+.payment-option .po-icon{font-size:24px}
+.payment-option .po-name{font-size:15px;font-weight:600;color:var(--cream)}
+.payment-option .po-desc{font-size:12px;color:var(--mist-dim)}
+
+/* ─── QR Payment ─── */
+.qr-payment{text-align:center;padding:24px}
+.qr-placeholder{width:200px;height:200px;margin:16px auto;background:var(--pine);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;border:2px dashed var(--gold-border)}
+.qr-placeholder span{font-size:14px;color:var(--mist-dim)}
+
+/* ─── Invoice ─── */
+.invoice{background:var(--cream);color:var(--night);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
+.invoice h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--night);margin-bottom:4px}
+.invoice .inv-sub{font-size:12px;color:#666;margin-bottom:16px}
+.invoice .inv-line{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid #eee}
+.invoice .inv-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--night);font-size:18px;font-weight:700}
+
+/* ─── Section Headers ─── */
+.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:20px 0 12px;font-weight:600}
+
+/* ─── Empty State ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--mist-dim)}
+.empty-state .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+.empty-state p{font-size:14px}
+
+/* ─── Notifications ─── */
+.notif-item{display:flex;gap:12px;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;border-left:3px solid var(--gold)}
+.notif-item.unread{border-left-color:var(--alert)}
+.notif-text{font-size:14px;color:var(--cream);flex:1}
+.notif-time{font-size:11px;color:var(--mist-dim);white-space:nowrap}
+
+/* ─── House Requests / Service Items ─── */
+.request-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.request-item:active{background:var(--pine-light)}
+
+/* ─── Animations ─── */
+@keyframes spFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes spBlinkRed{0%,100%{opacity:1;border-left-color:#c45a5a;box-shadow:0 0 8px rgba(196,90,90,0.3)}50%{opacity:0.7;border-left-color:#e06060;box-shadow:0 0 16px rgba(196,90,90,0.6)}}
+@keyframes spPulseYellow{0%,100%{border-left-color:#d4b880}50%{border-left-color:#e4c890}}
+
+/* ─── Order Status Colours (Ridgebell) ─── */
+.order-status-placed{border-left:3px solid #c45a5a;animation:spBlinkRed 1.5s ease-in-out infinite}
+.order-status-preparing{border-left:3px solid #d4b880;animation:spPulseYellow 2s ease-in-out infinite}
+.order-status-served{border-left:3px solid #4a8a62}
+.order-status-cancelled{border-left:3px solid #888;opacity:0.5}
+
+/* ─── Kitchen Busy Toast ─── */
+.kitchen-busy-toast{position:fixed;top:70px;left:12px;right:12px;z-index:150;background:rgba(196,90,90,0.95);color:var(--cream);padding:12px 16px;border-radius:var(--radius);font-size:13px;text-align:center;backdrop-filter:blur(8px);border:1px solid rgba(224,96,96,0.3);animation:spFadeIn 0.3s ease}
+.kitchen-busy-toast .eta{font-weight:600;color:var(--gold);margin-top:4px}
+
+/* ─── Persistent Order Notification ─── */
+.persistent-order-notif{position:fixed;top:130px;left:12px;right:12px;z-index:149;background:var(--pine);color:var(--cream);padding:12px 16px;border-radius:var(--radius);font-size:13px;border:1px solid var(--gold-border);animation:spFadeIn 0.3s ease}
+.persistent-order-notif .order-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.persistent-order-notif .order-item .eta{color:var(--gold);font-weight:600}
+
+/* ─── Places Guide ─── */
+.place-card{display:flex;gap:12px;padding:14px;background:var(--pine);border-radius:var(--radius);margin-bottom:10px;border:1px solid var(--gold-border);transition:all 0.2s}
+.place-card:active{background:var(--pine-light)}
+.place-icon{width:48px;height:48px;border-radius:10px;background:var(--pine-light);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.place-info{flex:1}
+.place-name{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.place-desc{font-size:12px;color:var(--mist-dim);margin-bottom:6px;line-height:1.4}
+.place-meta{display:flex;gap:8px;flex-wrap:wrap}
+.place-tag{font-size:10px;padding:3px 8px;border-radius:12px;background:var(--gold-dim);color:var(--gold)}
+.place-tag.taxi{background:rgba(74,138,98,0.15);color:var(--green)}
+.place-tag.bike{background:rgba(212,136,90,0.15);color:var(--alert)}
+
+/* ─── Perool Store ─── */
+.perool-header{text-align:center;padding:20px 0;margin-bottom:16px}
+.perool-header .brand{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:4px}
+.perool-header .tagline{font-size:12px;color:var(--mist-dim);font-style:italic}
+.perool-header .insta{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 14px;background:var(--pine-light);border-radius:20px;font-size:12px;color:var(--gold);text-decoration:none}
+.perool-cat{margin-bottom:20px}
+.perool-cat-title{font-size:14px;font-weight:600;color:var(--gold);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--gold-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.perool-cat-title .arrow{transition:transform 0.2s}
+.perool-cat-title.collapsed .arrow{transform:rotate(-90deg)}
+.perool-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.perool-item{padding:12px;background:var(--pine);border-radius:var(--radius);text-align:center;border:1px solid var(--gold-border);transition:all 0.2s}
+.perool-item:active{background:var(--pine-light);border-color:var(--gold)}
+.perool-item .item-icon{font-size:28px;margin-bottom:6px}
+.perool-item .item-name{font-size:13px;font-weight:500;color:var(--cream)}
+.perool-item .item-desc{font-size:11px;color:var(--mist-dim);margin-top:2px}
+.perool-whatsapp{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:rgba(37,210,95,0.15);border:1px solid rgba(37,210,95,0.3);border-radius:var(--radius);margin-top:16px;color:#25d366;font-size:14px;font-weight:600;text-decoration:none}
+
+/* ─── Staff Contacts ─── */
+.staff-card{display:flex;gap:14px;padding:16px;background:var(--pine);border-radius:var(--radius);margin-bottom:10px;border:1px solid var(--gold-border)}
+.staff-avatar{width:56px;height:56px;border-radius:50%;background:var(--pine-light);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden}
+.staff-avatar img{width:100%;height:100%;object-fit:cover}
+.staff-info{flex:1}
+.staff-name{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.staff-role{font-size:12px;color:var(--gold);margin-bottom:6px}
+.staff-contact{font-size:12px;color:var(--mist-dim)}
+.staff-contact a{color:var(--gold);text-decoration:none}
+.staff-contact a:hover{text-decoration:underline}
+
+/* ─── Responsive ─── */
+@media(min-width:480px){
+  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  ACCESS SCREEN
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-access">
+  <div class="access-screen">
+    <svg class="access-logo" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="30" stroke="#d4b880" stroke-width="2"/>
+      <path d="M32 10 L35 22 L48 22 L38 30 L42 42 L32 34 L22 42 L26 30 L16 22 L29 22Z" fill="#d4b880" opacity="0.8"/>
+    </svg>
+    <div class="access-title">Stars & Pines</div>
+    <div class="access-sub">Enter your access code to enter the portal.</div>
+    <div class="access-form">
+      <div class="form-group">
+        <label>Access Code</label>
+        <input type="text" class="code-input" id="access-code" maxlength="6" placeholder="ABC123" autocomplete="off" />
+      </div>
+      <button class="btn btn-primary btn-block" onclick="validateAccess()" style="margin-top:8px">Enter Portal</button>
+    </div>
+    <div style="margin-top:24px;font-size:12px;color:var(--mist-dim)">
+      Stars & Pines · Kasar Devi · Almora
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  PORTAL SCREEN
+═══════════════════════════════════════ -->
+<div class="portal-screen" id="screen-portal">
+  <div class="portal-header">
+    <div class="portal-greeting" id="portal-greeting">Welcome</div>
+    <div class="portal-room" id="portal-room"></div>
+    <div class="portal-code" id="portal-code-display"></div>
+  </div>
+
+  <!-- TAB: Food Orders (default) -->
+  <div class="tab-content active" id="tab-food">
+    <div id="menu-container"></div>
+  </div>
+
+  <!-- TAB: My Booking -->
+  <div class="tab-content" id="tab-booking">
+    <div class="card">
+      <div class="card-title">My Booking</div>
+      <div class="card-body" id="booking-details"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">WiFi</div>
+      <div class="card-body">
+        <div class="bill-line"><span class="bill-label">Network</span><span class="bill-value">StarsAndPines_Guest</span></div>
+        <div class="bill-line"><span class="bill-label">Password</span><span class="bill-value">pines2024</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Emergency Contacts</div>
+      <div class="card-body">
+        <div class="bill-line"><span class="bill-label">Front Desk</span><span class="bill-value">+91 79825 23582</span></div>
+        <div class="bill-line"><span class="bill-label">Ambulance</span><span class="bill-value">108</span></div>
+        <div class="bill-line"><span class="bill-label">Police</span><span class="bill-value">100</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Service Requests -->
+  <div class="tab-content" id="tab-services">
+    <div class="section-header">House Requests</div>
+    <div id="house-requests"></div>
+    <div class="section-header">Experiences</div>
+    <div id="experiences"></div>
+    <div class="section-header">Concierge</div>
+    <div id="concierge"></div>
+  </div>
+
+  <!-- TAB: Places Guide -->
+  <div class="tab-content" id="tab-places">
+    <div class="section-header">Around the Ridge</div>
+    <div id="places-guide"></div>
+  </div>
+
+  <!-- TAB: Perool -->
+  <div class="tab-content" id="tab-perool">
+    <div class="section-header">Perool — Clothing & Craft</div>
+    <div id="perool-store"></div>
+  </div>
+
+  <!-- TAB: Staff & Contacts -->
+  <div class="tab-content" id="tab-contacts">
+    <div class="section-header">Stars Family</div>
+    <div id="staff-contacts"></div>
+    <div class="section-header">Emergency</div>
+    <div id="emergency-contacts"></div>
+  </div>
+
+  <!-- TAB: Notifications -->
+  <div class="tab-content" id="tab-notifications">
+    <div id="notifications-list"></div>
+  </div>
+
+  <!-- TAB: Grievances -->
+  <div class="tab-content" id="tab-grievances">
+    <div class="section-header">Submit a Concern</div>
+    <div class="card">
+      <div class="grievance-grid" id="grievance-types"></div>
+      <div class="form-group">
+        <label>Describe your concern</label>
+        <textarea id="grievance-message" rows="3" placeholder="Please describe the issue..." style="resize:vertical;min-height:80px"></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="submitGrievance()">Submit Concern</button>
+    </div>
+    <div class="section-header">Your Concerns</div>
+    <div id="my-grievances"></div>
+  </div>
+
+  <!-- TAB: Pay (Bill + Payment) -->
+  <div class="tab-content" id="tab-pay">
+    <div class="section-header">Your Bill</div>
+    <div class="bill-summary" id="pay-bill-summary"></div>
+    <div class="section-header">Payment Methods</div>
+    <div class="payment-option" onclick="payWithRazorpay()">
+      <div class="po-icon">💳</div>
+      <div><div class="po-name">Pay Online</div><div class="po-desc">Credit/Debit Card, UPI, Net Banking</div></div>
+    </div>
+    <div class="payment-option" onclick="showQRPayment()">
+      <div class="po-icon">📱</div>
+      <div><div class="po-name">Scan QR to Pay</div><div class="po-desc">UPI QR Code</div></div>
+    </div>
+    <div class="payment-option" onclick="payLater()">
+      <div class="po-icon">📝</div>
+      <div><div class="po-name">Pay Later</div><div class="po-desc">Settle at checkout</div></div>
+    </div>
+    <div id="qr-payment-area" style="display:none">
+      <div class="card qr-payment">
+        <div class="card-title">Scan to Pay</div>
+        <div class="qr-placeholder"><span>UPI QR Code<br/>(Place your QR image here)</span></div>
+        <div style="margin-top:12px;font-size:13px;color:var(--mist-dim)">After payment, inform the staff to confirm.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Checkout -->
+  <div class="tab-content" id="tab-checkout">
+    <div class="card">
+      <div class="card-title">Request Checkout</div>
+      <div class="card-body">When you're ready to check out, we'll generate your final invoice. All outstanding charges must be settled before departure.</div>
+      <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="requestCheckout()">Request Checkout</button>
+    </div>
+    <div id="checkout-invoice" style="display:none"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('food')" data-tab="food"><span class="tab-icon">🍽</span>Menu</button>
+    <button class="tab-btn" onclick="switchTab('booking')" data-tab="booking"><span class="tab-icon">📋</span>Booking</button>
+    <button class="tab-btn" onclick="switchTab('pay')" data-tab="pay"><span class="tab-icon">💰</span>Pay</button>
+    <button class="tab-btn" onclick="switchTab('services')" data-tab="services"><span class="tab-icon">🛎</span>Services</button>
+    <button class="tab-btn" onclick="switchTab('places')" data-tab="places"><span class="tab-icon">🗺</span>Places</button>
+    <button class="tab-btn" onclick="switchTab('perool')" data-tab="perool"><span class="tab-icon">🧵</span>Perool</button>
+    <button class="tab-btn" onclick="switchTab('contacts')" data-tab="contacts"><span class="tab-icon">👤</span>Contacts</button>
+    <button class="tab-btn" onclick="switchTab('notifications')" data-tab="notifications"><span class="tab-icon">🔔</span>Alerts</button>
+    <button class="tab-btn" onclick="switchTab('grievances')" data-tab="grievances"><span class="tab-icon">⚠</span>Concerns</button>
+    <button class="tab-btn" onclick="switchTab('checkout')" data-tab="checkout"><span class="tab-icon">🚪</span>Checkout</button>
+  </div>
+
+  <!-- Cart Bar -->
+  <div class="cart-bar" id="cart-bar">
+    <span id="cart-count">0 items</span>
+    <span id="cart-total">₹0</span>
+    <button class="btn btn-sm" style="background:var(--night);color:var(--gold)" onclick="submitOrder()">Send to Kitchen</button>
+  </div>
+</div>
+
+<script src="../shared/api.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var guestData = null;
+  var cart = {};
+  var selectedGrievanceType = null;
+
+  // ─── Full Menu (from actual Stars & Pines menu) ───
+  var MENU = {
+    'Drinks (Wyrmie\'s)': [
+      { id: 'masala-chai', name: 'Masala Chai', price: 55, desc: 'Mountain chai with local spices' },
+      { id: 'ginger-lemon-honey', name: 'Ginger Lemon Honey', price: 122, desc: 'Soothing hot remedy' },
+      { id: 'americano', name: 'Americano', price: 155, desc: 'Classic black coffee' },
+      { id: 'cappuccino', name: 'Cappuccino', price: 222, desc: 'Espresso with steamed milk foam' },
+      { id: 'mocha', name: 'Mocha', price: 244, desc: 'Chocolate espresso blend' },
+      { id: 'hot-chocolate', name: 'Hot Chocolate', price: 233, desc: 'Rich and creamy' },
+      { id: 'latte', name: 'Latte', price: 222, desc: 'Smooth espresso with milk' }
+    ],
+    'Breakfast': [
+      { id: 'peculiar-poha', name: 'Peculiar Poha', price: 111, desc: 'Flattened rice with peanuts, curry leaves, and a secret spice blend' },
+      { id: 'aalo-puri', name: 'Aalo Puri', price: 222, desc: 'Crispy puris with spiced potato' },
+      { id: 'omelette-plain', name: 'Omelette (Plain)', price: 180, desc: 'Classic fluffy omelette' },
+      { id: 'omelette-veg-cheese', name: 'Omelette (Veg Cheese)', price: 250, desc: 'Loaded with veggies and melted cheese' },
+      { id: 'pancake', name: 'Pancake', price: 355, desc: 'Stack of fluffy pancakes with maple syrup' },
+      { id: 'muesli', name: 'Muesli', price: 288, desc: 'Granola with fresh fruits and yogurt' },
+      { id: 'paratha-aloo', name: 'Paratha (Aloo)', price: 122, desc: 'Stuffed potato paratha with curd' },
+      { id: 'paratha-paneer', name: 'Paratha (Paneer)', price: 144, desc: 'Stuffed paneer paratha' },
+      { id: 'french-toast', name: 'French Toast', price: 255, desc: 'Golden eggy bread with honey' },
+      { id: 'crepes', name: 'Crepes', price: 333, desc: 'Thin crepes with sweet or savoury filling' },
+      { id: 'shakshouka', name: 'Shakshouka', price: 355, desc: 'Eggs poached in spiced tomato sauce with fresh bread' },
+      { id: 'moong-dal-chilla', name: 'Moong Dal Chilla', price: 222, desc: '2 pcs with 2-3 dips' }
+    ],
+    'Burgers': [
+      { id: 'garden-fresh', name: 'Garden Fresh', price: 255, desc: 'Grilled veggie patty with house pickles' },
+      { id: 'potato-paneer', name: 'Potato vs Paneer', price: 333, desc: 'Choose your fighter — spiced potato or grilled paneer' },
+      { id: 'achaari-chicken', name: 'Achaari Chicken', price: 444, desc: 'Pickled spice chicken burger with mint chutney' }
+    ],
+    'Small Plates': [
+      { id: 'potata-batata', name: 'Potata Batata', price: 222, desc: 'Spiced potato cakes with tamarind chutney' },
+      { id: 'herb-whisperers', name: 'Herb Whisperers', price: 255, desc: 'Herb-crusted paneer fingers' },
+      { id: 'cheesy-aubergenie', name: 'Cheesy Aubergenie', price: 299, desc: 'Baked eggplant with melted cheese' },
+      { id: 'falafel-chips', name: 'Falafel Chips', price: 222, desc: 'Crispy falafel with yogurt dip' },
+      { id: 'falafel-wrap', name: 'Falafel Wrap', price: 299, desc: 'Falafel, salad, and tahini in warm pita' },
+      { id: 'pizza-toasties', name: 'Pizza Toasties', price: 222, desc: 'Mini pizza on toasted sourdough' },
+      { id: 'pakoda', name: 'Pakoda', price: 222, desc: 'Crispy fritters with chutney' },
+      { id: 'fries-salted', name: 'Fries (Salted)', price: 166, desc: 'Classic salted fries' },
+      { id: 'fries-peri-peri', name: 'Fries (Peri Peri)', price: 199, desc: 'Spicy peri peri seasoned fries' }
+    ],
+    'Sandwiches': [
+      { id: 'chilli-cheesewich', name: 'Chilli Cheesewich', price: 255, desc: 'Melted cheese with green chilli kick' },
+      { id: 'habibi', name: 'Habibi', price: 277, desc: 'Hummus, roasted veggies, tahini drizzle' },
+      { id: 'shroomwich', name: 'Creamy Shroomwich', price: 277, desc: 'Garlic mushroom with cream cheese' },
+      { id: 'chickenwich', name: 'Creamy Chickenwich', price: 355, desc: 'Grilled chicken with herb mayo' }
+    ],
+    'Soups & Salads': [
+      { id: 'tomatine', name: 'Tomatine', price: 188, desc: 'Roasted tomato soup with basil' },
+      { id: 'hemp-supreme', name: 'Hemp Supreme', price: 222, desc: 'Hearty hemp and vegetable soup' },
+      { id: 'creamy-mushroom', name: 'Creamy Mushroom', price: 255, desc: 'Rich mushroom soup with cream' },
+      { id: 'fruity-fantasy', name: 'Fruity Fantasy', price: 255, desc: 'Seasonal fruit salad with honey dressing' },
+      { id: 'bodhi-bowl', name: 'Bodhi Bowl', price: 299, desc: 'Quinoa, avocado, cherry tomatoes, lemon dressing' },
+      { id: 'himalayan', name: 'The Himalayan', price: 333, desc: 'Local greens, walnuts, pomegranate, mustard dressing' }
+    ],
+    'Coolers': [
+      { id: 'lime-wire', name: 'Lime Wire', price: 144, desc: 'Fresh lime soda — sweet or salt' },
+      { id: 'kheera-masala', name: 'Kheera Masala', price: 166, desc: 'Cucumber cooler with spices' },
+      { id: 'rhodo-lover', name: 'Rhodo Lover', price: 166, desc: 'Rhododendron squash — seasonal special' },
+      { id: 'apple-gingerina', name: 'Apple Gingerina', price: 177, desc: 'Local apple with ginger kick' },
+      { id: 'thick-shake', name: 'Thick Shake', price: 222, desc: 'Banana or chocolate milkshake' },
+      { id: 'cold-kaapi', name: 'Cold Kaapi', price: 222, desc: 'South Indian filter coffee, chilled' },
+      { id: 'iced-tea', name: 'Iced Tea', price: 177, desc: 'Chilled brewed tea with lemon' },
+      { id: 'lassi', name: 'Lassi', price: 177, desc: 'Traditional yogurt drink — sweet or salt' }
+    ],
+    'Large Plates': [
+      { id: 'coconut-qualia-veg', name: 'Coconut Qualia (Veg)', price: 422, desc: 'Coconut curry with seasonal vegetables' },
+      { id: 'coconut-qualia-chicken', name: 'Coconut Qualia (Chicken)', price: 499, desc: 'Coconut curry with tender chicken' },
+      { id: 'penne-divino-veg', name: 'Penne Divino (Veg)', price: 455, desc: 'Penne in creamy tomato basil sauce' },
+      { id: 'penne-divino-nonveg', name: 'Penne Divino (Non-Veg)', price: 533, desc: 'Penne with meat in creamy tomato sauce' },
+      { id: 'alfredo-veg', name: 'Alfredo (Veg)', price: 455, desc: 'Creamy white sauce pasta' },
+      { id: 'alfredo-nonveg', name: 'Alfredo (Non-Veg)', price: 533, desc: 'Creamy white sauce pasta with chicken' },
+      { id: 'arrabiata-veg', name: 'Arrabiata (Veg)', price: 455, desc: 'Spicy tomato sauce pasta' },
+      { id: 'arrabiata-nonveg', name: 'Arrabiata (Non-Veg)', price: 533, desc: 'Spicy tomato sauce pasta with chicken' },
+      { id: 'grand-hummus', name: 'The Grand Hummus Spread', price: 555, desc: 'Hummus, falafel, pita, salad — for sharing' },
+      { id: 'kumaoni-thali', name: 'Kumaoni Thali', price: 444, desc: 'Local mountain cuisine — seasonal vegetables, dal, rice, roti' }
+    ]
+  };
+
+  var HOUSE_REQUESTS = [
+    { type: 'extra_towels', icon: '🛁', name: 'Extra Towels', message: 'Extra towels coming right up.' },
+    { type: 'extra_blanket', icon: '🧣', name: 'Extra Blanket', message: 'An extra blanket coming right up.' },
+    { type: 'water_refill', icon: '💧', name: 'Water Refill', message: 'Water refill on the way.' },
+    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning', message: 'Room cleaning requested.' },
+    { type: 'firepit_setup', icon: '🔥', name: 'Firepit Setup', message: 'Firepit setup requested.' },
+    { type: 'tea_to_room', icon: '☕', name: 'Tea to Room', message: 'Tea to room requested.' }
+  ];
+
+  var EXPERIENCES = [
+    { type: 'bonfire', icon: '🔥', name: 'Bonfire Night' },
+    { type: 'local_guide', icon: '🗺', name: 'Local Guide' },
+    { type: 'photography', icon: '📷', name: 'Photography Session' },
+    { type: 'village_walk', icon: '🚶', name: 'Village Walk' },
+    { type: 'bird_watching', icon: '🐦', name: 'Bird Watching' },
+    { type: 'stargazing', icon: '⭐', name: 'Stargazing' },
+    { type: 'transportation', icon: '🚗', name: 'Transportation' },
+    { type: 'special_meal', icon: '🍳', name: 'Special Meal' }
+  ];
+
+  var CONCIERGE = [
+    { type: 'extra_blankets', icon: '🧣', name: 'Extra Blankets' },
+    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning' },
+    { type: 'hot_water', icon: '🚿', name: 'Hot Water' },
+    { type: 'laundry', icon: '👕', name: 'Laundry' },
+    { type: 'taxi', icon: '🚕', name: 'Taxi Booking' },
+    { type: 'wake_up_call', icon: '⏰', name: 'Wake-up Call' },
+    { type: 'medical_help', icon: '🏥', name: 'Medical Help' },
+    { type: 'luggage_assistance', icon: '🧳', name: 'Luggage Help' }
+  ];
+
+  // ─── Places Guide (from meeting minutes 18/06) ───
+  var PLACES = [
+    { name: 'Chittai Temple', desc: 'Ancient temple dedicated to Golu Devta. Known for bells hung by devotees.', distance: '5 km', taxiMin: 15, bikeMin: 25, icon: '🛕', tags: ['temple', 'cultural'] },
+    { name: 'Balta Waterfall', desc: 'Hidden waterfall through pine forests. A short walk from the village trail.', distance: '1.5 km', taxiMin: 5, bikeMin: 10, icon: '💧', tags: ['nature', 'waterfall'] },
+    { name: 'Kasar Devi Temple', desc: 'Visible from the balcony. A small shrine that grew over decades. Vivekananda meditated here.', distance: '0.3 km', taxiMin: 3, bikeMin: 5, icon: '🛕', tags: ['temple', 'heritage'] },
+    { name: 'Katarmal Sun Temple', desc: 'Ancient sun temple with intricate stone carvings. One of the oldest in the region.', distance: '8 km', taxiMin: 20, bikeMin: 35, icon: '🏛', tags: ['temple', 'heritage'] },
+    { name: 'Vivekanand Dhyan Gufa', desc: 'Meditation cave where Swami Vivekananda sat in deep contemplation.', distance: '6 km', taxiMin: 18, bikeMin: 30, icon: '🧘', tags: ['spiritual', 'cave'] },
+    { name: 'Lakhudiyaar Caves', desc: 'Ancient rock-cut caves with prehistoric inscriptions and carvings.', distance: '12 km', taxiMin: 30, bikeMin: 50, icon: '🏔', tags: ['caves', 'heritage'] },
+    { name: 'Almora Zoo', desc: 'Small hill zoo with local Himalayan fauna. Good for a quick visit.', distance: '10 km', taxiMin: 25, bikeMin: 40, icon: '🦌', tags: ['family', 'nature'] },
+    { name: 'Bright End Corner (NTD)', desc: 'Sunset point with panoramic Himalayan views. Named after the British era.', distance: '9 km', taxiMin: 22, bikeMin: 38, icon: '🌅', tags: ['viewpoint', 'sunset'] },
+    { name: 'The Lagoon', desc: 'Natural pool formed by seasonal streams. A quiet spot for a dip.', distance: '3 km', taxiMin: 10, bikeMin: 18, icon: '🏊', tags: ['nature', 'swimming'] },
+    { name: 'Karni Mata Temple', desc: 'Hilltop temple with sweeping valley views. Popular with locals.', distance: '4 km', taxiMin: 12, bikeMin: 20, icon: '🛕', tags: ['temple', 'viewpoint'] },
+    { name: 'Balta Village', desc: 'A quiet village trail through pine and rhododendron. Takes twenty minutes.', distance: '0.1 km', taxiMin: 2, bikeMin: 5, icon: '🏘', tags: ['village', 'walk'] },
+  ];
+
+  // ─── Perool Store (from meeting minutes 18/06) ───
+  var PEROOL = {
+    brand: 'Perool',
+    tagline: 'Clothing & Craft from the Ridge',
+    instagram: 'perool_clothing_craft',
+    whatsapp: '8979720455',
+    categories: [
+      {
+        name: 'Clothing',
+        icon: '👗',
+        items: [
+          { name: 'Kimonos', icon: '👘', desc: 'Hand-dyed mountain kimonos' },
+          { name: 'Mufflers', icon: '🧣', desc: 'Woven wool mufflers' },
+          { name: 'Tops', icon: '👚', desc: 'Cotton and linen tops' },
+          { name: 'Summer Dresses', icon: '👗', desc: 'Light frocks for warm days' },
+          { name: 'Sweaters', icon: '🧶', desc: 'Hand-knit mountain wool' },
+        ]
+      },
+      {
+        name: 'Furnishing',
+        icon: '🏠',
+        items: [
+          { name: 'Carpets', icon: '🟫', desc: 'Hand-woven Himalayan carpets' },
+          { name: 'Yoga Mats', icon: '🧘', desc: 'Natural fibre yoga mats' },
+          { name: 'Runners / Throws', icon: '🛋', desc: 'Decorative runners and throws' },
+        ]
+      },
+      {
+        name: 'Bathroom',
+        icon: '🛁',
+        items: [
+          { name: 'Bath Salts', icon: '🧂', desc: 'Himalayan mineral bath salts' },
+          { name: 'Organic Soaps', icon: '🧼', desc: 'Handmade herbal soaps' },
+        ]
+      },
+      {
+        name: 'Accessories',
+        icon: '👜',
+        items: [
+          { name: 'Yoga Bags', icon: '🎒', desc: 'Canvas yoga carry bags' },
+          { name: 'Laptop Bags', icon: '💼', desc: 'Hand-stitched laptop sleeves' },
+          { name: 'Scrunchies', icon: '🎀', desc: 'Fabric scrunchies' },
+          { name: 'Coasters', icon: '☕', desc: 'Hand-painted wooden coasters' },
+          { name: 'Candles', icon: '🕯', desc: 'Beeswax mountain candles' },
+        ]
+      },
+      {
+        name: 'Organic',
+        icon: '🌿',
+        items: [
+          { name: 'Organic Soaps', icon: '🧼', desc: 'Chemical-free herbal soaps' },
+          { name: 'Achaar', icon: '🫙', desc: 'Homemade mountain pickles' },
+          { name: 'Herbal Teas', icon: '🍵', desc: 'Wild-harvested herb blends' },
+        ]
+      },
+      {
+        name: 'Art',
+        icon: '🎨',
+        items: [
+          { name: 'Paintings', icon: '🖼', desc: 'Original ridge landscape art' },
+        ]
+      },
+    ]
+  };
+
+  // ─── Staff Contacts (from meeting minutes 18/06) ───
+  var STAFF_CONTACTS = [
+    { name: 'Mona', role: 'Caretaker', phone: '+91 79825 23582', whatsapp: '917982523582', avatar: '👩', desc: 'The heart of the house' },
+    { name: 'Raman ji', role: 'Owner · Fabric & Interior Designer', phone: '+91 79825 23582', whatsapp: '917982523582', avatar: '👨', desc: 'The hands behind the space' },
+    { name: 'Amrit', role: 'Kitchen & Cafe', phone: '+91 79825 23582', whatsapp: '917982523582', avatar: '👨‍🍳', desc: 'The person behind your plate' },
+    { name: 'Tiwari ji', role: 'Cab & Logistics', phone: '+91 94120 12345', whatsapp: '919412012345', avatar: '🚕', desc: 'Need to get somewhere? Tiwari bhaiya will make it happen.' },
+    { name: 'Harsh', role: 'Operations', phone: '+91 79825 23582', whatsapp: '917982523582', avatar: '👤', desc: 'Operations and tech' },
+  ];
+
+  // ─── House Requests with ETA (from meeting minutes 18/06) ───
+  var HOUSE_REQUESTS = [
+    { type: 'extra_towels', icon: '🛁', name: 'Extra Towels', message: 'Extra towels coming right up.', eta: '10 min' },
+    { type: 'extra_blanket', icon: '🧣', name: 'Extra Blanket', message: 'An extra blanket coming right up.', eta: '10 min' },
+    { type: 'water_refill', icon: '💧', name: 'Water Refill', message: 'Water refill on the way.', eta: '5 min' },
+    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning', message: 'Room cleaning requested.', eta: '~2 hrs (we\'ll let you know sooner)' },
+    { type: 'firepit_setup', icon: '🔥', name: 'Firepit Setup', message: 'Firepit setup requested.', eta: '30 min' },
+    { type: 'tea_to_room', icon: '☕', name: 'Tea to Room', message: 'Tea to room requested.', eta: '15 min' }
+  ];
+    { type: 'room', icon: '🏠', name: 'Room' },
+    { type: 'housekeeping', icon: '🧹', name: 'Housekeeping' },
+    { type: 'food', icon: '🍽', name: 'Food' },
+    { type: 'staff', icon: '👤', name: 'Staff' },
+    { type: 'water', icon: '💧', name: 'Water' },
+    { type: 'electricity', icon: '⚡', name: 'Electricity' },
+    { type: 'noise', icon: '🔊', name: 'Noise' },
+    { type: 'other', icon: '📝', name: 'Other' }
+  ];
+
+  var GRIEVANCE_TYPES = [
+    { type: 'room', icon: '🏠', name: 'Room' },
+    { type: 'housekeeping', icon: '🧹', name: 'Housekeeping' },
+    { type: 'food', icon: '🍽', name: 'Food' },
+    { type: 'staff', icon: '👤', name: 'Staff' },
+    { type: 'water', icon: '💧', name: 'Water' },
+    { type: 'electricity', icon: '⚡', name: 'Electricity' },
+    { type: 'noise', icon: '🔊', name: 'Noise' },
+    { type: 'other', icon: '📝', name: 'Other' }
+  ];
+
+  // ─── Initialize ──────────────────────────────────────────────────
+  function init() {
+    var params = new URLSearchParams(window.location.search);
+    var codeFromUrl = params.get('token');
+    if (codeFromUrl) {
+      document.getElementById('access-code').value = codeFromUrl.toUpperCase();
+      validateAccess();
+    }
+    renderGrievanceTypes();
+    renderHouseRequests();
+    renderExperiences();
+    renderConcierge();
+    renderPlacesGuide();
+    renderPeroolStore();
+    renderStaffContacts();
+    renderEmergencyContacts();
+    startOrderPolling();
+  }
+
+  // ─── Access Validation ───────────────────────────────────────────
+  window.validateAccess = function() {
+    var code = document.getElementById('access-code').value.trim().toUpperCase();
+    if (!code || code.length < 4) { showToast('Enter your access code'); return; }
+
+    API.validateToken(code).then(function(data) {
+      guestData = {
+        guestName: data.guest_name,
+        room: data.room_name,
+        token: code,
+        stayId: data.stay_id,
+        roomId: data.room_id,
+      };
+      enterPortal();
+    }).catch(function() {
+      showToast('Invalid access code. Please check with the front desk.');
+    });
+  };
+
+  function enterPortal() {
+    document.getElementById('screen-access').classList.remove('active');
+    document.getElementById('screen-access').style.display = 'none';
+    document.getElementById('screen-portal').classList.add('active');
+    document.getElementById('screen-portal').style.display = 'block';
+
+    document.getElementById('portal-greeting').textContent = 'Welcome, ' + (guestData.guestName || 'Guest');
+    document.getElementById('portal-room').textContent = guestData.room || '';
+    document.getElementById('portal-code-display').textContent = 'Code: ' + (guestData.token || '');
+
+    loadBookingDetails();
+    loadPayBill();
+    renderMenu();
+    loadMyGrievances();
+    loadNotifications();
+  }
+
+  // ─── Tab Switching ───────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    var btn = document.querySelector('[data-tab="' + tab + '"]');
+    if (btn) btn.classList.add('active');
+
+    if (tab === 'pay') loadPayBill();
+  };
+
+  // ─── Booking Details ─────────────────────────────────────────────
+  function loadBookingDetails() {
+    var container = document.getElementById('booking-details');
+    if (!container) return;
+    container.innerHTML =
+      '<div class="bill-line"><span class="bill-label">Guest</span><span class="bill-value">' + escHtml(guestData.guestName) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Room</span><span class="bill-value">' + escHtml(guestData.room) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Access Code</span><span class="bill-value" style="font-family:monospace;font-size:12px">' + escHtml(guestData.token) + '</span></div>';
+  }
+
+  // ─── Pay Tab (Bill + Payment) ────────────────────────────────────
+  function loadPayBill() {
+    if (!guestData || !guestData.token) return;
+
+    API.getPortalBill(guestData.token).then(function(bill) {
+      var charges = bill.entries.filter(function(e) { return e.amount > 0; });
+      var payments = bill.entries.filter(function(e) { return e.amount < 0; });
+
+      var totalCharges = charges.reduce(function(s, e) { return s + e.amount; }, 0);
+      var totalPayments = payments.reduce(function(s, e) { return s + Math.abs(e.amount); }, 0);
+      var outstanding = Math.max(0, bill.balance);
+
+      var html = '';
+      charges.forEach(function(e) {
+        html += '<div class="bill-line"><span class="bill-label">' + escHtml(e.description) + '</span><span class="bill-value">₹' + e.amount.toFixed(0) + '</span></div>';
+      });
+      payments.forEach(function(e) {
+        html += '<div class="bill-line"><span class="bill-label">Payment</span><span class="bill-value" style="color:var(--green)">-₹' + Math.abs(e.amount).toFixed(0) + '</span></div>';
+      });
+
+      html += '<div class="bill-total"><span class="bill-label">Total</span><span class="bill-value">₹' + totalCharges.toFixed(0) + '</span></div>';
+      if (totalPayments > 0) {
+        html += '<div class="bill-line"><span class="bill-label">Paid</span><span class="bill-value" style="color:var(--green)">-₹' + totalPayments.toFixed(0) + '</span></div>';
+      }
+      html += '<div class="bill-outstanding"><span class="bill-label">Amount Due</span><span class="bill-value">₹' + outstanding.toFixed(0) + '</span></div>';
+
+      document.getElementById('pay-bill-summary').innerHTML = html;
+    }).catch(function() {
+      document.getElementById('pay-bill-summary').innerHTML = '<div class="empty-state"><p>No charges yet</p></div>';
+    });
+  }
+
+  // ─── Menu & Ordering ─────────────────────────────────────────────
+  function renderMenu() {
+    var container = document.getElementById('menu-container');
+    var html = '';
+
+    for (var category in MENU) {
+      if (!MENU.hasOwnProperty(category)) continue;
+      html += '<div class="menu-category"><div class="menu-cat-title">' + escHtml(category) + '</div>';
+      MENU[category].forEach(function(item) {
+        var qty = cart[item.id] ? cart[item.id].qty : 0;
+        html += '<div class="menu-item" onclick="toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">' +
+          '<div style="flex:1">' +
+            '<div class="menu-item-name">' + escHtml(item.name) + '</div>' +
+            '<div class="menu-item-desc">' + escHtml(item.desc) + '</div>' +
+          '</div>' +
+          '<div class="menu-item-qty">' +
+            (qty > 0 ? '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">−</span>' +
+              '<span style="min-width:20px;text-align:center">' + qty + '</span>' +
+              '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">+</span>' :
+              '<span class="menu-item-price">₹' + item.price + '</span>') +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  window.toggleCartItem = function(id, name, price) {
+    if (!cart[id]) cart[id] = { name: name, qty: 0, price: price };
+    cart[id].qty++;
+    if (cart[id].qty > 10) cart[id].qty = 1;
+    updateCart();
+    renderMenu();
+  };
+
+  function updateCart() {
+    var totalItems = 0;
+    var totalPrice = 0;
+    for (var id in cart) {
+      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
+        totalItems += cart[id].qty;
+        totalPrice += cart[id].qty * cart[id].price;
+      }
+    }
+
+    var bar = document.getElementById('cart-bar');
+    if (totalItems > 0) {
+      bar.classList.add('visible');
+      document.getElementById('cart-count').textContent = totalItems + ' item' + (totalItems > 1 ? 's' : '');
+      document.getElementById('cart-total').textContent = '₹' + totalPrice;
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+
+  window.submitOrder = function() {
+    var items = [];
+    for (var id in cart) {
+      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
+        items.push({ menu_item_id: id, quantity: cart[id].qty, item_name: cart[id].name, item_price: cart[id].price });
+      }
+    }
+
+    if (items.length === 0) return;
+
+    API.createOrder({
+      order_type: 'room',
+      stay_id: guestData.stayId,
+      table_label: guestData.room,
+      items: items,
+    }).then(function() {
+      cart = {};
+      updateCart();
+      renderMenu();
+      showToast('Order sent to the kitchen');
+    }).catch(function(err) {
+      showToast('Failed to place order: ' + err.message);
+    });
+  };
+
+  // ─── House Requests ──────────────────────────────────────────────
+  function renderHouseRequests() {
+    var container = document.getElementById('house-requests');
+    container.innerHTML = HOUSE_REQUESTS.map(function(r) {
+      return '<div class="request-item" onclick="sendHouseRequest(\'' + r.type + '\', \'' + escHtml(r.message) + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + r.icon + '</span><span class="menu-item-name">' + escHtml(r.name) + '</span>' +
+        '<div style="font-size:11px;color:var(--mist-dim);margin-top:2px">ETA: ' + r.eta + '</div></div>' +
+        '<span class="badge badge-pending" id="hr-' + r.type + '" style="display:none">Sent</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.sendHouseRequest = function(type, message) {
+    API.createCleaning({
+      stay_id: guestData.stayId,
+      room_id: guestData.roomId,
+      notes: message,
+    }).then(function() {
+      var badge = document.getElementById('hr-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      showToast(message.split(' ')[0] + ' noted');
+    }).catch(function() {
+      showToast('Request failed');
+    });
+  };
+
+  // ─── Experiences ─────────────────────────────────────────────────
+  function renderExperiences() {
+    var container = document.getElementById('experiences');
+    container.innerHTML = EXPERIENCES.map(function(e) {
+      return '<div class="request-item" onclick="requestExperience(\'' + e.type + '\', \'' + escHtml(e.name) + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + e.icon + '</span><span class="menu-item-name">' + escHtml(e.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="exp-' + e.type + '" style="display:none">Requested</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.requestExperience = function(type, name) {
+    API.createServiceRequest({
+      stay_id: guestData.stayId,
+      request_type: 'experience',
+      type: type,
+      notes: name,
+    }).then(function() {
+      var badge = document.getElementById('exp-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      showToast(name + ' requested');
+    }).catch(function() {
+      showToast('Request failed');
+    });
+  };
+
+  // ─── Concierge ───────────────────────────────────────────────────
+  function renderConcierge() {
+    var container = document.getElementById('concierge');
+    container.innerHTML = CONCIERGE.map(function(c) {
+      return '<div class="request-item" onclick="requestConcierge(\'' + c.type + '\', \'' + escHtml(c.name) + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + c.icon + '</span><span class="menu-item-name">' + escHtml(c.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="conc-' + c.type + '" style="display:none">Requested</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.requestConcierge = function(type, name) {
+    API.createServiceRequest({
+      stay_id: guestData.stayId,
+      request_type: 'concierge',
+      type: type,
+      notes: name,
+    }).then(function() {
+      var badge = document.getElementById('conc-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      showToast(name + ' requested');
+    }).catch(function() {
+      showToast('Request failed');
+    });
+  };
+
+  // ─── Grievances ──────────────────────────────────────────────────
+  function renderGrievanceTypes() {
+    var container = document.getElementById('grievance-types');
+    container.innerHTML = GRIEVANCE_TYPES.map(function(t) {
+      return '<div class="grievance-type-btn" onclick="selectGrievanceType(this, \'' + t.type + '\')">' +
+        '<div class="gt-icon">' + t.icon + '</div>' +
+        '<div class="gt-name">' + escHtml(t.name) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.selectGrievanceType = function(el, type) {
+    document.querySelectorAll('.grievance-type-btn').forEach(function(b) { b.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedGrievanceType = type;
+  };
+
+  window.submitGrievance = function() {
+    if (!selectedGrievanceType) { showToast('Select a concern type'); return; }
+    var message = document.getElementById('grievance-message').value.trim();
+    if (!message) { showToast('Describe your concern'); return; }
+
+    API.createGrievance({
+      stay_id: guestData.stayId,
+      type: selectedGrievanceType,
+      message: message,
+      severity: 'medium',
+    }).then(function() {
+      document.getElementById('grievance-message').value = '';
+      document.querySelectorAll('.grievance-type-btn').forEach(function(b) { b.classList.remove('selected'); });
+      selectedGrievanceType = null;
+      showToast('Your concern has been noted');
+      loadMyGrievances();
+    }).catch(function() {
+      showToast('Failed to submit concern');
+    });
+  };
+
+  function loadMyGrievances() {
+    if (!guestData) return;
+
+    API.getGrievances(guestData.stayId).then(function(grievances) {
+      var container = document.getElementById('my-grievances');
+      if (grievances.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No concerns raised</p></div>';
+        return;
+      }
+
+      container.innerHTML = grievances.map(function(g) {
+        var statusBadge = g.status === 'open' ? 'badge-open' :
+                          g.status === 'acknowledged' ? 'badge-acknowledged' :
+                          g.status === 'resolved' ? 'badge-resolved' : 'badge-dismissed';
+        return '<div class="card">' +
+          '<div class="card-header">' +
+            '<div class="card-title">' + escHtml(g.type) + '</div>' +
+            '<span class="badge ' + statusBadge + '">' + escHtml(g.status) + '</span>' +
+          '</div>' +
+          '<div class="card-body">' + escHtml(g.message) + '</div>' +
+          '<div class="card-meta">' + formatDateTime(g.created_at) + '</div>' +
+        '</div>';
+      }).join('');
+    }).catch(function() {
+      document.getElementById('my-grievances').innerHTML = '<div class="empty-state"><p>Unable to load concerns</p></div>';
+    });
+  }
+
+  // ─── Notifications ───────────────────────────────────────────────
+  function loadNotifications() {
+    if (!guestData) return;
+
+    API.getNotifications(guestData.stayId).then(function(notifs) {
+      var container = document.getElementById('notifications-list');
+      if (notifs.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔔</div><p>No notifications</p></div>';
+        return;
+      }
+
+      container.innerHTML = notifs.map(function(n) {
+        return '<div class="notif-item' + (n.is_read ? '' : ' unread') + '">' +
+          '<div class="notif-text">' + escHtml(n.message) + '</div>' +
+          '<div class="notif-time">' + formatTime(n.created_at) + '</div>' +
+        '</div>';
+      }).join('');
+    }).catch(function() {
+      document.getElementById('notifications-list').innerHTML = '<div class="empty-state"><p>Unable to load notifications</p></div>';
+    });
+  }
+
+  window.payWithRazorpay = function() {
+    if (typeof Razorpay === 'undefined') {
+      showToast('Online payment not available. Please use QR or Pay Later.');
+      return;
+    }
+
+    API.getPortalBill(guestData.token).then(function(bill) {
+      var outstanding = Math.max(0, bill.balance);
+      if (outstanding <= 0) { showToast('No outstanding balance'); return; }
+
+      var options = {
+        key: 'REPLACE_WITH_RAZORPAY_KEY_ID',
+        amount: outstanding * 100,
+        currency: 'INR',
+        name: 'Stars & Pines',
+        description: 'Stay Payment — ' + guestData.token,
+        handler: function(response) {
+          API.portalPayment(guestData.token, {
+            stay_id: guestData.stayId,
+            amount: outstanding,
+            method: 'upi',
+            notes: 'Razorpay: ' + response.razorpay_payment_id,
+          }).then(function() {
+            showToast('Payment successful! ₹' + outstanding);
+            loadPayBill();
+          }).catch(function() {
+            showToast('Payment recorded but confirmation failed. Please inform staff.');
+          });
+        },
+        prefill: { name: guestData.guestName || '' },
+        theme: { color: '#1f2f1d' }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.open();
+    });
+  };
+
+  window.showQRPayment = function() {
+    var area = document.getElementById('qr-payment-area');
+    area.style.display = area.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.payLater = function() {
+    API.getPortalBill(guestData.token).then(function(bill) {
+      var outstanding = Math.max(0, bill.balance);
+      if (outstanding <= 0) { showToast('No outstanding balance'); return; }
+
+      API.portalPayment(guestData.token, {
+        stay_id: guestData.stayId,
+        amount: outstanding,
+        method: 'pay_later',
+        notes: 'Pay later — guest selected at portal',
+      }).then(function() {
+        showToast('Payment deferred to checkout');
+        loadPayBill();
+      }).catch(function() {
+        showToast('Failed to defer payment');
+      });
+    });
+  };
+
+  // ─── Checkout ────────────────────────────────────────────────────
+  window.requestCheckout = function() {
+    if (!guestData) return;
+
+    API.getPortalBill(guestData.token).then(function(bill) {
+      var charges = bill.entries.filter(function(e) { return e.amount > 0; });
+      var payments = bill.entries.filter(function(e) { return e.amount < 0; });
+      var totalCharges = charges.reduce(function(s, e) { return s + e.amount; }, 0);
+      var totalPayments = payments.reduce(function(s, e) { return s + Math.abs(e.amount); }, 0);
+      var outstanding = Math.max(0, bill.balance);
+
+      var foodEntries = charges.filter(function(e) { return e.entry_type === 'food'; });
+      var orderLines = foodEntries.map(function(e) {
+        return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>';
+      }).join('');
+
+      var roomEntries = charges.filter(function(e) { return e.entry_type === 'room'; });
+      var roomLines = roomEntries.map(function(e) {
+        return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>';
+      }).join('');
+
+      var invoiceDiv = document.getElementById('checkout-invoice');
+      invoiceDiv.style.display = 'block';
+      invoiceDiv.innerHTML =
+        '<div class="invoice">' +
+          '<h3>Stars & Pines</h3>' +
+          '<div class="inv-sub">Invoice for ' + escHtml(guestData.guestName) + ' · ' + escHtml(guestData.room) + '</div>' +
+          (roomLines || '<div class="inv-line"><span>Room Charges</span><span>—</span></div>') +
+          (orderLines || '') +
+          '<div class="inv-line"><span>Deposits / Payments</span><span>- ₹' + totalPayments.toFixed(0) + '</span></div>' +
+          '<div class="inv-total"><span>Total Due</span><span>₹' + outstanding.toFixed(0) + '</span></div>' +
+        '</div>' +
+        '<div class="btn-group">' +
+          '<button class="btn btn-primary btn-block" onclick="confirmCheckout()">Confirm Checkout</button>' +
+        '</div>';
+    });
+  };
+
+  window.confirmCheckout = function() {
+    if (!confirm('Are you sure you want to check out? This will close your stay.')) return;
+
+    API.checkout(guestData.stayId, 'Guest Portal').then(function() {
+      showToast('Checkout complete. Thank you for staying with us!');
+      document.getElementById('screen-portal').style.display = 'none';
+      document.getElementById('screen-access').style.display = 'flex';
+      document.getElementById('screen-access').classList.add('active');
+      document.getElementById('access-code').value = '';
+    }).catch(function(err) {
+      showToast('Checkout failed: ' + err.message);
+    });
+  };
+
+  // ─── Places Guide ────────────────────────────────────────────────
+  function renderPlacesGuide() {
+    var container = document.getElementById('places-guide');
+    if (!container) return;
+    container.innerHTML = PLACES.map(function(p) {
+      var tags = p.tags.map(function(t) { return '<span class="place-tag">' + t + '</span>'; }).join('');
+      return '<div class="place-card">' +
+        '<div class="place-icon">' + p.icon + '</div>' +
+        '<div class="place-info">' +
+          '<div class="place-name">' + escHtml(p.name) + '</div>' +
+          '<div class="place-desc">' + escHtml(p.desc) + '</div>' +
+          '<div class="place-meta">' +
+            '<span class="place-tag">' + p.distance + '</span>' +
+            '<span class="place-tag taxi">🚕 ' + p.taxiMin + ' min</span>' +
+            '<span class="place-tag bike">🏍 ' + p.bikeMin + ' min</span>' +
+            tags +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ─── Perool Store ────────────────────────────────────────────────
+  function renderPeroolStore() {
+    var container = document.getElementById('perool-store');
+    if (!container) return;
+
+    var html = '<div class="perool-header">' +
+      '<div class="brand">' + PEROOL.brand + '</div>' +
+      '<div class="tagline">' + PEROOL.tagline + '</div>' +
+      '<a class="insta" href="https://instagram.com/' + PEROOL.instagram + '" target="_blank">📸 @' + PEROOL.instagram + '</a>' +
+    '</div>';
+
+    PEROOL.categories.forEach(function(cat, idx) {
+      var itemsHtml = cat.items.map(function(item) {
+        return '<div class="perool-item">' +
+          '<div class="item-icon">' + item.icon + '</div>' +
+          '<div class="item-name">' + escHtml(item.name) + '</div>' +
+          '<div class="item-desc">' + escHtml(item.desc) + '</div>' +
+        '</div>';
+      }).join('');
+
+      html += '<div class="perool-cat">' +
+        '<div class="perool-cat-title" onclick="togglePeroolCat(this, ' + idx + ')">' +
+          '<span>' + cat.icon + ' ' + escHtml(cat.name) + '</span>' +
+          '<span class="arrow">▼</span>' +
+        '</div>' +
+        '<div class="perool-items" id="perool-cat-' + idx + '">' + itemsHtml + '</div>' +
+      '</div>';
+    });
+
+    html += '<a class="perool-whatsapp" href="https://wa.me/91' + PEROOL.whatsapp + '?text=Hi!%20I%27m%20a%20guest%20at%20Stars%20%26%20Pines.%20I%27d%20like%20to%20know%20more%20about%20Perool%20products." target="_blank">' +
+      '💬 Order on WhatsApp · +' + PEROOL.whatsapp +
+    '</a>';
+
+    container.innerHTML = html;
+  }
+
+  window.togglePeroolCat = function(el, idx) {
+    var items = document.getElementById('perool-cat-' + idx);
+    if (el.classList.contains('collapsed')) {
+      el.classList.remove('collapsed');
+      items.style.display = 'grid';
+    } else {
+      el.classList.add('collapsed');
+      items.style.display = 'none';
+    }
+  };
+
+  // ─── Staff Contacts ──────────────────────────────────────────────
+  function renderStaffContacts() {
+    var container = document.getElementById('staff-contacts');
+    if (!container) return;
+    container.innerHTML = STAFF_CONTACTS.map(function(s) {
+      return '<div class="staff-card">' +
+        '<div class="staff-avatar">' + s.avatar + '</div>' +
+        '<div class="staff-info">' +
+          '<div class="staff-name">' + escHtml(s.name) + '</div>' +
+          '<div class="staff-role">' + escHtml(s.role) + '</div>' +
+          '<div class="staff-contact">' +
+            '<a href="tel:' + s.phone.replace(/[^0-9+]/g, '') + '">' + s.phone + '</a>' +
+            ' · <a href="https://wa.me/' + s.whatsapp + '" target="_blank">WhatsApp</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderEmergencyContacts() {
+    var container = document.getElementById('emergency-contacts');
+    if (!container) return;
+    container.innerHTML =
+      '<div class="card">' +
+        '<div class="bill-line"><span class="bill-label">Ambulance</span><span class="bill-value"><a href="tel:108" style="color:var(--gold)">108</a></span></div>' +
+        '<div class="bill-line"><span class="bill-label">Police</span><span class="bill-value"><a href="tel:100" style="color:var(--gold)">100</a></span></div>' +
+        '<div class="bill-line"><span class="bill-label">Fire</span><span class="bill-value"><a href="tel:101" style="color:var(--gold)">101</a></span></div>' +
+      '</div>';
+  }
+
+  // ─── Order Polling & Kitchen Status ──────────────────────────────
+  var orderPollInterval = null;
+  var lastOrderCount = 0;
+
+  function startOrderPolling() {
+    if (orderPollInterval) clearInterval(orderPollInterval);
+    orderPollInterval = setInterval(function() {
+      if (!guestData || !guestData.stayId) return;
+      API.getPortalOrders(guestData.token).then(function(orders) {
+        updateKitchenStatus(orders);
+      }).catch(function() {});
+    }, 15000);
+  }
+
+  function updateKitchenStatus(orders) {
+    var activeOrders = orders.filter(function(o) {
+      return o.status === 'pending' || o.status === 'preparing';
+    });
+
+    // Kitchen busy toast
+    var existingToast = document.getElementById('kitchen-busy-toast');
+    if (activeOrders.length > 0) {
+      if (!existingToast) {
+        var toast = document.createElement('div');
+        toast.id = 'kitchen-busy-toast';
+        toast.className = 'kitchen-busy-toast';
+        document.body.appendChild(toast);
+      }
+      var toast = document.getElementById('kitchen-busy-toast');
+      var items = [];
+      activeOrders.forEach(function(o) {
+        (o.items || []).forEach(function(i) {
+          items.push(i.item_name);
+        });
+      });
+      var eta = activeOrders.some(function(o) { return o.status === 'pending'; }) ? '~30 min' : '~15 min';
+      toast.innerHTML = '<div>🍳 Kitchen is busy</div><div class="eta">' + items.join(', ') + ' — ETA: ' + eta + '</div>';
+    } else if (existingToast) {
+      existingToast.remove();
+    }
+
+    // Persistent order notifications
+    var existingNotif = document.getElementById('persistent-order-notif');
+    if (activeOrders.length > 0) {
+      if (!existingNotif) {
+        var notif = document.createElement('div');
+        notif.id = 'persistent-order-notif';
+        notif.className = 'persistent-order-notif';
+        document.body.appendChild(notif);
+      }
+      var notif = document.getElementById('persistent-order-notif');
+      var html = '<div style="font-weight:600;margin-bottom:6px;color:var(--gold)">Your Orders</div>';
+      activeOrders.forEach(function(o) {
+        var statusColor = o.status === 'pending' ? 'var(--red)' : 'var(--gold)';
+        var statusText = o.status === 'pending' ? 'Placed' : 'Preparing';
+        html += '<div class="order-item">' +
+          '<span>' + (o.items || []).map(function(i) { return i.quantity + 'x ' + i.item_name; }).join(', ') + '</span>' +
+          '<span class="eta" style="color:' + statusColor + '">' + statusText + '</span>' +
+        '</div>';
+      });
+      notif.innerHTML = html;
+    } else if (existingNotif) {
+      existingNotif.remove();
+    }
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────
+  function escHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatDateTime(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  }
+
+  function formatTime(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  }
+
+  function showToast(msg) {
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--pine-light);color:var(--cream);padding:10px 20px;border-radius:8px;font-size:13px;z-index:200;border:1px solid var(--gold-border);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { t.remove(); }, 2500);
+  }
+
+  // ─── Start ───────────────────────────────────────────────────────
+  init();
+})();
+</script>
+</body>
+</html>
