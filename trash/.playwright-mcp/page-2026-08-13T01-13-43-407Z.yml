@@ -1,0 +1,85 @@
+- generic [ref=e18]:
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - heading "Stars & Pines" [level=1] [ref=e21]
+      - generic [ref=e22]: Family Dashboard · Raman Ji
+    - generic [ref=e23]:
+      - button "Refresh" [ref=e24] [cursor=pointer]
+      - button "Logout" [ref=e25] [cursor=pointer]
+  - generic [ref=e26]:
+    - button "Dashboard" [ref=e27] [cursor=pointer]
+    - button "Kitchen" [ref=e28] [cursor=pointer]
+    - button "Inventory" [ref=e29] [cursor=pointer]
+    - button "Checkout" [ref=e30] [cursor=pointer]
+  - generic [ref=e31]:
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e34]: 0%
+        - generic [ref=e35]: Occupancy
+      - generic [ref=e36]:
+        - generic [ref=e37]: 0/12
+        - generic [ref=e38]: Beds
+      - generic [ref=e39]:
+        - generic [ref=e40]: ₹0
+        - generic [ref=e41]: Food
+      - generic [ref=e42]:
+        - generic [ref=e43]: ₹0
+        - generic [ref=e44]: Payments
+    - generic [ref=e45]: Room & Bed Grid
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Dorm 1
+            - generic [ref=e51]: dorm · ₹600
+          - generic [ref=e52]: Vacant
+        - generic [ref=e53]:
+          - generic [ref=e54]: Bed 1
+          - generic [ref=e55]: Bed 2
+          - generic [ref=e56]: Bed 3
+          - generic [ref=e57]: Bed 4
+          - generic [ref=e58]: Bed 5
+          - generic [ref=e59]: Bed 6
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e63]: Dorm 2
+            - generic [ref=e64]: dorm · ₹700
+          - generic [ref=e65]: Vacant
+        - generic [ref=e66]:
+          - generic [ref=e67]: Bed 1
+          - generic [ref=e68]: Bed 2
+          - generic [ref=e69]: Bed 3
+          - generic [ref=e70]: Bed 4
+          - generic [ref=e71]: Bed 5
+          - generic [ref=e72]: Bed 6
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]: Ridge Room
+            - generic [ref=e77]: private · ₹1800
+          - generic [ref=e78]: Vacant
+        - generic [ref=e79]: Vacant
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]: Star Suite
+            - generic [ref=e85]: private · ₹5000
+          - generic [ref=e86]: Vacant
+        - generic [ref=e87]: Vacant
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: Turquoise Room
+            - generic [ref=e93]: private · ₹2500
+          - generic [ref=e94]: Vacant
+        - generic [ref=e95]: Vacant
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Yellow Room
+            - generic [ref=e101]: private · ₹2500
+          - generic [ref=e102]: Vacant
+        - generic [ref=e103]: Vacant
+    - generic [ref=e105]: Active Stays
+    - generic [ref=e106]: No active stays

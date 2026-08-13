@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stars & Pines — Guest Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#131a12;--pine:#1f2f1d;--pine-light:#2a3f28;
+  --gold:#d4b880;--cream:#f6f1ea;--mist:#e8e2d8;
+  --alert:#d4885a;--green:#4a8a62;--red:#c45a5a;
+  --radius:12px;--radius-lg:16px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--night);color:var(--cream);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600}
+.serif{font-family:'EB Garamond',serif}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;font-size:16px;background:var(--pine-light);color:var(--cream);border:1px solid rgba(212,184,128,0.2);border-radius:8px;padding:12px 16px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{font-size:13px;color:var(--mist);margin-bottom:4px;display:block}
+
+/* ─── Access Screen ─── */
+.access-screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.access-logo{width:64px;height:64px;margin-bottom:20px}
+.access-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:8px}
+.access-sub{font-size:14px;color:var(--mist);margin-bottom:32px;max-width:280px;line-height:1.6}
+.access-form{width:100%;max-width:320px}
+.access-form .form-group{margin-bottom:16px}
+.access-form .code-input{font-family:'DM Mono',monospace;font-size:28px;text-align:center;letter-spacing:8px;text-transform:uppercase;padding:16px}
+.access-form .phone-input{text-align:center;font-size:18px;letter-spacing:2px}
+
+/* ─── Portal Screen ─── */
+.portal-screen{display:none;padding-bottom:80px}
+.portal-screen.active{display:block}
+
+/* ─── Header ─── */
+.portal-header{padding:24px 16px 16px;text-align:center;border-bottom:1px solid rgba(212,184,128,0.1)}
+.portal-greeting{font-family:'EB Garamond',serif;font-size:22px;color:var(--gold);font-style:italic;margin-bottom:4px}
+.portal-room{font-size:14px;color:var(--mist)}
+.portal-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--mist);margin-top:4px;opacity:0.6}
+
+/* ─── Tab Bar ─── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--night);border-top:1px solid rgba(212,184,128,0.1);display:flex;overflow-x:auto;padding:6px 0 env(safe-area-inset-bottom,6px);-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;background:none;color:var(--mist);font-size:9px;transition:color 0.2s;white-space:nowrap}
+.tab-btn.active{color:var(--gold)}
+.tab-btn .tab-icon{font-size:18px}
+
+/* ─── Tab Content ─── */
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block}
+
+/* ─── Cards ─── */
+.card{background:var(--pine);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(212,184,128,0.08)}
+.card-title{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.card-body{font-size:14px;color:var(--mist);line-height:1.5}
+.card-meta{font-size:12px;color:var(--mist);margin-top:8px}
+
+/* ─── Badges ─── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase}
+.badge-paid{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-pending{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-overdue{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-open{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-resolved{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-preparing{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-delivered{background:rgba(74,138,98,0.2);color:var(--green)}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;min-height:44px}
+.btn-primary{background:var(--gold);color:var(--night)}
+.btn-secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-sm{padding:8px 14px;font-size:12px;min-height:36px}
+.btn-block{width:100%}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ─── Running Bill ─── */
+.bill-summary{background:var(--pine);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.bill-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(212,184,128,0.08);font-size:14px}
+.bill-line:last-child{border-bottom:none}
+.bill-label{color:var(--mist)}
+.bill-value{color:var(--cream);font-weight:600}
+.bill-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--gold);font-size:18px;font-weight:700}
+.bill-total .bill-label{color:var(--gold)}
+.bill-total .bill-value{color:var(--gold)}
+.bill-outstanding{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--alert);font-size:20px;font-weight:700}
+.bill-outstanding .bill-label{color:var(--alert)}
+.bill-outstanding .bill-value{color:var(--alert)}
+
+/* ─── Menu ─── */
+.menu-category{margin-bottom:20px}
+.menu-cat-title{font-size:16px;font-weight:600;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(212,184,128,0.1)}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.menu-item:active{background:var(--pine-light)}
+.menu-item-name{font-size:14px;font-weight:500;color:var(--cream)}
+.menu-item-desc{font-size:12px;color:var(--mist);margin-top:2px}
+.menu-item-price{font-size:14px;font-weight:600;color:var(--gold);white-space:nowrap;margin-left:12px}
+.menu-item-qty{display:flex;align-items:center;gap:8px}
+.qty-btn{width:32px;height:32px;border-radius:50%;background:var(--pine-light);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,184,128,0.2)}
+
+/* ─── Cart Bar ─── */
+.cart-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:99;background:var(--gold);color:var(--night);border-radius:var(--radius);padding:12px 16px;display:none;align-items:center;justify-content:space-between;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.cart-bar.visible{display:flex}
+
+/* ─── Grievance Types ─── */
+.grievance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.grievance-type-btn{padding:16px 12px;background:var(--pine);border-radius:var(--radius);text-align:center;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.grievance-type-btn.selected{border-color:var(--gold);background:var(--pine-light)}
+.grievance-type-btn .gt-icon{font-size:24px;margin-bottom:4px}
+.grievance-type-btn .gt-name{font-size:12px;color:var(--cream)}
+
+/* ─── Payment Options ─── */
+.payment-option{display:flex;align-items:center;gap:12px;padding:16px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
+.payment-option:active{border-color:var(--gold)}
+.payment-option .po-icon{font-size:24px}
+.payment-option .po-name{font-size:15px;font-weight:600;color:var(--cream)}
+.payment-option .po-desc{font-size:12px;color:var(--mist)}
+
+/* ─── QR Payment ─── */
+.qr-payment{text-align:center;padding:24px}
+.qr-placeholder{width:200px;height:200px;margin:16px auto;background:var(--pine);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;border:2px dashed rgba(212,184,128,0.3)}
+.qr-placeholder span{font-size:14px;color:var(--mist)}
+
+/* ─── Invoice ─── */
+.invoice{background:var(--cream);color:var(--night);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
+.invoice h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--night);margin-bottom:4px}
+.invoice .inv-sub{font-size:12px;color:#666;margin-bottom:16px}
+.invoice .inv-line{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid #eee}
+.invoice .inv-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--night);font-size:18px;font-weight:700}
+
+/* ─── Section Headers ─── */
+.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:20px 0 12px;font-weight:600}
+
+/* ─── Empty State ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--mist)}
+.empty-state .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+.empty-state p{font-size:14px}
+
+/* ─── Notifications ─── */
+.notif-item{display:flex;gap:12px;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;border-left:3px solid var(--gold)}
+.notif-item.unread{border-left-color:var(--alert)}
+.notif-text{font-size:14px;color:var(--cream);flex:1}
+.notif-time{font-size:11px;color:var(--mist);white-space:nowrap}
+
+/* ─── Animations ─── */
+@keyframes spFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* ─── Responsive ─── */
+@media(min-width:480px){
+  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  ACCESS SCREEN
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-access">
+  <div class="access-screen">
+    <svg class="access-logo" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="30" stroke="#d4b880" stroke-width="2"/>
+      <path d="M32 10 L35 22 L48 22 L38 30 L42 42 L32 34 L22 42 L26 30 L16 22 L29 22Z" fill="#d4b880" opacity="0.8"/>
+    </svg>
+    <div class="access-title">Stars & Pines</div>
+    <div class="access-sub">Enter your access code and the last 4 digits of your registered phone number to enter the portal.</div>
+    <div class="access-form">
+      <div class="form-group">
+        <label>Access Code</label>
+        <input type="text" class="code-input" id="access-code" maxlength="6" placeholder="ABC123" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label>Last 4 Digits of Phone</label>
+        <input type="tel" class="phone-input" id="access-phone" maxlength="4" placeholder="4321" autocomplete="off" />
+      </div>
+      <button class="btn btn-primary btn-block" onclick="validateAccess()" style="margin-top:8px">Enter Portal</button>
+    </div>
+    <div style="margin-top:24px;font-size:12px;color:var(--mist)">
+      Stars & Pines · Crank's Ridge · Kasar Devi
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  PORTAL SCREEN
+═══════════════════════════════════════ -->
+<div class="portal-screen" id="screen-portal">
+  <div class="portal-header">
+    <div class="portal-greeting" id="portal-greeting">Welcome</div>
+    <div class="portal-room" id="portal-room"></div>
+    <div class="portal-code" id="portal-code-display"></div>
+  </div>
+
+  <!-- TAB: My Booking -->
+  <div class="tab-content active" id="tab-booking">
+    <div class="card">
+      <div class="card-title">My Booking</div>
+      <div class="card-body" id="booking-details"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Running Bill -->
+  <div class="tab-content" id="tab-bill">
+    <div class="bill-summary" id="bill-summary"></div>
+    <button class="btn btn-primary btn-block" onclick="switchTab('payment')">Go to Payment Center</button>
+  </div>
+
+  <!-- TAB: Food Orders -->
+  <div class="tab-content" id="tab-food">
+    <div id="menu-container"></div>
+  </div>
+
+  <!-- TAB: Service Requests -->
+  <div class="tab-content" id="tab-services">
+    <div class="section-header">House Requests</div>
+    <div id="house-requests"></div>
+    <div class="section-header">Experiences</div>
+    <div id="experiences"></div>
+    <div class="section-header">Concierge</div>
+    <div id="concierge"></div>
+  </div>
+
+  <!-- TAB: Notifications -->
+  <div class="tab-content" id="tab-notifications">
+    <div id="notifications-list"></div>
+  </div>
+
+  <!-- TAB: Grievances -->
+  <div class="tab-content" id="tab-grievances">
+    <div class="section-header">Submit a Concern</div>
+    <div class="card">
+      <div class="grievance-grid" id="grievance-types"></div>
+      <div class="form-group">
+        <label>Describe your concern</label>
+        <textarea id="grievance-message" rows="3" placeholder="Please describe the issue..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="submitGrievance()">Submit Concern</button>
+    </div>
+    <div class="section-header">Your Concerns</div>
+    <div id="my-grievances"></div>
+  </div>
+
+  <!-- TAB: Payment Center -->
+  <div class="tab-content" id="tab-payment">
+    <div class="bill-summary" id="payment-summary"></div>
+    <div class="section-header">Payment Methods</div>
+    <div class="payment-option" onclick="payWithRazorpay()">
+      <div class="po-icon">💳</div>
+      <div><div class="po-name">Pay Online</div><div class="po-desc">Credit/Debit Card, UPI, Net Banking</div></div>
+    </div>
+    <div class="payment-option" onclick="showQRPayment()">
+      <div class="po-icon">📱</div>
+      <div><div class="po-name">Scan QR to Pay</div><div class="po-desc">UPI QR Code</div></div>
+    </div>
+    <div class="payment-option" onclick="payLater()">
+      <div class="po-icon">📝</div>
+      <div><div class="po-name">Pay Later</div><div class="po-desc">Settle at checkout</div></div>
+    </div>
+    <div id="qr-payment-area" style="display:none">
+      <div class="card qr-payment">
+        <div class="card-title">Scan to Pay</div>
+        <div class="qr-placeholder"><span>UPI QR Code<br/>(Place your QR image here)</span></div>
+        <div style="margin-top:12px;font-size:13px;color:var(--mist)">After payment, inform the staff to confirm.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Checkout -->
+  <div class="tab-content" id="tab-checkout">
+    <div class="card">
+      <div class="card-title">Request Checkout</div>
+      <div class="card-body">When you're ready to check out, we'll generate your final invoice. All outstanding charges must be settled before departure.</div>
+      <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="requestCheckout()">Request Checkout</button>
+    </div>
+    <div id="checkout-invoice" style="display:none"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('booking')" data-tab="booking"><span class="tab-icon">📋</span>Booking</button>
+    <button class="tab-btn" onclick="switchTab('bill')" data-tab="bill"><span class="tab-icon">🧾</span>Bill</button>
+    <button class="tab-btn" onclick="switchTab('food')" data-tab="food"><span class="tab-icon">🍽</span>Food</button>
+    <button class="tab-btn" onclick="switchTab('services')" data-tab="services"><span class="tab-icon">🛎</span>Services</button>
+    <button class="tab-btn" onclick="switchTab('notifications')" data-tab="notifications"><span class="tab-icon">🔔</span>Alerts</button>
+    <button class="tab-btn" onclick="switchTab('grievances')" data-tab="grievances"><span class="tab-icon">⚠</span>Concerns</button>
+    <button class="tab-btn" onclick="switchTab('payment')" data-tab="payment"><span class="tab-icon">💰</span>Pay</button>
+    <button class="tab-btn" onclick="switchTab('checkout')" data-tab="checkout"><span class="tab-icon">🚪</span>Checkout</button>
+  </div>
+
+  <!-- Cart Bar -->
+  <div class="cart-bar" id="cart-bar">
+    <span id="cart-count">0 items</span>
+    <span id="cart-total">₹0</span>
+    <button class="btn btn-sm" style="background:var(--night);color:var(--gold)" onclick="submitOrder()">Send to Kitchen</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SCRIPTS
+═══════════════════════════════════════ -->
+<script src="js/firebase-config.js"></script>
+<script src="js/shared-utils.js"></script>
+<script src="js/local-db.js"></script>
+<script src="js/sync-engine.js"></script>
+<script src="js/payment-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var guestData = null;
+  var bookingData = null;
+  var cart = {};
+  var selectedGrievanceType = null;
+
+  // Menu data (same as original portal)
+  var MENU = {
+    'Breakfast': [
+      { name: 'Peculiar Poha', price: 120, desc: 'Flattened rice with peanuts, curry leaves, and a secret spice blend' },
+      { name: 'Shakshouka', price: 160, desc: 'Eggs poached in spiced tomato sauce with fresh bread' }
+    ],
+    'Burgers': [
+      { name: 'Garden Fresh', price: 220, desc: 'Grilled veggie patty with house pickles' },
+      { name: 'Potato vs Paneer', price: 240, desc: 'Choose your fighter — spiced potato or grilled paneer' },
+      { name: 'Achaari Chicken', price: 280, desc: 'Pickled spice chicken burger with mint chutney' }
+    ],
+    'Sandwiches': [
+      { name: 'Chilli Cheesewich', price: 160, desc: 'Melted cheese with green chilli kick' },
+      { name: 'Habibi', price: 180, desc: 'Hummus, roasted veggies, tahini drizzle' },
+      { name: 'Creamy Shroomwich', price: 170, desc: 'Garlic mushroom with cream cheese' },
+      { name: 'Creamy Chickenwich', price: 200, desc: 'Grilled chicken with herb mayo' }
+    ],
+    'Small Plates': [
+      { name: 'Patata Balota', price: 150, desc: 'Spiced potato cakes with tamarind chutney' },
+      { name: 'Herb Whisperers', price: 140, desc: 'Herb-crusted paneer fingers' },
+      { name: 'Cheesy Aubergine', price: 160, desc: 'Baked eggplant with melted cheese' },
+      { name: 'Falafel Chips', price: 130, desc: 'Crispy falafel with yogurt dip' },
+      { name: 'Falafel Wrap', price: 160, desc: 'Falafel, salad, and tahini in warm pita' },
+      { name: 'Pizza Toasties', price: 140, desc: 'Mini pizza on toasted sourdough' }
+    ],
+    'Large Plates': [
+      { name: 'Coconut Quinoa Bowl', price: 280, desc: 'Quinoa, coconut milk, roasted vegetables' },
+      { name: 'Velvet Stroganov', price: 320, desc: 'Mushroom stroganov with egg noodles' },
+      { name: 'Penne Divino', price: 260, desc: 'Penne in creamy tomato basil sauce' },
+      { name: 'Grand Hummus Spread', price: 240, desc: 'Hummus, falafel, pita, salad — for sharing' },
+      { name: 'Kumauni Thali', price: 300, desc: 'Local mountain cuisine — seasonal vegetables, dal, rice, roti' }
+    ],
+    'Soups & Salads': [
+      { name: 'Tomatina', price: 120, desc: 'Roasted tomato soup with basil' },
+      { name: 'Hearty Supreme', price: 140, desc: 'Mixed vegetable soup with croutons' },
+      { name: 'Fruity Fantasy', price: 130, desc: 'Seasonal fruit salad with honey dressing' },
+      { name: 'Bodhi Bowl', price: 160, desc: 'Quinoa, avocado, cherry tomatoes, lemon dressing' },
+      { name: 'The Himalayan', price: 150, desc: 'Local greens, walnuts, pomegranate, mustard dressing' }
+    ],
+    'Beverages': [
+      { name: 'Lime Wire', price: 80, desc: 'Fresh lime soda — sweet or salt' },
+      { name: 'Rhodo Lover', price: 100, desc: 'Rhododendron squash — seasonal special' },
+      { name: 'Apple Gingerina', price: 100, desc: 'Local apple with ginger kick' },
+      { name: 'Thicc Shake', price: 160, desc: 'Banana or chocolate milkshake' },
+      { name: 'Cold Kaapi', price: 80, desc: 'South Indian filter coffee, chilled' },
+      { name: 'Masala Chai', price: 60, desc: 'Mountain chai with local spices' }
+    ]
+  };
+
+  var HOUSE_REQUESTS = [
+    { type: 'extra_towels', icon: '🛁', name: 'Extra Towels', message: 'Extra towels coming right up.' },
+    { type: 'extra_blanket', icon: '🧣', name: 'Extra Blanket', message: 'An extra blanket coming right up.' },
+    { type: 'water_refill', icon: '💧', name: 'Water Refill', message: 'Water refill on the way.' },
+    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning', message: 'Room cleaning requested.' },
+    { type: 'firepit_setup', icon: '🔥', name: 'Firepit Setup', message: 'Firepit setup requested.' },
+    { type: 'tea_to_room', icon: '☕', name: 'Tea to Room', message: 'Tea to room requested.' }
+  ];
+
+  var EXPERIENCES = [
+    { type: 'bonfire', icon: '🔥', name: 'Bonfire Night' },
+    { type: 'local-guide', icon: '🗺', name: 'Local Guide' },
+    { type: 'photography', icon: '📷', name: 'Photography Session' },
+    { type: 'village-walk', icon: '🚶', name: 'Village Walk' },
+    { type: 'bird-watching', icon: '🐦', name: 'Bird Watching' },
+    { type: 'stargazing', icon: '⭐', name: 'Stargazing' },
+    { type: 'transportation', icon: '🚗', name: 'Transportation' },
+    { type: 'special-meal', icon: '🍳', name: 'Special Meal' }
+  ];
+
+  var CONCIERGE = [
+    { type: 'extra_blankets', icon: '🧣', name: 'Extra Blankets' },
+    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning' },
+    { type: 'hot_water', icon: '🚿', name: 'Hot Water' },
+    { type: 'laundry', icon: '👕', name: 'Laundry' },
+    { type: 'taxi', icon: '🚕', name: 'Taxi Booking' },
+    { type: 'wake-up_call', icon: '⏰', name: 'Wake-up Call' },
+    { type: 'medical_help', icon: '🏥', name: 'Medical Help' },
+    { type: 'luggage_assistance', icon: '🧳', name: 'Luggage Help' }
+  ];
+
+  var GRIEVANCE_TYPES = [
+    { type: 'room', icon: '🏠', name: 'Room' },
+    { type: 'housekeeping', icon: '🧹', name: 'Housekeeping' },
+    { type: 'food', icon: '🍽', name: 'Food' },
+    { type: 'staff', icon: '👤', name: 'Staff' },
+    { type: 'water', icon: '💧', name: 'Water' },
+    { type: 'electricity', icon: '⚡', name: 'Electricity' },
+    { type: 'noise', icon: '🔊', name: 'Noise' },
+    { type: 'other', icon: '📝', name: 'Other' }
+  ];
+
+  // ─── Initialize ──────────────────────────────────────────────────
+  function init() {
+    SyncEngine.init(LocalDB, SP_DB).then(function() {
+      // Check URL for access code
+      var params = new URLSearchParams(window.location.search);
+      var codeFromUrl = params.get('code');
+      if (codeFromUrl) {
+        document.getElementById('access-code').value = codeFromUrl.toUpperCase();
+        document.getElementById('access-phone').focus();
+      }
+
+      // Render static content
+      renderGrievanceTypes();
+      renderHouseRequests();
+      renderExperiences();
+      renderConcierge();
+      renderMenu();
+    });
+  }
+
+  // ─── Access Validation ───────────────────────────────────────────
+  window.validateAccess = function() {
+    var code = document.getElementById('access-code').value.trim().toUpperCase();
+    var phone4 = document.getElementById('access-phone').value.trim();
+
+    if (!code || code.length < 4) { SP_UTILS.showToast('Enter your access code'); return; }
+    if (!phone4 || phone4.length < 4) { SP_UTILS.showToast('Enter last 4 digits of your phone'); return; }
+
+    // Validate against Firebase guest_access (backward compat)
+    SP_DB.ref('guest_access/' + code).once('value').then(function(snapshot) {
+      var record = snapshot.val();
+      if (record && record.active && record.validUntil > Date.now()) {
+        var recordPhone4 = SP_UTILS.lastFourDigits(record.phone);
+        if (recordPhone4 === phone4) {
+          guestData = record;
+          enterPortal();
+          return;
+        }
+      }
+      // Also check local bookings
+      return SyncEngine.getByIndex('bookings', 'accessCode', code).then(function(bookings) {
+        var match = bookings.find(function(b) {
+          return SP_UTILS.lastFourDigits(b.phone) === phone4 && b.status === 'confirmed';
+        });
+        if (match) {
+          guestData = {
+            guestName: match.guestName,
+            room: match.room,
+            phone: match.phone,
+            accessCode: match.accessCode,
+            checkin: match.checkInDate,
+            checkout: match.checkOutDate,
+            bookingId: match.bookingId,
+            guestId: match.guestId,
+            active: true
+          };
+          bookingData = match;
+          enterPortal();
+        } else {
+          SP_UTILS.showToast('Access code or phone number does not match', 3000, '#c45a5a');
+        }
+      });
+    }).catch(function(err) {
+      console.error('Access error:', err);
+      SP_UTILS.showToast('Unable to verify access. Please try again.', 3000, '#c45a5a');
+    });
+  };
+
+  function enterPortal() {
+    document.getElementById('screen-access').classList.remove('active');
+    document.getElementById('screen-portal').classList.add('active');
+    document.getElementById('screen-portal').style.display = 'block';
+
+    document.getElementById('portal-greeting').textContent = 'Welcome, ' + (guestData.guestName || 'Guest');
+    document.getElementById('portal-room').textContent = guestData.room || '';
+    document.getElementById('portal-code-display').textContent = 'Code: ' + (guestData.accessCode || guestData.token || '');
+
+    // Load booking details
+    loadBookingDetails();
+    loadRunningBill();
+    loadMyOrders();
+    loadMyGrievances();
+    loadNotifications();
+
+    // Start listeners
+    startListeners();
+  }
+
+  // ─── Firebase Listeners ──────────────────────────────────────────
+  function startListeners() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    // Listen for order updates
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).on('value', function() {
+      loadMyOrders();
+      loadRunningBill();
+    });
+
+    // Listen for grievance updates
+    SP_DB.ref('grievances').orderByChild('guestToken').equalTo(guestToken).on('value', function() {
+      loadMyGrievances();
+    });
+  }
+
+  // ─── Tab Switching ───────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    var btn = document.querySelector('[data-tab="' + tab + '"]');
+    if (btn) btn.classList.add('active');
+
+    if (tab === 'bill') loadRunningBill();
+    if (tab === 'payment') loadPaymentSummary();
+  };
+
+  // ─── Booking Details ─────────────────────────────────────────────
+  function loadBookingDetails() {
+    var container = document.getElementById('booking-details');
+    if (!container) return;
+
+    var checkin = guestData.checkin ? SP_UTILS.formatDate(guestData.checkin) : '—';
+    var checkout = guestData.checkout ? SP_UTILS.formatDate(guestData.checkout) : '—';
+    var deposit = guestData.depositAmount ? SP_UTILS.formatCurrency(guestData.depositAmount) : 'Not recorded';
+    var depositStatus = guestData.depositStatus || '—';
+
+    container.innerHTML =
+      '<div class="bill-line"><span class="bill-label">Guest</span><span class="bill-value">' + escHtml(guestData.guestName) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Room</span><span class="bill-value">' + escHtml(guestData.room) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Check-In</span><span class="bill-value">' + checkin + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Check-Out</span><span class="bill-value">' + checkout + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Deposit</span><span class="bill-value">' + deposit + ' <span class="badge badge-paid">' + escHtml(depositStatus) + '</span></span></div>' +
+      (guestData.bookingId ? '<div class="bill-line"><span class="bill-label">Booking ID</span><span class="bill-value" style="font-family:monospace;font-size:12px">' + escHtml(guestData.bookingId) + '</span></div>' : '');
+  }
+
+  // ─── Running Bill ────────────────────────────────────────────────
+  function loadRunningBill() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    // Get room charges
+    var roomCharge = 0;
+    if (guestData.checkin && guestData.checkout) {
+      var nights = SP_UTILS.daysBetween(guestData.checkin, guestData.checkout);
+      var pricePerNight = guestData.room && guestData.room.indexOf('Double') >= 0 ? 4200 :
+                          guestData.room && guestData.room.indexOf('Twin') >= 0 ? 5800 : 2640;
+      roomCharge = nights * pricePerNight;
+    }
+
+    // Get food charges
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var foodCharge = 0;
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        if (o.status === 'delivered') foodCharge += o.total || 0;
+      });
+
+      // Get deposit
+      var deposit = guestData.depositAmount || 0;
+
+      var subtotal = roomCharge + foodCharge;
+      var outstanding = subtotal - deposit;
+
+      var container = document.getElementById('bill-summary');
+      container.innerHTML =
+        '<div class="bill-line"><span class="bill-label">Room Charges</span><span class="bill-value">' + SP_UTILS.formatCurrency(roomCharge) + '</span></div>' +
+        '<div class="bill-line"><span class="bill-label">Food Orders</span><span class="bill-value">' + SP_UTILS.formatCurrency(foodCharge) + '</span></div>' +
+        '<div class="bill-total"><span class="bill-label">Subtotal</span><span class="bill-value">' + SP_UTILS.formatCurrency(subtotal) + '</span></div>' +
+        '<div class="bill-line"><span class="bill-label">Deposits</span><span class="bill-value">- ' + SP_UTILS.formatCurrency(deposit) + '</span></div>' +
+        '<div class="bill-outstanding"><span class="bill-label">Outstanding</span><span class="bill-value">' + SP_UTILS.formatCurrency(Math.max(0, outstanding)) + '</span></div>';
+    });
+  }
+
+  // ─── Menu & Ordering ─────────────────────────────────────────────
+  function renderMenu() {
+    var container = document.getElementById('menu-container');
+    var html = '';
+
+    for (var category in MENU) {
+      if (!MENU.hasOwnProperty(category)) continue;
+      html += '<div class="menu-category"><div class="menu-cat-title">' + escHtml(category) + '</div>';
+      MENU[category].forEach(function(item) {
+        var qty = cart[item.name] || 0;
+        html += '<div class="menu-item" onclick="toggleCartItem(\'' + escHtml(item.name) + '\', ' + item.price + ')">' +
+          '<div style="flex:1">' +
+            '<div class="menu-item-name">' + escHtml(item.name) + '</div>' +
+            '<div class="menu-item-desc">' + escHtml(item.desc) + '</div>' +
+          '</div>' +
+          '<div class="menu-item-qty">' +
+            (qty > 0 ? '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + escHtml(item.name) + '\', ' + item.price + ')">−</span>' +
+              '<span style="min-width:20px;text-align:center">' + qty + '</span>' +
+              '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + escHtml(item.name) + '\', ' + item.price + ')">+</span>' :
+              '<span class="menu-item-price">' + SP_UTILS.formatCurrency(item.price) + '</span>') +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  window.toggleCartItem = function(name, price) {
+    if (!cart[name]) cart[name] = { qty: 0, price: price };
+    cart[name].qty++;
+    if (cart[name].qty > 10) cart[name].qty = 1;
+    updateCart();
+    renderMenu();
+  };
+
+  function updateCart() {
+    var totalItems = 0;
+    var totalPrice = 0;
+    for (var name in cart) {
+      if (cart.hasOwnProperty(name) && cart[name].qty > 0) {
+        totalItems += cart[name].qty;
+        totalPrice += cart[name].qty * cart[name].price;
+      }
+    }
+
+    var bar = document.getElementById('cart-bar');
+    if (totalItems > 0) {
+      bar.classList.add('visible');
+      document.getElementById('cart-count').textContent = totalItems + ' item' + (totalItems > 1 ? 's' : '');
+      document.getElementById('cart-total').textContent = SP_UTILS.formatCurrency(totalPrice);
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+
+  window.submitOrder = function() {
+    var items = [];
+    var total = 0;
+    for (var name in cart) {
+      if (cart.hasOwnProperty(name) && cart[name].qty > 0) {
+        items.push({ name: name, qty: cart[name].qty, price: cart[name].price });
+        total += cart[name].qty * cart[name].price;
+      }
+    }
+
+    if (items.length === 0) return;
+
+    var guestToken = guestData.accessCode || guestData.token;
+    var order = {
+      id: 'order_' + Date.now(),
+      room: guestData.room || '',
+      items: items,
+      total: total,
+      status: 'pending',
+      source: 'portal',
+      guestToken: guestToken,
+      guestName: guestData.guestName || '',
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    // Write to Firebase (also syncs to local via listener)
+    SP_DB.ref('orders').push(order).then(function() {
+      cart = {};
+      updateCart();
+      renderMenu();
+      SP_UTILS.showToast('Order sent to the kitchen', 2000);
+    }).catch(function() {
+      SP_UTILS.showToast('Failed to place order. Please try again.', 3000, '#c45a5a');
+    });
+  };
+
+  // ─── My Orders ───────────────────────────────────────────────────
+  function loadMyOrders() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      // Orders are shown in the Running Bill tab context
+    });
+  }
+
+  // ─── House Requests ──────────────────────────────────────────────
+  function renderHouseRequests() {
+    var container = document.getElementById('house-requests');
+    container.innerHTML = HOUSE_REQUESTS.map(function(r) {
+      return '<div class="menu-item" onclick="sendHouseRequest(\'' + r.type + '\', \'' + escHtml(r.message) + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + r.icon + '</span><span class="menu-item-name">' + escHtml(r.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="hr-' + r.type + '" style="display:none">Sent</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.sendHouseRequest = function(type, message) {
+    var guestToken = guestData.accessCode || guestData.token;
+    var nudge = {
+      id: 'nudge_' + Date.now(),
+      room: guestData.room || '',
+      type: type,
+      message: message,
+      status: 'sent',
+      source: 'portal',
+      guestToken: guestToken,
+      guestName: guestData.guestName || '',
+      createdAt: Date.now()
+    };
+
+    SP_DB.ref('nudges').push(nudge).then(function() {
+      var badge = document.getElementById('hr-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      SP_UTILS.showToast(message.split(' ')[0] + ' noted', 2000);
+    });
+  };
+
+  // ─── Experiences ─────────────────────────────────────────────────
+  function renderExperiences() {
+    var container = document.getElementById('experiences');
+    container.innerHTML = EXPERIENCES.map(function(e) {
+      return '<div class="menu-item" onclick="requestExperience(\'' + e.type + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + e.icon + '</span><span class="menu-item-name">' + escHtml(e.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="exp-' + e.type + '" style="display:none">Requested</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.requestExperience = function(type) {
+    var guestToken = guestData.accessCode || guestData.token;
+    var exp = {
+      id: 'exp_' + Date.now(),
+      type: type,
+      room: guestData.room || '',
+      guestToken: guestToken,
+      guestName: guestData.guestName || '',
+      status: 'requested',
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    SP_DB.ref('experiences').push(exp).then(function() {
+      var badge = document.getElementById('exp-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      SP_UTILS.showToast('Experience requested', 2000);
+    });
+  };
+
+  // ─── Concierge ───────────────────────────────────────────────────
+  function renderConcierge() {
+    var container = document.getElementById('concierge');
+    container.innerHTML = CONCIERGE.map(function(c) {
+      return '<div class="menu-item" onclick="requestConcierge(\'' + c.type + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + c.icon + '</span><span class="menu-item-name">' + escHtml(c.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="conc-' + c.type + '" style="display:none">Requested</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.requestConcierge = function(type) {
+    var guestToken = guestData.accessCode || guestData.token;
+    var conc = {
+      id: 'conc_' + Date.now(),
+      type: type,
+      room: guestData.room || '',
+      guestToken: guestToken,
+      guestName: guestData.guestName || '',
+      status: 'requested',
+      createdAt: Date.now()
+    };
+
+    SP_DB.ref('concierge').push(conc).then(function() {
+      var badge = document.getElementById('conc-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      SP_UTILS.showToast('Concierge request sent', 2000);
+    });
+  };
+
+  // ─── Grievances ──────────────────────────────────────────────────
+  function renderGrievanceTypes() {
+    var container = document.getElementById('grievance-types');
+    container.innerHTML = GRIEVANCE_TYPES.map(function(t) {
+      return '<div class="grievance-type-btn" onclick="selectGrievanceType(this, \'' + t.type + '\')">' +
+        '<div class="gt-icon">' + t.icon + '</div>' +
+        '<div class="gt-name">' + escHtml(t.name) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.selectGrievanceType = function(el, type) {
+    document.querySelectorAll('.grievance-type-btn').forEach(function(b) { b.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedGrievanceType = type;
+  };
+
+  window.submitGrievance = function() {
+    if (!selectedGrievanceType) { SP_UTILS.showToast('Select a concern type'); return; }
+    var message = document.getElementById('grievance-message').value.trim();
+    if (!message) { SP_UTILS.showToast('Describe your concern'); return; }
+
+    var guestToken = guestData.accessCode || guestData.token;
+    var grievance = {
+      id: 'grievance_' + Date.now(),
+      room: guestData.room || '',
+      type: selectedGrievanceType,
+      message: message,
+      severity: 'medium',
+      status: 'open',
+      source: 'portal',
+      guestToken: guestToken,
+      guestName: guestData.guestName || '',
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    SP_DB.ref('grievances').push(grievance).then(function() {
+      document.getElementById('grievance-message').value = '';
+      document.querySelectorAll('.grievance-type-btn').forEach(function(b) { b.classList.remove('selected'); });
+      selectedGrievanceType = null;
+      SP_UTILS.showToast('Your concern has been noted', 2000);
+      loadMyGrievances();
+    });
+  };
+
+  function loadMyGrievances() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    SP_DB.ref('grievances').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var container = document.getElementById('my-grievances');
+      var grievances = [];
+      snapshot.forEach(function(child) {
+        var g = child.val();
+        g.key = child.key;
+        grievances.push(g);
+      });
+
+      if (grievances.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No concerns raised</p></div>';
+        return;
+      }
+
+      grievances.sort(function(a, b) { return b.createdAt - a.createdAt; });
+      container.innerHTML = grievances.map(function(g) {
+        var statusBadge = g.status === 'open' ? 'badge-open' : g.status === 'acknowledged' ? 'badge-pending' : 'badge-resolved';
+        return '<div class="card">' +
+          '<div class="card-header">' +
+            '<div class="card-title">' + escHtml(g.type) + '</div>' +
+            '<span class="badge ' + statusBadge + '">' + escHtml(g.status) + '</span>' +
+          '</div>' +
+          '<div class="card-body">' + escHtml(g.message) + '</div>' +
+          '<div class="card-meta">' + SP_UTILS.formatDateTime(g.createdAt) + '</div>' +
+        '</div>';
+      }).join('');
+    });
+  }
+
+  // ─── Notifications ───────────────────────────────────────────────
+  function loadNotifications() {
+    var container = document.getElementById('notifications-list');
+    SP_DB.ref('notifications').orderByChild('target').equalTo('all').limitToLast(20).once('value').then(function(snapshot) {
+      var notifs = [];
+      snapshot.forEach(function(child) {
+        var n = child.val();
+        n.key = child.key;
+        notifs.push(n);
+      });
+
+      if (notifs.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔔</div><p>No notifications</p></div>';
+        return;
+      }
+
+      notifs.reverse();
+      container.innerHTML = notifs.map(function(n) {
+        return '<div class="notif-item' + (n.read ? '' : ' unread') + '">' +
+          '<div class="notif-text">' + escHtml(n.message) + '</div>' +
+          '<div class="notif-time">' + SP_UTILS.formatTime(n.createdAt) + '</div>' +
+        '</div>';
+      }).join('');
+    });
+  }
+
+  // ─── Payment Center ──────────────────────────────────────────────
+  function loadPaymentSummary() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    var roomCharge = 0;
+    if (guestData.checkin && guestData.checkout) {
+      var nights = SP_UTILS.daysBetween(guestData.checkin, guestData.checkout);
+      var pricePerNight = guestData.room && guestData.room.indexOf('Double') >= 0 ? 4200 :
+                          guestData.room && guestData.room.indexOf('Twin') >= 0 ? 5800 : 2640;
+      roomCharge = nights * pricePerNight;
+    }
+
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var foodCharge = 0;
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        if (o.status === 'delivered') foodCharge += o.total || 0;
+      });
+
+      var deposit = guestData.depositAmount || 0;
+      var subtotal = roomCharge + foodCharge;
+      var outstanding = Math.max(0, subtotal - deposit);
+
+      var container = document.getElementById('payment-summary');
+      container.innerHTML =
+        '<div class="bill-line"><span class="bill-label">Room Charges</span><span class="bill-value">' + SP_UTILS.formatCurrency(roomCharge) + '</span></div>' +
+        '<div class="bill-line"><span class="bill-label">Food Orders</span><span class="bill-value">' + SP_UTILS.formatCurrency(foodCharge) + '</span></div>' +
+        '<div class="bill-line"><span class="bill-label">Deposits</span><span class="bill-value">- ' + SP_UTILS.formatCurrency(deposit) + '</span></div>' +
+        '<div class="bill-outstanding"><span class="bill-label">Amount Due</span><span class="bill-value">' + SP_UTILS.formatCurrency(outstanding) + '</span></div>';
+    });
+  }
+
+  window.payWithRazorpay = function() {
+    if (typeof Razorpay === 'undefined') {
+      SP_UTILS.showToast('Online payment not available. Please use QR or Pay Later.', 3000);
+      return;
+    }
+
+    // Calculate outstanding
+    var roomCharge = 0;
+    if (guestData.checkin && guestData.checkout) {
+      var nights = SP_UTILS.daysBetween(guestData.checkin, guestData.checkout);
+      var pricePerNight = guestData.room && guestData.room.indexOf('Double') >= 0 ? 4200 :
+                          guestData.room && guestData.room.indexOf('Twin') >= 0 ? 5800 : 2640;
+      roomCharge = nights * pricePerNight;
+    }
+
+    var guestToken = guestData.accessCode || guestData.token;
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var foodCharge = 0;
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        if (o.status === 'delivered') foodCharge += o.total || 0;
+      });
+
+      var deposit = guestData.depositAmount || 0;
+      var outstanding = Math.max(0, roomCharge + foodCharge - deposit);
+
+      if (outstanding <= 0) {
+        SP_UTILS.showToast('No outstanding balance', 2000);
+        return;
+      }
+
+      var options = {
+        key: 'REPLACE_WITH_RAZORPAY_KEY_ID',
+        amount: outstanding * 100,
+        currency: 'INR',
+        name: 'Stars & Pines',
+        description: 'Stay Payment — ' + (guestData.bookingId || guestData.accessCode),
+        handler: function(response) {
+          SP_DB.ref('payments').push({
+            bookingId: guestData.bookingId || '',
+            guestId: guestData.guestId || '',
+            guestToken: guestToken,
+            amount: outstanding,
+            method: 'razorpay',
+            status: 'confirmed',
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }).then(function() {
+            SP_UTILS.showToast('Payment successful! ' + SP_UTILS.formatCurrency(outstanding), 3000);
+            loadPaymentSummary();
+            loadRunningBill();
+          });
+        },
+        prefill: {
+          name: guestData.guestName || '',
+          contact: guestData.phone || ''
+        },
+        theme: { color: '#1f2f1d' }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.open();
+    });
+  };
+
+  window.showQRPayment = function() {
+    var area = document.getElementById('qr-payment-area');
+    area.style.display = area.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.payLater = function() {
+    var roomCharge = 0;
+    if (guestData.checkin && guestData.checkout) {
+      var nights = SP_UTILS.daysBetween(guestData.checkin, guestData.checkout);
+      var pricePerNight = guestData.room && guestData.room.indexOf('Double') >= 0 ? 4200 :
+                          guestData.room && guestData.room.indexOf('Twin') >= 0 ? 5800 : 2640;
+      roomCharge = nights * pricePerNight;
+    }
+
+    var guestToken = guestData.accessCode || guestData.token;
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var foodCharge = 0;
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        if (o.status === 'delivered') foodCharge += o.total || 0;
+      });
+
+      var deposit = guestData.depositAmount || 0;
+      var outstanding = Math.max(0, roomCharge + foodCharge - deposit);
+
+      if (outstanding <= 0) {
+        SP_UTILS.showToast('No outstanding balance', 2000);
+        return;
+      }
+
+      SP_DB.ref('payments').push({
+        bookingId: guestData.bookingId || '',
+        guestId: guestData.guestId || '',
+        guestToken: guestToken,
+        amount: outstanding,
+        method: 'pay_later',
+        status: 'pending',
+        notes: 'Pay later — guest selected at portal',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }).then(function() {
+        SP_DB.ref('notifications').push({
+          type: 'outstanding_payment',
+          guestToken: guestToken,
+          message: guestData.guestName + ' selected Pay Later — ' + SP_UTILS.formatCurrency(outstanding) + ' outstanding',
+          priority: 'high',
+          target: 'all',
+          read: false,
+          createdAt: Date.now()
+        }).then(function() {
+          SP_UTILS.showToast('Payment deferred to checkout', 2000);
+          loadPaymentSummary();
+        });
+      });
+    });
+  };
+
+  // ─── Checkout ────────────────────────────────────────────────────
+  window.requestCheckout = function() {
+    var guestToken = guestData.accessCode || guestData.token;
+    if (!guestToken) return;
+
+    var roomCharge = 0;
+    if (guestData.checkin && guestData.checkout) {
+      var nights = SP_UTILS.daysBetween(guestData.checkin, guestData.checkout);
+      var pricePerNight = guestData.room && guestData.room.indexOf('Double') >= 0 ? 4200 :
+                          guestData.room && guestData.room.indexOf('Twin') >= 0 ? 5800 : 2640;
+      roomCharge = nights * pricePerNight;
+    }
+
+    SP_DB.ref('orders').orderByChild('guestToken').equalTo(guestToken).once('value').then(function(snapshot) {
+      var foodCharge = 0;
+      var orderLines = '';
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        if (o.status === 'delivered') {
+          foodCharge += o.total || 0;
+          var items = Array.isArray(o.items) ? o.items.map(function(i) { return i.name + ' ×' + (i.qty||1); }).join(', ') : '';
+          orderLines += '<div class="inv-line"><span>Food: ' + escHtml(items) + '</span><span>' + SP_UTILS.formatCurrency(o.total) + '</span></div>';
+        }
+      });
+
+      var deposit = guestData.depositAmount || 0;
+      var subtotal = roomCharge + foodCharge;
+      var outstanding = Math.max(0, subtotal - deposit);
+
+      var invoiceDiv = document.getElementById('checkout-invoice');
+      invoiceDiv.style.display = 'block';
+      invoiceDiv.innerHTML =
+        '<div class="invoice">' +
+          '<h3>Stars & Pines</h3>' +
+          '<div class="inv-sub">Invoice for ' + escHtml(guestData.guestName) + ' · ' + escHtml(guestData.room) + '</div>' +
+          '<div class="inv-line"><span>Room Charges (' + SP_UTILS.daysBetween(guestData.checkin, guestData.checkout) + ' nights)</span><span>' + SP_UTILS.formatCurrency(roomCharge) + '</span></div>' +
+          orderLines +
+          '<div class="inv-line"><span>Deposits</span><span>- ' + SP_UTILS.formatCurrency(deposit) + '</span></div>' +
+          '<div class="inv-total"><span>Total Due</span><span>' + SP_UTILS.formatCurrency(outstanding) + '</span></div>' +
+        '</div>' +
+        '<div class="btn-group">' +
+          '<button class="btn btn-primary btn-block" onclick="payWithRazorpay()">Pay Online</button>' +
+          '<button class="btn btn-secondary btn-block" onclick="showQRPayment()">Scan QR</button>' +
+          '<button class="btn btn-secondary btn-block" onclick="payLater()">Pay Later</button>' +
+        '</div>';
+
+      // Deactivate access code
+      SP_DB.ref('guest_access/' + guestToken).update({ active: false, status: 'checked-out', checkout: Date.now() });
+    });
+  };
+
+  // ─── Helpers ─────────────────────────────────────────────────────
+  function escHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ─── Start ───────────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

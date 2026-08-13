@@ -1,0 +1,125 @@
+- generic [ref=f5e15]:
+  - generic [ref=f5e16]:
+    - generic [ref=f5e17]: Welcome, E2E Test Guest
+    - generic [ref=f5e18]: Yellow Room
+    - generic [ref=f5e19]: "Code: JAQU9D"
+  - generic [ref=f5e21]:
+    - generic [ref=f5e22]:
+      - generic [ref=f5e23]: beverages
+      - generic [ref=f5e24] [cursor=pointer]:
+        - generic [ref=f5e25]:
+          - generic [ref=f5e26]: Americano
+          - generic [ref=f5e27]: ~5 min
+        - generic [ref=f5e28]: ₹155
+      - generic [ref=f5e30] [cursor=pointer]:
+        - generic [ref=f5e31]:
+          - generic [ref=f5e32]: Cappuccino
+          - generic [ref=f5e33]: ~5 min
+        - generic [ref=f5e34]: ₹222
+      - generic [ref=f5e36] [cursor=pointer]:
+        - generic [ref=f5e37]:
+          - generic [ref=f5e38]: Ginger Lemon Honey
+          - generic [ref=f5e39]: ~5 min
+        - generic [ref=f5e40]: ₹122
+      - generic [ref=f5e42] [cursor=pointer]:
+        - generic [ref=f5e43]:
+          - generic [ref=f5e44]: Hot Chocolate
+          - generic [ref=f5e45]: ~5 min
+        - generic [ref=f5e46]: ₹233
+      - generic [ref=f5e48] [cursor=pointer]:
+        - generic [ref=f5e49]:
+          - generic [ref=f5e50]: Latte
+          - generic [ref=f5e51]: ~5 min
+        - generic [ref=f5e52]: ₹222
+      - generic [ref=f5e54] [cursor=pointer]:
+        - generic [ref=f5e55]:
+          - generic [ref=f5e56]: Masala Chai
+          - generic [ref=f5e57]: ~5 min
+        - generic [ref=f5e58]:
+          - generic [ref=f5e59]: −
+          - generic [ref=f5e60]: "1"
+          - generic [ref=f5e61]: +
+    - generic [ref=f5e62]:
+      - generic [ref=f5e63]: breakfast
+      - generic [ref=f5e64] [cursor=pointer]:
+        - generic [ref=f5e65]:
+          - generic [ref=f5e66]: Butter Toast
+          - generic [ref=f5e67]: ~5 min
+        - generic [ref=f5e68]: ₹50
+      - generic [ref=f5e70] [cursor=pointer]:
+        - generic [ref=f5e71]:
+          - generic [ref=f5e72]: Omelette (Plain)
+          - generic [ref=f5e73]: ~10 min
+        - generic [ref=f5e74]: ₹180
+      - generic [ref=f5e76] [cursor=pointer]:
+        - generic [ref=f5e77]:
+          - generic [ref=f5e78]: Paratha (Aloo)
+          - generic [ref=f5e79]: ~15 min
+        - generic [ref=f5e80]: ₹122
+    - generic [ref=f5e82]:
+      - generic [ref=f5e83]: mains
+      - generic [ref=f5e84] [cursor=pointer]:
+        - generic [ref=f5e85]:
+          - generic [ref=f5e86]: Banana
+          - generic [ref=f5e87]: ~1 min
+        - generic [ref=f5e88]: ₹20
+      - generic [ref=f5e90] [cursor=pointer]:
+        - generic [ref=f5e91]:
+          - generic [ref=f5e92]: Butter Naan
+          - generic [ref=f5e93]: ~5 min
+        - generic [ref=f5e94]: ₹45
+      - generic [ref=f5e96] [cursor=pointer]:
+        - generic [ref=f5e97]:
+          - generic [ref=f5e98]: Curd
+          - generic [ref=f5e99]: ~2 min
+        - generic [ref=f5e100]: ₹40
+      - generic [ref=f5e102] [cursor=pointer]:
+        - generic [ref=f5e103]:
+          - generic [ref=f5e104]: Maggi
+          - generic [ref=f5e105]: ~10 min
+        - generic [ref=f5e106]: ₹60
+      - generic [ref=f5e108] [cursor=pointer]:
+        - generic [ref=f5e109]:
+          - generic [ref=f5e110]: Plain Naan
+          - generic [ref=f5e111]: ~5 min
+        - generic [ref=f5e112]: ₹35
+      - generic [ref=f5e114] [cursor=pointer]:
+        - generic [ref=f5e115]:
+          - generic [ref=f5e116]: Thukpa (Veg)
+          - generic [ref=f5e117]: ~15 min
+        - generic [ref=f5e118]: ₹130
+  - generic [ref=f5e120]:
+    - button "🍽 Menu" [ref=f5e121] [cursor=pointer]:
+      - generic [ref=f5e122]: 🍽
+      - text: Menu
+    - button "📋 Booking" [ref=f5e123] [cursor=pointer]:
+      - generic [ref=f5e124]: 📋
+      - text: Booking
+    - button "💰 Pay" [ref=f5e125] [cursor=pointer]:
+      - generic [ref=f5e126]: 💰
+      - text: Pay
+    - button "🛎 Services" [ref=f5e127] [cursor=pointer]:
+      - generic [ref=f5e128]: 🛎
+      - text: Services
+    - button "🗺 Places" [ref=f5e129] [cursor=pointer]:
+      - generic [ref=f5e130]: 🗺
+      - text: Places
+    - button "🧵 Perool" [ref=f5e131] [cursor=pointer]:
+      - generic [ref=f5e132]: 🧵
+      - text: Perool
+    - button "👤 Contacts" [ref=f5e133] [cursor=pointer]:
+      - generic [ref=f5e134]: 👤
+      - text: Contacts
+    - button "🔔 Alerts" [ref=f5e135] [cursor=pointer]:
+      - generic [ref=f5e136]: 🔔
+      - text: Alerts
+    - button "⚠ Concerns" [ref=f5e137] [cursor=pointer]:
+      - generic [ref=f5e138]: ⚠
+      - text: Concerns
+    - button "🚪 Checkout" [ref=f5e139] [cursor=pointer]:
+      - generic [ref=f5e140]: 🚪
+      - text: Checkout
+  - generic [ref=f5e141]:
+    - generic [ref=f5e142]: 1 item
+    - generic [ref=f5e143]: ₹55
+    - button "Send to Kitchen" [ref=f5e144] [cursor=pointer]

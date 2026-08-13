@@ -1,0 +1,54 @@
+- generic [ref=f6e18]:
+  - generic [ref=f6e19]:
+    - generic [ref=f6e20]:
+      - heading "Stars & Pines" [level=1] [ref=f6e21]
+      - generic [ref=f6e22]: Family Dashboard · Raman Ji
+    - generic [ref=f6e23]:
+      - button "Refresh" [ref=f6e24] [cursor=pointer]
+      - button "Logout" [ref=f6e25] [cursor=pointer]
+  - generic [ref=f6e26]:
+    - button "Dashboard" [ref=f6e27] [cursor=pointer]
+    - button "Kitchen" [active] [ref=f6e28] [cursor=pointer]
+    - button "Inventory" [ref=f6e29] [cursor=pointer]
+    - button "Checkout" [ref=f6e30] [cursor=pointer]
+  - generic [ref=f6e117]:
+    - generic [ref=f6e118]:
+      - generic [ref=f6e119]:
+        - generic [ref=f6e120]: "1"
+        - generic [ref=f6e121]: Pending
+      - generic [ref=f6e122]:
+        - generic [ref=f6e123]: "0"
+        - generic [ref=f6e124]: Preparing
+      - generic [ref=f6e125]:
+        - generic [ref=f6e126]: "0"
+        - generic [ref=f6e127]: Served
+      - generic [ref=f6e128]:
+        - generic [ref=f6e129]: ₹0
+        - generic [ref=f6e130]: Revenue
+    - generic [ref=f6e131]: Kitchen Queue
+    - generic [ref=f6e133]:
+      - generic [ref=f6e134]: 🍳 Kitchen Busy — 2 orders
+      - generic [ref=f6e135]: 2x Masala Chai, 1x Masala Chai, 1x Americano
+      - generic [ref=f6e136]: "ETA: ~30 min"
+    - generic [ref=f6e137]:
+      - generic [ref=f6e138]:
+        - generic [ref=f6e139]:
+          - generic [ref=f6e140]:
+            - generic [ref=f6e141]: Turquoise Room
+            - generic [ref=f6e142]: 9:16:58 PM · 2012m ago · ETA ~15 min
+          - generic [ref=f6e143]: 🟡 Processing
+        - generic [ref=f6e144]: 2x Masala Chai
+        - generic [ref=f6e145]:
+          - button "Served" [ref=f6e146] [cursor=pointer]
+          - button "Cancel" [ref=f6e147] [cursor=pointer]
+      - generic [ref=f6e148]:
+        - generic [ref=f6e149]:
+          - generic [ref=f6e150]:
+            - generic [ref=f6e151]: Yellow Room
+            - generic [ref=f6e152]: 1:18:31 AM · 330m ago · ETA ~30 min
+          - generic [ref=f6e153]: 🔴 Placed
+        - generic [ref=f6e154]: 1x Masala Chai
+        - generic [ref=f6e155]: 1x Americano
+        - generic [ref=f6e156]:
+          - button "Start" [ref=f6e157] [cursor=pointer]
+          - button "Cancel" [ref=f6e158] [cursor=pointer]

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Main Website
+Comment=Public property website
+Exec=firefox --class "MainSite" --new-window "http://localhost"
+Icon=starsandpines-web
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=MainSite

@@ -1,0 +1,44 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e18]:
+    - generic [ref=f6e19]:
+      - generic [ref=f6e20]:
+        - heading "Stars & Pines" [level=1] [ref=f6e21]
+        - generic [ref=f6e22]: Family Dashboard · Raman Ji
+      - generic [ref=f6e23]:
+        - button "Refresh" [ref=f6e24] [cursor=pointer]
+        - button "Logout" [ref=f6e25] [cursor=pointer]
+    - generic [ref=f6e26]:
+      - button "Dashboard" [ref=f6e27] [cursor=pointer]
+      - button "Kitchen" [ref=f6e28] [cursor=pointer]
+      - button "Inventory" [ref=f6e29] [cursor=pointer]
+      - button "Checkout" [ref=f6e30] [cursor=pointer]
+    - generic [ref=f6e117]:
+      - generic [ref=f6e118]:
+        - generic [ref=f6e196]:
+          - generic [ref=f6e197]: "0"
+          - generic [ref=f6e198]: Pending
+        - generic [ref=f6e199]:
+          - generic [ref=f6e200]: "0"
+          - generic [ref=f6e201]: Preparing
+        - generic [ref=f6e202]:
+          - generic [ref=f6e203]: "1"
+          - generic [ref=f6e204]: Served
+        - generic [ref=f6e205]:
+          - generic [ref=f6e206]: ₹210
+          - generic [ref=f6e207]: Revenue
+      - generic [ref=f6e131]: Kitchen Queue
+      - generic [ref=f6e208]:
+        - generic [ref=f6e209]: 🍳 Kitchen Busy — 1 order
+        - generic [ref=f6e210]: 2x Masala Chai
+        - generic [ref=f6e211]: "ETA: ~15 min"
+      - generic [ref=f6e212]:
+        - generic [ref=f6e213]:
+          - generic [ref=f6e214]:
+            - generic [ref=f6e215]: Turquoise Room
+            - generic [ref=f6e216]: 9:16:58 PM · 2013m ago · ETA ~15 min
+          - generic [ref=f6e217]: 🟡 Processing
+        - generic [ref=f6e218]: 2x Masala Chai
+        - generic [ref=f6e219]:
+          - button "Served" [ref=f6e220] [cursor=pointer]
+          - button "Cancel" [ref=f6e221] [cursor=pointer]
+  - generic [ref=f6e17]: Order served

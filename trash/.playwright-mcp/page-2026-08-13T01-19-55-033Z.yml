@@ -1,0 +1,64 @@
+- generic [ref=f7e2]:
+  - generic [ref=f7e3]:
+    - generic [ref=f7e4]: Welcome, E2E Test Guest
+    - generic [ref=f7e5]: Yellow Room
+    - generic [ref=f7e6]: "Code: JAQU9D"
+  - generic [ref=f7e126]:
+    - generic [ref=f7e127]: Your Bill
+    - generic [ref=f7e128]:
+      - generic [ref=f7e129]:
+        - generic [ref=f7e130]: "Order: 1x Masala Chai, 1x Americano"
+        - generic [ref=f7e131]: ₹210
+      - generic [ref=f7e132]:
+        - generic [ref=f7e133]: Total
+        - generic [ref=f7e134]: ₹210
+      - generic [ref=f7e135]:
+        - generic [ref=f7e136]: Amount Due
+        - generic [ref=f7e137]: ₹210
+    - generic [ref=f7e138]: Payment Methods
+    - generic [ref=f7e139] [cursor=pointer]:
+      - generic [ref=f7e140]: 💳
+      - generic [ref=f7e141]:
+        - generic [ref=f7e142]: Pay Online
+        - generic [ref=f7e143]: Credit/Debit Card, UPI, Net Banking
+    - generic [ref=f7e144] [cursor=pointer]:
+      - generic [ref=f7e145]: 📱
+      - generic [ref=f7e146]:
+        - generic [ref=f7e147]: Scan QR to Pay
+        - generic [ref=f7e148]: UPI QR Code
+    - generic [ref=f7e149] [cursor=pointer]:
+      - generic [ref=f7e150]: 📝
+      - generic [ref=f7e151]:
+        - generic [ref=f7e152]: Pay Later
+        - generic [ref=f7e153]: Settle at checkout
+  - generic [ref=f7e105]:
+    - button "🍽 Menu" [ref=f7e106] [cursor=pointer]:
+      - generic [ref=f7e107]: 🍽
+      - text: Menu
+    - button "📋 Booking" [ref=f7e108] [cursor=pointer]:
+      - generic [ref=f7e109]: 📋
+      - text: Booking
+    - button "💰 Pay" [active] [ref=f7e110] [cursor=pointer]:
+      - generic [ref=f7e111]: 💰
+      - text: Pay
+    - button "🛎 Services" [ref=f7e112] [cursor=pointer]:
+      - generic [ref=f7e113]: 🛎
+      - text: Services
+    - button "🗺 Places" [ref=f7e114] [cursor=pointer]:
+      - generic [ref=f7e115]: 🗺
+      - text: Places
+    - button "🧵 Perool" [ref=f7e116] [cursor=pointer]:
+      - generic [ref=f7e117]: 🧵
+      - text: Perool
+    - button "👤 Contacts" [ref=f7e118] [cursor=pointer]:
+      - generic [ref=f7e119]: 👤
+      - text: Contacts
+    - button "🔔 Alerts" [ref=f7e120] [cursor=pointer]:
+      - generic [ref=f7e121]: 🔔
+      - text: Alerts
+    - button "⚠ Concerns" [ref=f7e122] [cursor=pointer]:
+      - generic [ref=f7e123]: ⚠
+      - text: Concerns
+    - button "🚪 Checkout" [ref=f7e124] [cursor=pointer]:
+      - generic [ref=f7e125]: 🚪
+      - text: Checkout

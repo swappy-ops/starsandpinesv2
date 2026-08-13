@@ -1,0 +1,56 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e18]:
+    - generic [ref=f6e19]:
+      - generic [ref=f6e20]:
+        - heading "Stars & Pines" [level=1] [ref=f6e21]
+        - generic [ref=f6e22]: Family Dashboard · Raman Ji
+      - generic [ref=f6e23]:
+        - button "Refresh" [ref=f6e24] [cursor=pointer]
+        - button "Logout" [ref=f6e25] [cursor=pointer]
+    - generic [ref=f6e26]:
+      - button "Dashboard" [ref=f6e27] [cursor=pointer]
+      - button "Kitchen" [ref=f6e28] [cursor=pointer]
+      - button "Inventory" [ref=f6e29] [cursor=pointer]
+      - button "Checkout" [ref=f6e30] [cursor=pointer]
+    - generic [ref=f6e117]:
+      - generic [ref=f6e118]:
+        - generic [ref=f6e159]:
+          - generic [ref=f6e160]: "0"
+          - generic [ref=f6e161]: Pending
+        - generic [ref=f6e162]:
+          - generic [ref=f6e163]: "1"
+          - generic [ref=f6e164]: Preparing
+        - generic [ref=f6e165]:
+          - generic [ref=f6e166]: "0"
+          - generic [ref=f6e167]: Served
+        - generic [ref=f6e168]:
+          - generic [ref=f6e169]: ₹0
+          - generic [ref=f6e170]: Revenue
+      - generic [ref=f6e131]: Kitchen Queue
+      - generic [ref=f6e171]:
+        - generic [ref=f6e172]: 🍳 Kitchen Busy — 2 orders
+        - generic [ref=f6e173]: 2x Masala Chai, 1x Masala Chai, 1x Americano
+        - generic [ref=f6e174]: "ETA: ~15 min"
+      - generic [ref=f6e137]:
+        - generic [ref=f6e175]:
+          - generic [ref=f6e176]:
+            - generic [ref=f6e177]:
+              - generic [ref=f6e178]: Turquoise Room
+              - generic [ref=f6e179]: 9:16:58 PM · 2012m ago · ETA ~15 min
+            - generic [ref=f6e180]: 🟡 Processing
+          - generic [ref=f6e181]: 2x Masala Chai
+          - generic [ref=f6e182]:
+            - button "Served" [ref=f6e183] [cursor=pointer]
+            - button "Cancel" [ref=f6e184] [cursor=pointer]
+        - generic [ref=f6e185]:
+          - generic [ref=f6e186]:
+            - generic [ref=f6e187]:
+              - generic [ref=f6e188]: Yellow Room
+              - generic [ref=f6e189]: 1:18:31 AM · 331m ago · ETA ~15 min
+            - generic [ref=f6e190]: 🟡 Processing
+          - generic [ref=f6e191]: 1x Masala Chai
+          - generic [ref=f6e192]: 1x Americano
+          - generic [ref=f6e193]:
+            - button "Served" [ref=f6e194] [cursor=pointer]
+            - button "Cancel" [ref=f6e195] [cursor=pointer]
+  - generic [ref=f6e17]: Order preparing

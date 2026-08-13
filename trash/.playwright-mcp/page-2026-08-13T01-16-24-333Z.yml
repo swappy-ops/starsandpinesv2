@@ -1,0 +1,12 @@
+- generic [ref=f3e29]:
+  - generic [ref=f3e30]:
+    - generic [ref=f3e31]: Stars & Pines
+    - generic [ref=f3e32]: Guest Entry QR
+  - generic [ref=f3e33]:
+    - generic [ref=f3e35]: E2E Test Guest
+    - generic [ref=f3e36]: Yellow Room
+    - generic [ref=f3e37]: JAQU9D
+  - paragraph [ref=f3e38]: Guest scans this QR to register and access their portal.
+  - generic [ref=f3e39]:
+    - button "New Guest" [ref=f3e40] [cursor=pointer]
+    - button "Share via WhatsApp" [ref=f3e41] [cursor=pointer]

@@ -1,0 +1,9 @@
+- generic [ref=f5e3]:
+  - generic [ref=f5e7]: Stars & Pines
+  - generic [ref=f5e8]: Enter your access code to enter the portal.
+  - generic [ref=f5e9]:
+    - generic [ref=f5e10]:
+      - generic [ref=f5e11]: Access Code
+      - textbox "ABC123" [ref=f5e12]: JAQU9D
+    - button "Enter Portal" [ref=f5e13] [cursor=pointer]
+  - generic [ref=f5e14]: Stars & Pines · Kasar Devi · Almora

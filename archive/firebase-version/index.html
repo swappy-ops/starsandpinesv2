@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stars & Pines — A Mountain Home on Crank's Ridge</title>
+<meta name="description" content="A mountain home on Crank's Ridge, Kasar Devi. Come discover what's here. Almora, Uttarakhand." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "Stars & Pines",
+  "description": "A mountain home on Crank's Ridge, Kasar Devi, Almora. Come discover what's here.",
+  "url": "https://starsandpines.in",
+  "telephone": "+917982523582",
+  "email": "stay@starsandpines.in",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kasar Devi Road, Crank's Ridge",
+    "addressLocality": "Almora",
+    "addressRegion": "Uttarakhand",
+    "postalCode": "263601",
+    "addressCountry": "IN"
+  },
+  "priceRange": "₹₹",
+  "containsPlace": [
+    {"@type": "HotelRoom", "name": "Five-Bed Dormitory", "offers": {"@type": "Offer", "price": "700", "priceCurrency": "INR"}},
+    {"@type": "HotelRoom", "name": "Turquoise Room", "offers": {"@type": "Offer", "price": "2700", "priceCurrency": "INR"}},
+    {"@type": "HotelRoom", "name": "Star Suite", "offers": {"@type": "Offer", "price": "5000", "priceCurrency": "INR"}}
+  ],
+  "sameAs": ["https://www.instagram.com/starsandpiness"]
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#F8F5F0;--cream:#FCFAF6;--night:#0B0D0B;--pine:#1D2C1B;--pine-light:#2D4530;
+  --text:#161411;--text-soft:#4F453A;--text-muted:#7A6E62;
+  --text-light:#F5F1EA;--text-light-soft:#C8C1B7;--text-light-muted:#9A9188;
+  --gold:#D6B26E;--gold-bright:#E4C27A;--warm:#C4A870;
+  --border:rgba(79,69,58,0.12);--border-dark:rgba(245,241,234,0.12);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--paper);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:400;line-height:1.75;overflow-x:hidden}
+.serif{font-family:'Playfair Display',serif}
+.garamond{font-family:'EB Garamond',serif;font-style:italic}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.3}
+.container{max-width:1200px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.container{padding:0 24px}}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:28px 52px;display:flex;justify-content:space-between;align-items:center;transition:background 0.5s,padding 0.4s}
+nav.scrolled{background:rgba(250,247,242,0.96);padding:18px 52px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:0.06em;color:var(--text-light);text-decoration:none;transition:color 0.4s}
+nav.scrolled .nav-logo{color:var(--pine)}
+.nav-links{list-style:none;display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(250,247,242,0.85);font-weight:500;text-decoration:none;transition:color 0.3s}
+nav.scrolled .nav-links a{color:var(--text-soft)}
+.nav-links a:hover{color:var(--gold-bright)}
+nav.scrolled .nav-links a:hover{color:var(--text)}
+.nav-book{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--night)!important;background:var(--gold);padding:10px 24px;text-decoration:none;font-weight:600;transition:background 0.3s}
+.nav-book:hover{background:var(--gold-bright)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;border:none;background:none;padding:4px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.hamburger span{display:block;width:24px;height:1.5px;background:var(--text-light);transition:all 0.3s}
+nav.scrolled .hamburger span{background:var(--pine)}
+
+/* ─── HERO ─── */
+#hero{position:relative;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:flex-end}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,13,11,0.4) 0%,rgba(11,13,11,0.1) 40%,rgba(11,13,11,0.65) 100%);z-index:1}
+#hero-canvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hero-content{position:relative;z-index:2;padding:0 52px 80px;max-width:900px}
+.hero-content h1{font-size:3.2rem;color:var(--text-light);font-weight:400;line-height:1.2;margin-bottom:16px;letter-spacing:-0.01em}
+.hero-content .sub{font-size:1.05rem;color:rgba(245,241,234,0.8);font-weight:300;line-height:1.6;max-width:560px}
+.hero-content .sub .highlight{color:var(--gold)}
+.hero-star{display:inline-block;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-rhythm{font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:rgba(212,184,128,0.6);margin-top:20px;letter-spacing:0.04em}
+
+/* ─── SECTION COMMON ─── */
+.section{padding:100px 0}
+.section-dark{background:var(--night);color:var(--text-light)}
+.section-pine{background:var(--pine);color:var(--text-light)}
+.section-alt{background:var(--cream)}
+.section-header{text-align:center;margin-bottom:64px}
+.section-header h2{font-size:2.4rem;margin-bottom:12px}
+.section-header .subtitle{font-size:0.95rem;color:var(--text-muted);max-width:600px;margin:0 auto;line-height:1.6}
+
+/* ─── WELCOME / NOT A DESTINATION ─── */
+.not-dest{text-align:center;max-width:700px;margin:0 auto}
+.not-dest .big{font-size:1.8rem;font-family:'Playfair Display',serif;color:var(--text-light);line-height:1.4;margin-bottom:24px}
+.not-dest p{font-size:0.95rem;color:var(--text-light-soft);line-height:1.7}
+
+/* ─── RIDGE INTRO ─── */
+.ridge-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ridge-intro .text{font-size:1.05rem;line-height:1.8;color:var(--text-soft)}
+.ridge-intro .text p{margin-bottom:20px}
+.ridge-intro .text .big{font-size:1.4rem;font-family:'Playfair Display',serif;color:var(--text);line-height:1.5}
+.ridge-intro .visual{position:relative;padding-top:75%;background:var(--cream);border-radius:4px;overflow:hidden}
+.ridge-intro .visual img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+@media(max-width:768px){.ridge-intro{grid-template-columns:1fr;gap:32px}}
+
+/* ─── TIMELINE ─── */
+.timeline-wrap{position:relative;padding:40px 0}
+.timeline-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--gold);opacity:0.3}
+.timeline-item{display:flex;gap:40px;margin-bottom:60px;position:relative;align-items:center}
+.timeline-item:nth-child(odd){flex-direction:row-reverse}
+.timeline-item .year{font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--gold);flex:0 0 120px;text-align:center;font-weight:500}
+.timeline-item .content{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border-dark);border-radius:12px;padding:28px;backdrop-filter:blur(8px)}
+.timeline-item .content h3{font-size:1.15rem;color:var(--text-light);margin-bottom:8px}
+.timeline-item .content p{font-size:0.9rem;color:var(--text-light-soft);line-height:1.6}
+.timeline-item .content img{width:100%;max-width:300px;border-radius:8px;margin-top:12px;cursor:pointer;transition:transform 0.3s}
+.timeline-item .content img:hover{transform:scale(1.02)}
+.timeline-item .dot{position:absolute;left:50%;width:12px;height:12px;background:var(--gold);border-radius:50%;transform:translateX(-50%);border:2px solid var(--night)}
+@media(max-width:768px){
+  .timeline-line{left:20px}
+  .timeline-item,.timeline-item:nth-child(odd){flex-direction:column;align-items:flex-start;padding-left:50px;gap:12px}
+  .timeline-item .year{font-size:1.8rem;flex:0 0 auto;text-align:left}
+  .timeline-item .dot{left:20px}
+}
+
+/* ─── ROOMS ─── */
+.rooms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.room-card{background:var(--cream);border-radius:16px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;cursor:default}
+.room-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08)}
+.room-card .img{height:220px;background:var(--pine-light);position:relative;overflow:hidden}
+.room-card .img .placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.15em;text-transform:uppercase}
+.room-card .body{padding:24px}
+.room-card .body .tag{display:inline-block;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.room-card .body h3{font-size:1.25rem;color:var(--text);margin-bottom:8px}
+.room-card .body p{font-size:0.88rem;color:var(--text-soft);line-height:1.6;margin-bottom:12px}
+.room-card .body .price{font-size:1.4rem;font-family:'Playfair Display',serif;color:var(--pine)}
+.room-card .body .price small{font-size:0.7rem;color:var(--text-muted);font-family:'DM Sans',sans-serif}
+.room-card .body .amenities{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.room-card .body .amenities span{font-size:0.7rem;padding:4px 10px;background:var(--paper);border-radius:20px;color:var(--text-soft)}
+@media(max-width:900px){.rooms-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.rooms-grid{grid-template-columns:1fr}}
+
+/* ─── BREAKFAST TABLE ─── */
+.breakfast-scene{position:relative;max-width:700px;margin:0 auto}
+.breakfast-scene .table-img{width:100%;border-radius:16px;display:block}
+.breakfast-scene .bubble{position:absolute;background:rgba(255,253,250,0.95);color:var(--text);padding:16px 20px;border-radius:16px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.08);max-width:240px;animation:fadeUp 0.6s ease forwards;opacity:0}
+.breakfast-scene .bubble::after{content:'';position:absolute;width:12px;height:12px;background:rgba(255,253,250,0.95);transform:rotate(45deg)}
+.breakfast-scene .bubble-1{top:5%;right:-80px;animation-delay:0.2s}
+.breakfast-scene .bubble-1::after{bottom:-6px;left:30px}
+.breakfast-scene .bubble-2{bottom:15%;left:-100px;animation-delay:0.6s}
+.breakfast-scene .bubble-2::after{top:-6px;right:30px}
+.breakfast-scene .bubble-3{top:40%;right:-90px;animation-delay:1s}
+.breakfast-scene .bubble-3::after{bottom:-6px;left:20px}
+.roundtable{display:flex;justify-content:center;gap:4px;margin-bottom:16px}
+.roundtable .person{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff}
+.roundtable .person.raman{background:#d4a373}
+.roundtable .person.amrit{background:#6b8e6b}
+.roundtable .person.blob{background:#c8c1b7}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){
+  .breakfast-scene .bubble{position:static;margin-bottom:16px;max-width:100%}
+  .breakfast-scene .bubble::after{display:none}
+}
+
+/* ─── TEAM ─── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:32px;text-align:center}
+.team-card .avatar{width:90px;height:90px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream);border:2px solid var(--border);overflow:hidden}
+.team-card .avatar img{width:100%;height:100%;object-fit:cover}
+.team-card .name{font-size:1rem;font-weight:600;color:var(--text)}
+.team-card .role{font-size:0.78rem;color:var(--text-muted);margin-top:4px}
+.team-card .desc{font-size:0.78rem;color:var(--text-soft);margin-top:8px;line-height:1.5}
+.team-card .recommendation{font-size:0.72rem;color:var(--text-muted);margin-top:8px;font-style:italic;font-family:'EB Garamond',serif}
+
+/* ─── MAP ─── */
+.map-container{position:relative;width:100%;max-width:800px;margin:0 auto;border-radius:16px;overflow:hidden;background:var(--pine-light);min-height:400px}
+.map-container canvas{width:100%;height:100%;display:block}
+.map-overlay{position:absolute;inset:0;pointer-events:none}
+.map-label{position:absolute;font-size:0.72rem;color:var(--text-light);background:rgba(11,13,11,0.8);padding:4px 12px;border-radius:20px;white-space:nowrap;border:1px solid rgba(212,184,128,0.2)}
+.map-label .dist{color:var(--gold);font-size:0.6rem}
+.map-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;background:var(--gold);border-radius:50%;box-shadow:0 0 20px rgba(214,178,110,0.4)}
+.map-ring{position:absolute;border:1px dashed rgba(212,184,128,0.2);border-radius:50%;pointer-events:none}
+.map-helilink{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:0.72rem;color:var(--gold);text-decoration:underline;pointer-events:auto;z-index:10}
+
+/* ─── REVIEWS ─── */
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.review-card{background:var(--cream);padding:28px;border-radius:12px;border:1px solid var(--border)}
+.review-card .stars{color:var(--gold);font-size:0.9rem;letter-spacing:2px;margin-bottom:8px}
+.review-card blockquote{font-size:0.92rem;color:var(--text-soft);line-height:1.65;font-style:italic;margin-bottom:12px}
+.review-card .author{font-size:0.78rem;color:var(--text-muted);font-weight:500}
+.review-card .source{font-size:0.68rem;color:var(--text-muted)}
+
+/* ─── CONTRAST STRIPE ─── */
+.contrast-stripe{background:var(--pine);padding:32px 0;text-align:center}
+.contrast-stripe .links{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.contrast-stripe a{color:var(--text-light);text-decoration:none;font-size:0.82rem;letter-spacing:0.12em;display:flex;align-items:center;gap:8px;transition:color 0.3s}
+.contrast-stripe a:hover{color:var(--gold)}
+.contrast-stripe a .icon{font-size:1.2rem}
+
+/* ─── RHYTHM VIDEO ─── */
+.rhythm-section{position:relative;overflow:hidden;padding:120px 0;text-align:center}
+.rhythm-section canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+.rhythm-overlay{position:absolute;inset:0;background:rgba(11,13,11,0.55);z-index:1}
+.rhythm-content{position:relative;z-index:2}
+.rhythm-content h2{font-size:2.8rem;color:var(--text-light);margin-bottom:16px}
+.rhythm-content p{font-size:1.1rem;color:rgba(245,241,234,0.7);max-width:480px;margin:0 auto;line-height:1.7}
+
+/* ─── CTA ─── */
+#cta{padding:100px 0;text-align:center}
+#cta h2{font-size:2.4rem;margin-bottom:16px}
+#cta p{font-size:1rem;color:var(--text-soft);max-width:500px;margin:0 auto 32px}
+.cta-btn{display:inline-block;padding:14px 40px;background:var(--gold);color:var(--night);text-decoration:none;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;font-weight:600;transition:background 0.3s}
+.cta-btn:hover{background:var(--gold-bright)}
+
+/* ─── NOT THE SAME REASON ─── */
+.reason-visual{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}
+.reason-item{text-align:center;padding:32px 20px;background:var(--cream);border-radius:12px;border:1px solid var(--border)}
+.reason-item .icon{font-size:2.4rem;margin-bottom:12px}
+.reason-item h4{font-size:1rem;margin-bottom:8px}
+.reason-item p{font-size:0.82rem;color:var(--text-soft);line-height:1.5}
+@media(max-width:600px){.reason-visual{grid-template-columns:1fr}}
+
+/* ─── EXPLORE ─── */
+.explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.explore-card{position:relative;border-radius:12px;overflow:hidden;height:280px;cursor:pointer;background:var(--pine-light)}
+.explore-card .bg{position:absolute;inset:0}
+.explore-card .bg img{width:100%;height:100%;object-fit:cover}
+.explore-card .over{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,13,11,0.7),transparent);z-index:1}
+.explore-card .label{position:absolute;bottom:20px;left:20px;z-index:2;color:var(--text-light)}
+.explore-card .label h3{font-size:1.2rem;margin-bottom:4px}
+.explore-card .label p{font-size:0.8rem;color:rgba(245,241,234,0.7)}
+@media(max-width:600px){.explore-grid{grid-template-columns:1fr}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(11,13,11,0.98);padding:80px 40px;gap:24px;align-items:flex-start;z-index:900}
+  .nav-links.open a{font-size:0.85rem;color:var(--text-light)}
+  .hero-content{padding:0 24px 60px}
+  .hero-content h1{font-size:2rem}
+  .hero-content .sub{font-size:0.92rem}
+  .section{padding:60px 0}
+  .section-header h2{font-size:1.8rem}
+}
+
+/* ─── STARS ANIMATION ─── */
+.stars-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Stars & Pines</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#why">Why People Stay</a></li>
+    <li><a href="#discover">Discover</a></li>
+    <li><a href="#rooms">The Property</a></li>
+    <li><a href="#breakfast">Breakfast Table</a></li>
+    <li><a href="#team">The People</a></li>
+    <li><a href="#cta" class="nav-book">Come Along</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=1600&q=80" alt="Himalayan view from Crank's Ridge" loading="eager" />
+  </div>
+  <div class="hero-overlay"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <h1>
+      <span class="hero-star">✦</span>
+      Come discover what's here.
+    </h1>
+    <div class="sub">
+      A mountain home on Crank's Ridge, Kasar Devi.
+      <span class="highlight">Stars above.</span> Pines around.
+      The Himalayas doing what they do best.
+    </div>
+    <div class="hero-rhythm">— the ridge sets the rhythm · stars set the rhythm —</div>
+  </div>
+</section>
+
+<!-- ═══ WELCOME: NOT A DESTINATION ═══ -->
+<section class="section section-dark" id="ridge">
+  <div class="container">
+    <div class="not-dest">
+      <div class="big">This is not a place you visit.<br />It's a place you find yourself in.</div>
+      <p>Stars & Pines sits on Crank's Ridge — a place that has drawn seekers, writers, and wanderers for generations. Not because it's famous. Because it's quiet. Because the mountains don't perform here. They just are.</p>
+      <p style="margin-top:16px;color:var(--gold);font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem">You'll understand when you arrive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY PEOPLE STAY ═══ -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-header">
+      <h2>Not the Same Reason Twice</h2>
+      <div class="subtitle">Everyone arrives with their own question. The ridge answers differently each time.</div>
+    </div>
+    <div class="reason-visual">
+      <div class="reason-item">
+        <div class="icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4L4 36h32L20 4z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M20 12L12 36h16L20 12z" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
+          </svg>
+        </div>
+        <h4>For the Silence</h4>
+        <p>Some come for the kind of quiet that doesn't exist in cities. The ridge delivers. No announcement. Just absence of noise.</p>
+      </div>
+      <div class="reason-item">
+        <div class="icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="3" fill="currentColor"/>
+            <circle cx="10" cy="12" r="1.5" fill="currentColor" opacity="0.6"/>
+            <circle cx="30" cy="14" r="1" fill="currentColor" opacity="0.4"/>
+            <circle cx="14" cy="28" r="1.5" fill="currentColor" opacity="0.5"/>
+            <circle cx="28" cy="30" r="1" fill="currentColor" opacity="0.3"/>
+            <circle cx="20" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </div>
+        <h4>For the Stars</h4>
+        <p>On a clear night, the sky doesn't just have stars — it is stars. Trishul to Panchachuli by day, the Milky Way by night.</p>
+      </div>
+      <div class="reason-item">
+        <div class="icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 32c0-8 4-16 12-20 8 4 12 12 12 20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="20" cy="16" r="4" stroke="currentColor" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <h4>For Themselves</h4>
+        <p>Writers finish their books here. Seekers find their way. Some just show up and stay. The ridge doesn't ask why.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THINGS PEOPLE DISCOVER ═══ -->
+<section class="section section-dark" id="discover">
+  <div class="container">
+    <div class="section-header">
+      <h2>Things People Discover</h2>
+      <div class="subtitle" style="color:var(--text-light-muted)">Not a directory. Not a guidebook. Just the things guests keep finding — and coming back to tell us about.</div>
+    </div>
+    <div class="explore-grid">
+      <div class="explore-card">
+        <div class="bg"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600&q=80" alt="Stars at night" loading="lazy" /></div>
+        <div class="over"></div>
+        <div class="label"><h3>The Stargazing Spot</h3><p>Walk past the last light. Look up. The Himalayas frame the sky like a panorama you didn't know existed.</p></div>
+      </div>
+      <div class="explore-card">
+        <div class="bg"><img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600&q=80" alt="Forest trail" loading="lazy" /></div>
+        <div class="over"></div>
+        <div class="label"><h3>The Path Down to Balta</h3><p>A village trail through pine and rhododendron. Takes twenty minutes. Feels like an hour in the right direction.</p></div>
+      </div>
+      <div class="explore-card">
+        <div class="bg"><img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&q=80" alt="Bonfire" loading="lazy" /></div>
+        <div class="over"></div>
+        <div class="label"><h3>Where Shunyata Baba Rested</h3><p>A short walk from the property. His samadhi sits quietly — a place people visit and sit with, without knowing why.</p></div>
+      </div>
+      <div class="explore-card">
+        <div class="bg"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80" alt="Local temple" loading="lazy" /></div>
+        <div class="over"></div>
+        <div class="label"><h3>Kasar Devi Temple</h3><p>Visible from the balcony. A small shrine that grew over decades. Someone always asks about it over breakfast.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STORIES FROM THE RIDGE ═══ -->
+<section class="section section-alt" id="stories">
+  <div class="container">
+    <div class="section-header">
+      <h2>Stories from the Ridge</h2>
+      <div class="subtitle">Not history. Not heritage. Just the moments people keep carrying with them.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+      <div style="background:var(--cream);padding:32px;border-radius:12px;border:1px solid var(--border)">
+        <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--text);line-height:1.6;margin-bottom:16px">"Someone always asks about Vivekananda over breakfast."</p>
+        <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.7">He meditated at Kasar Devi in the 1920s. Not because it was famous — because it was quiet. The ridge was already known as a place where the mind settles. You can still feel it if you walk up to the temple at dawn.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px;border-radius:12px;border:1px solid var(--border)">
+        <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--text);line-height:1.6;margin-bottom:16px">"If you walk a little further down the ridge, you'll find where Shunyata Baba spent his later years."</p>
+        <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.7">His samadhi sits quietly — no fanfare, no crowds. Just a place people visit and sit with, without knowing why. Krishnamurthy Ji walked these same paths. The ridge remembers.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px;border-radius:12px;border:1px solid var(--border)">
+        <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--text);line-height:1.6;margin-bottom:16px">"The temple grew from a small shrine to what stands today."</p>
+        <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.7">What began as a small shrine gradually grew over decades. The Kasar Devi temple became a landmark — visible from across the ridge. A sketch from the 1930s shows how it once stood alone against the mountain.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px;border-radius:12px;border:1px solid var(--border)">
+        <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--text);line-height:1.6;margin-bottom:16px">"7+ years of travellers finding home."</p>
+        <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.7">Stars & Pines has been a mountain house where the ridge sets the rhythm and the stars keep time. Writers finish their books here. Seekers find their way. Some just show up and stay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PROPERTY JOURNEY ═══ -->
+<section class="section section-dark" id="property-journey">
+  <div class="container">
+    <div class="section-header">
+      <h2>Walk Through the Property</h2>
+      <div class="subtitle" style="color:var(--text-light-muted)">Before you understand the rooms, understand the experience of being here.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="text-align:center;padding:32px 20px">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+          <path d="M24 4L4 44h40L24 4z" stroke="var(--gold)" stroke-width="1.5" fill="none"/>
+          <path d="M24 16L14 44h20L24 16z" stroke="var(--gold)" stroke-width="1" fill="none" opacity="0.5"/>
+        </svg>
+        <h4 style="color:var(--text-light);font-size:1rem;margin-bottom:8px">The Sunrise Corner</h4>
+        <p style="font-size:0.82rem;color:var(--text-light-soft);line-height:1.6">The balcony faces east. First light hits the Nanda Devi range before it reaches the valley. Guests who wake early claim this spot.</p>
+      </div>
+      <div style="text-align:center;padding:32px 20px">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+          <circle cx="24" cy="24" r="4" fill="var(--gold)"/>
+          <circle cx="12" cy="14" r="2" fill="var(--gold)" opacity="0.6"/>
+          <circle cx="36" cy="16" r="1.5" fill="var(--gold)" opacity="0.4"/>
+          <circle cx="16" cy="34" r="2" fill="var(--gold)" opacity="0.5"/>
+          <circle cx="34" cy="36" r="1.5" fill="var(--gold)" opacity="0.3"/>
+          <circle cx="24" cy="8" r="1.5" fill="var(--gold)" opacity="0.4"/>
+        </svg>
+        <h4 style="color:var(--text-light);font-size:1rem;margin-bottom:8px">The Stargazing Deck</h4>
+        <p style="font-size:0.82rem;color:var(--text-light-soft);line-height:1.6">Walk past the last light. Look up. 60–70% of the Himalayan range visible on a clear night. The Milky Way doesn't ask for permission.</p>
+      </div>
+      <div style="text-align:center;padding:32px 20px">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+          <path d="M8 40c0-10 5-20 16-24 11 4 16 14 16 24" stroke="var(--gold)" stroke-width="1.5" fill="none"/>
+          <circle cx="24" cy="20" r="5" stroke="var(--gold)" stroke-width="1" fill="none"/>
+        </svg>
+        <h4 style="color:var(--text-light);font-size:1rem;margin-bottom:8px">The Reading Spots</h4>
+        <p style="font-size:0.82rem;color:var(--text-light-soft);line-height:1.6">Every corner has a chair. Every chair has a view. Writers finish their books here. Not because of the wifi — because of the silence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PROPERTY ═══ -->
+<section class="section" id="rooms">
+  <div class="container">
+    <div class="section-header">
+      <h2>The Property</h2>
+      <div class="subtitle">From a warm dorm bed to a room of your own. The mountain adjusts to how you like to stay.</div>
+    </div>
+    <div class="rooms-grid">
+
+      <div class="room-card">
+        <div class="img">
+          <div class="placeholder">Dorm</div>
+        </div>
+        <div class="body">
+          <div class="tag">Shared</div>
+          <h3>Five-Bed Dorm</h3>
+          <p>A warm bed, good company, mountain air. Single bed in a shared five-bed dorm. The kind of place where strangers become friends by morning.</p>
+          <div class="price">₹600 <small>per bed / night</small></div>
+          <div style="margin-top:4px;font-size:0.82rem;color:var(--text-soft)">₹700 for privacy configuration</div>
+          <div class="amenities">
+            <span>Heating blanket</span>
+            <span>Reading light</span>
+            <span>Locker</span>
+            <span>Shared bathroom</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="img">
+          <div class="placeholder">Turquoise</div>
+        </div>
+        <div class="body">
+          <div class="tag">Private Room</div>
+          <h3>Turquoise Room</h3>
+          <p>A calm room with a king bed, outdoor seating, and mountain light. Step onto the balcony and the ridge is right there. Two kings, one on the floor — space for everyone.</p>
+          <div class="price">₹2,500 <small>per night</small></div>
+          <div style="margin-top:4px;font-size:0.82rem;color:var(--text-soft)">₹2,700 with breakfast<br/><small style="color:var(--text-muted)">Paratha / Poha / Bread Omlette + Chai</small></div>
+          <div class="amenities">
+            <span>King bed</span>
+            <span>Heating blanket</span>
+            <span>Geyser 24/7</span>
+            <span>Outdoor seating</span>
+            <span>Balcony</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="img">
+          <div class="placeholder">Yellow</div>
+        </div>
+        <div class="body">
+          <div class="tag">Private Room</div>
+          <h3>Yellow Room</h3>
+          <p>Warm yellow tones, same comforts as the Turquoise Room. Two kings, a floor king, balcony — your own corner of the ridge. Morning light hits differently here.</p>
+          <div class="price">₹2,500 <small>per night</small></div>
+          <div style="margin-top:4px;font-size:0.82rem;color:var(--text-soft)">₹2,700 with breakfast</div>
+          <div class="amenities">
+            <span>King bed</span>
+            <span>Heating blanket</span>
+            <span>Geyser 24/7</span>
+            <span>Outdoor seating</span>
+            <span>Balcony</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card" style="grid-column:span 3;max-width:400px;margin:0 auto">
+        <div class="img">
+          <div class="placeholder">Suite</div>
+        </div>
+        <div class="body">
+          <div class="tag">Suite</div>
+          <h3>Star Suite</h3>
+          <p>Our finest room. Two king beds plus one on the floor. An expansive balcony with uninterrupted Himalayan views. The suite for those who want the ridge all to themselves.</p>
+          <div class="price">₹5,000 <small>per night</small></div>
+          <div class="amenities">
+            <span>2 king beds</span>
+            <span>Floor king</span>
+            <span>Heating blanket</span>
+            <span>Geyser 24/7</span>
+            <span>Large balcony</span>
+            <span>Outdoor seating</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BREAKFAST TABLE ═══ -->
+<section class="section section-alt" id="breakfast">
+  <div class="container">
+    <div class="section-header">
+      <h2>What We'd Tell You Over Breakfast</h2>
+      <div class="subtitle">This is how we share everything you need to know. Not in a brochure. In conversation.</div>
+    </div>
+    <div class="breakfast-scene">
+      <img src="https://images.unsplash.com/photo-1559304822-5f8f1c7a2e2f?w=800&q=80" alt="Breakfast table" class="table-img" />
+      <div class="bubble bubble-1">
+        <div class="roundtable">
+          <span class="person raman" title="Raman">R</span>
+          <span class="person blob" title="Guest">•</span>
+          <span class="person blob" title="Guest">•</span>
+          <span class="person amrit" title="Amrit">A</span>
+          <span class="person blob" title="Guest">•</span>
+          <span class="person blob" title="Guest">•</span>
+          <span class="person blob" title="Guest">•</span>
+          <span class="person blob" title="Guest">•</span>
+        </div>
+        "Someone always asks about the NASA thing over breakfast. <em>No, NASA didn't prove anything about Kasar Devi.</em> But walk out at night and you'll understand why people thought they did."
+      </div>
+      <div class="bubble bubble-2">
+        "If you want to get to Almora, Tewari bhaiya will take you — <a href='tel:+919412012345' style='color:var(--gold)'>+91 94120 12345</a>. Or there's a <a href='https://himachaltourism.gov.in/helicopter-service/' target='_blank' style='color:var(--gold)'>helicopter service</a> — government-run, book online. Takes twenty minutes what would be two hours by road."
+      </div>
+      <div class="bubble bubble-3">
+        "Breakfast is simple — paratha, poha, bread omlette, chai. But the view from the balcony? That's the real meal. Amrit will tell you the same thing."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AROUND THE RIDGE ═══ -->
+<section class="section section-pine" id="map">
+  <div class="container">
+    <div class="section-header">
+      <h2>Around the Ridge</h2>
+      <div class="subtitle" style="color:var(--text-light-muted)">Everything is within reach. The temple, the village, the mountains. You're at the centre of it.</div>
+    </div>
+    <div class="map-container" id="map-container">
+      <canvas id="map-canvas"></canvas>
+      <div class="map-overlay">
+        <div class="map-center"></div>
+        <div class="map-ring" style="width:160px;height:160px;top:calc(50% - 80px);left:calc(50% - 80px)"></div>
+        <div class="map-ring" style="width:320px;height:320px;top:calc(50% - 160px);left:calc(50% - 160px)"></div>
+        <div class="map-ring" style="width:500px;height:500px;top:calc(50% - 250px);left:calc(50% - 250px)"></div>
+        <div class="map-label" style="top:30%;left:28%">Balta <span class="dist">· 0.1 km</span></div>
+        <div class="map-label" style="top:22%;right:25%">Kasar Devi Temple <span class="dist">· 0.3 km</span></div>
+        <div class="map-label" style="bottom:30%;left:20%">Katarmal <span class="dist">· 1 hr walk</span></div>
+        <div class="map-label" style="bottom:25%;right:20%">Almora <span class="dist">· 1 hr</span></div>
+        <div class="map-label" style="top:15%;left:10%">Nanda Devi Range <span class="dist">· 3 hr radius</span></div>
+        <a class="map-helilink" href="https://himachaltourism.gov.in/helicopter-service/" target="_blank">Helicopter service available (govt. website)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PEOPLE ═══ -->
+<section class="section" id="team">
+  <div class="container">
+    <div class="section-header">
+      <h2>The People</h2>
+      <div class="subtitle">Not staff. Hosts. Each one has a favourite spot on the ridge and a story they'll tell you if you ask.</div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="32" height="32" rx="16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M14 26c0-4 3-8 6-8s6 4 6 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="20" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="name">Ramandeep</div>
+        <div class="role">Raman ji · Fabric & Interior Designer</div>
+        <div class="desc">The hands behind the space. Every textile, every corner, every warm detail carries his touch.</div>
+        <div class="recommendation">"My favourite spot? The balcony at 5am. Before anyone's awake. That's when the house speaks."</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="32" height="32" rx="16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M14 26c0-4 3-8 6-8s6 4 6 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="20" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="name">Mona</div>
+        <div class="role">Caretaker</div>
+        <div class="desc">The heart of the house. If something needs doing, Mona's already done it.</div>
+        <div class="recommendation">"I know every guest's name by the second morning. It's not my memory — it's the ridge. It makes you pay attention."</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="32" height="32" rx="16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M14 26c0-4 3-8 6-8s6 4 6 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="20" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="name">Amrit</div>
+        <div class="role">Kitchen & Cafe</div>
+        <div class="desc">The person behind your plate. Shakshouka, thali, chai — all made with mountain quiet.</div>
+        <div class="recommendation">"The best thing I cook isn't on the menu. It's the chai I make when someone's had a long journey. That one's free."</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="32" height="32" rx="16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M14 26c0-4 3-8 6-8s6 4 6 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="20" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="name">Tewari</div>
+        <div class="role">Cab & Logistics</div>
+        <div class="desc">Need to get here? Tewari bhaiya will make it happen. <a href="tel:+919412012345" style="color:var(--gold);text-decoration:none">+91 94120 12345</a>.</div>
+        <div class="recommendation">"I've driven this road a thousand times. Every season changes it. Monsoon is my favourite — the pines smell different."</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar" style="background:var(--paper);border:2px dashed var(--border)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.3">
+            <rect x="3" y="3" width="18" height="18" rx="9" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="name">Harsh</div>
+        <div class="role">Operations</div>
+        <div class="desc" style="color:var(--text-muted)"><em>Image loading...</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RHYTHM ═══ -->
+<section class="rhythm-section" id="rhythm">
+  <canvas id="rhythm-canvas"></canvas>
+  <div class="rhythm-overlay"></div>
+  <div class="rhythm-content container">
+    <h2>The ridge sets the rhythm.<br />Stars set the rhythm.</h2>
+    <p>A day here moves at its own pace. Wake with the sun over Nanda Devi. Walk, read, write, sit. Watch the stars arrive. You'll notice your own rhythm changing.</p>
+  </div>
+</section>
+
+<!-- ═══ HONEST ACCOUNTS ═══ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2>What People Remember</h2>
+      <div class="subtitle">Not reviews. Just the things guests keep telling us — and the things they come back for.</div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Came for three days, stayed two weeks. The ridge has a way of changing your plans."</blockquote>
+        <div class="author">— Aditi, Bangalore</div>
+        <div class="source">April 2026</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The stars here are ridiculous. Like someone turned up the brightness on the universe."</blockquote>
+        <div class="author">— Tom, London</div>
+        <div class="source">March 2026</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I finished my novel in the Turquoise Room. The view from the balcony helped."</blockquote>
+        <div class="author">— Mira, Mumbai</div>
+        <div class="source">February 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta">
+  <div class="container">
+    <h2>When you're ready to find out<br />what's here.</h2>
+    <p>Write to us. We'll save you a bed, a room, or just a spot by the firepit. The ridge will do the rest.</p>
+    <a href="https://wa.me/917982523582" class="cta-btn">Come Along</a>
+    <div style="margin-top:16px;font-size:0.78rem;color:var(--text-muted)">Or email <a href="mailto:stay@starsandpines.in" style="color:var(--gold);text-decoration:none">stay@starsandpines.in</a> · Call +91 79825 23582</div>
+  </div>
+</section>
+
+<!-- ═══ CONTRAST STRIPE ═══ -->
+<div class="contrast-stripe">
+  <div class="container">
+    <div class="links">
+      <a href="https://wa.me/917982523582"><span class="icon">💬</span> WhatsApp</a>
+      <a href="https://www.instagram.com/starsandpiness" target="_blank"><span class="icon">📸</span> Instagram</a>
+      <a href="/portal"><span class="icon">🔑</span> Guest Portal</a>
+      <a href="mailto:stay@starsandpines.in"><span class="icon">✉</span> Email</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+// ─── NAV SCROLL ───
+const nav = document.getElementById('nav');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// ─── HERO STARS CANVAS ───
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, stars = [];
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+    stars = Array.from({ length: 80 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.5 + 0.5,
+      speed: Math.random() * 0.02 + 0.005,
+      phase: Math.random() * Math.PI * 2
+    }));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    stars.forEach(s => {
+      const alpha = 0.3 + 0.7 * Math.abs(Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(214,178,110,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ─── TEMPLE TIMELINE ANIMATION ───
+function animateTemple() {
+  const img = document.getElementById('temple-sketch');
+  if (!img) return;
+  const frames = [
+    'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27180%27 viewBox=%270 0 300 180%27%3E%3Crect width=%27300%27 height=%27180%27 fill=%27%232D4530%27/%3E%3Ctext x=%27150%27 y=%2795%27 text-anchor=%27middle%27 fill=%27%23d4b880%27 font-size=%2710%27 font-family=%27serif%27%3ESmall shrine%3C/text%3E%3C/svg%3E',
+    'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27180%27 viewBox=%270 0 300 180%27%3E%3Crect width=%27300%27 height=%27180%27 fill=%27%232D4530%27/%3E%3Ctext x=%27150%27 y=%2795%27 text-anchor=%27middle%27 fill=%27%23d4b880%27 font-size=%2714%27 font-family=%27serif%27%3ETemple growing%3C/text%3E%3C/svg%3E',
+    'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27180%27 viewBox=%270 0 300 180%27%3E%3Crect width=%27300%27 height=%27180%27 fill=%27%232D4530%27/%3E%3Ctext x=%27150%27 y=%2795%27 text-anchor=%27middle%27 fill=%27%23d4b880%27 font-size=%2718%27 font-family=%27serif%27%3EKasar Devi Temple%3C/text%3E%3C/svg%3E'
+  ];
+  let i = 0;
+  const interval = setInterval(() => {
+    img.src = frames[i];
+    i++;
+    if (i >= frames.length) clearInterval(interval);
+  }, 600);
+}
+
+// ─── MAP CANVAS ───
+(function() {
+  const canvas = document.getElementById('map-canvas');
+  const container = document.getElementById('map-container');
+  if (!canvas || !container) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, t = 0;
+
+  function resize() {
+    w = canvas.width = container.offsetWidth;
+    h = canvas.height = Math.max(400, w * 0.55);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    t += 0.008;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+
+    // gradient bg
+    const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, w * 0.5);
+    grad.addColorStop(0, '#2a3f28');
+    grad.addColorStop(0.5, '#1D2C1B');
+    grad.addColorStop(1, '#0f1610');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    // animated rings (1hr, 3hr radius)
+    for (let i = 0; i < 3; i++) {
+      const r = 50 + i * 60 + Math.sin(t + i) * 10;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(212,184,128,${0.15 - i * 0.04})`;
+      ctx.setLineDash([4, 8]);
+      ctx.stroke();
+    }
+
+    // ridge line with animation
+    ctx.beginPath();
+    ctx.moveTo(0, h * 0.6);
+    for (let x = 0; x < w; x += 2) {
+      const y = h * 0.6 + Math.sin(x * 0.008 + t * 0.5) * 20 + Math.sin(x * 0.02 + t) * 8;
+      ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(214,178,110,0.15)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // ridge fill
+    ctx.beginPath();
+    ctx.moveTo(0, h * 0.6);
+    for (let x = 0; x < w; x += 2) {
+      const y = h * 0.6 + Math.sin(x * 0.008 + t * 0.5) * 20 + Math.sin(x * 0.02 + t) * 8;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(214,178,110,0.05)';
+    ctx.fill();
+
+    // center dot with pulse
+    const pulse = Math.sin(t * 2) * 0.3 + 0.7;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#D6B26E';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 12 + pulse * 4, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(214,178,110,${0.3 * pulse})`;
+    ctx.stroke();
+
+    // animated dots for nearby places
+    const dots = [
+      { x: 0.28, y: 0.35, label: 'Balta' },
+      { x: 0.72, y: 0.30, label: 'Temple' },
+      { x: 0.25, y: 0.65, label: 'Katarmal' },
+      { x: 0.75, y: 0.70, label: 'Almora' },
+    ];
+    dots.forEach((d, i) => {
+      const dx = w * d.x, dy = h * d.y;
+      const dotPulse = Math.sin(t * 1.5 + i) * 0.5 + 0.5;
+      ctx.beginPath();
+      ctx.arc(dx, dy, 2 + dotPulse * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,193,183,${0.3 + dotPulse * 0.4})`;
+      ctx.fill();
+      // animated connection lines
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(dx, dy);
+      ctx.strokeStyle = `rgba(212,184,128,${0.05 + dotPulse * 0.08})`;
+      ctx.setLineDash([2, 4]);
+      ctx.stroke();
+    });
+
+    // floating particles
+    for (let i = 0; i < 15; i++) {
+      const px = (Math.sin(i * 73.1 + t * 0.3) * 0.5 + 0.5) * w;
+      const py = (Math.cos(i * 91.3 + t * 0.2) * 0.5 + 0.5) * h;
+      const alpha = Math.sin(t + i) * 0.3 + 0.3;
+      ctx.beginPath();
+      ctx.arc(px, py, 1, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(214,178,110,${alpha})`;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── RHYTHM DAY ANIMATION ───
+(function() {
+  const canvas = document.getElementById('rhythm-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, t = 0;
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    t += 0.003;
+    ctx.clearRect(0, 0, w, h);
+
+    // sky gradient that shifts through day phases
+    const phase = (Math.sin(t * 0.5) + 1) / 2; // 0-1 cycle
+    const r1 = Math.round(11 + phase * 40);
+    const g1 = Math.round(13 + phase * 30);
+    const b1 = Math.round(11 + phase * 20);
+    const r2 = Math.round(29 + phase * 60);
+    const g2 = Math.round(44 + phase * 50);
+    const b2 = Math.round(27 + phase * 30);
+
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, `rgb(${r1},${g1},${b1})`);
+    grad.addColorStop(1, `rgb(${r2},${g2},${b2})`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    // mountain silhouette
+    ctx.beginPath();
+    ctx.moveTo(0, h * 0.7);
+    for (let x = 0; x < w; x += 3) {
+      const y = h * 0.7 + Math.sin(x * 0.005 + 1) * 30 + Math.sin(x * 0.015) * 15 + Math.sin(x * 0.003 + t * 0.2) * 10;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(29,44,27,${0.6 + phase * 0.3})`;
+    ctx.fill();
+
+    // stars that fade in/out
+    const starAlpha = 1 - phase;
+    if (starAlpha > 0.1) {
+      for (let i = 0; i < 40; i++) {
+        const sx = (Math.sin(i * 127.1 + 311.7) * 0.5 + 0.5) * w;
+        const sy = (Math.sin(i * 269.5 + 183.3) * 0.5 + 0.5) * h * 0.5;
+        const twinkle = Math.sin(t * 2 + i) * 0.5 + 0.5;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 1 + twinkle, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(214,178,110,${starAlpha * twinkle * 0.8})`;
+        ctx.fill();
+      }
+    }
+
+    // sun/moon
+    const celestialY = h * 0.3 + Math.sin(t * 0.5) * h * 0.15;
+    const celestialX = w * 0.7 + Math.cos(t * 0.3) * w * 0.1;
+    ctx.beginPath();
+    ctx.arc(celestialX, celestialY, 20, 0, Math.PI * 2);
+    ctx.fillStyle = phase > 0.5 ? `rgba(214,178,110,${phase})` : `rgba(200,193,183,${1 - phase})`;
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.room-card, .timeline-item, .reason-item, .review-card, .team-card, .explore-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// ─── TRACKING ───
+const _depthFired = new Set();
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      [25, 50, 75, 100].forEach(m => {
+        if (pct >= m && !_depthFired.has(m)) _depthFired.add(m);
+      });
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
+}, { passive: true });
+
+console.log('Stars & Pines — Crank\'s Ridge. ✦');
+</script>
+</body>
+</html>

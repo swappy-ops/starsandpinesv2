@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Stars & Pines — Staff App
+Comment=Staff operations and order management
+Exec=firefox --class "StaffApp" --new-window "http://localhost/staff"
+Icon=starsandpines-staff
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=StaffApp

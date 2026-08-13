@@ -1,0 +1,38 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]: Stars & Pines
+    - generic [ref=f1e5]: Guest Entry · Staff
+  - paragraph [ref=f1e6]: Create a guest entry QR. Share it at check-in or send via WhatsApp.
+  - generic [ref=f1e7]:
+    - generic [ref=f1e8]:
+      - generic [ref=f1e9]: Booking ID (auto)
+      - textbox "Booking ID (auto)" [ref=f1e10]: "2"
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: Guest Name
+        - textbox "Guest Name" [ref=f1e14]:
+          - /placeholder: Priya K.
+          - text: Playwright Test Guest
+      - generic [ref=f1e15]:
+        - generic [ref=f1e16]: Room
+        - combobox "Room" [ref=f1e17]:
+          - option "— select —"
+          - option "Dorm 1"
+          - option "Dorm 2"
+          - option "Ridge Room"
+          - option "Star Suite"
+          - option "Turquoise Room" [selected]
+          - option "Yellow Room"
+    - generic [ref=f1e18]:
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Check-in
+        - textbox "Check-in" [ref=f1e21]
+      - generic [ref=f1e22]:
+        - generic [ref=f1e23]: Check-out
+        - textbox "Check-out" [ref=f1e24]
+    - generic [ref=f1e25]:
+      - generic [ref=f1e26]: Phone
+      - textbox "Phone" [active] [ref=f1e27]:
+        - /placeholder: +91 98765 43210
+        - text: "+919999999999"
+    - button "Generate QR Code" [ref=f1e28] [cursor=pointer]

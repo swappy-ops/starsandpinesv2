@@ -1,0 +1,14 @@
+- generic [ref=e2]:
+  - generic [ref=e6]: Stars & Pines
+  - generic [ref=e7]: Family Dashboard — Staff Access
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: Staff ID
+      - textbox "Staff ID" [ref=e11]:
+        - /placeholder: S02
+    - generic [ref=e12]:
+      - generic [ref=e13]: PIN
+      - textbox "PIN" [ref=e14]:
+        - /placeholder: ••••
+    - button "Enter Dashboard" [ref=e15] [cursor=pointer]
+  - generic [ref=e16]: Stars & Pines · Kasar Devi · Almora

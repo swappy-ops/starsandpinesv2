@@ -1,0 +1,12 @@
+[Unit]
+Description=Stars & Pines Daily Backup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/starsandpines-backup.sh
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
