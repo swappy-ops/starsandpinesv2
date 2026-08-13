@@ -1,0 +1,14 @@
+- generic [ref=e2]:
+  - generic [ref=e3]: Stars & Pines
+  - generic [ref=e4]: Family Dashboard
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: Staff ID
+      - textbox "Staff ID" [ref=e8]:
+        - /placeholder: S02
+    - generic [ref=e9]:
+      - generic [ref=e10]: PIN
+      - textbox "PIN" [ref=e11]:
+        - /placeholder: ""
+    - button "Enter" [ref=e12] [cursor=pointer]
+  - generic [ref=e13]: Kasar Devi, Almora

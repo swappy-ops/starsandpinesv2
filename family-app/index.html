@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#f8f8f6" />
-  <title>Stars & Pines — Family Dashboard</title>
+  <title>Stars & Pines — Family</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,8 +27,6 @@
       --sp-warm:       #c4a55a;
       --sp-alert:      #b05050;
       --sp-green:      #4a8a62;
-      --sp-night:      #131a12;
-      --sp-forest:     #253422;
       --sp-font-display: 'Playfair Display', Georgia, serif;
       --sp-font-body:    'EB Garamond', Georgia, serif;
       --sp-font-ui:      'DM Sans', system-ui, sans-serif;
@@ -39,450 +37,519 @@
       --space-md:  16px;
       --space-lg:  24px;
       --space-xl:  32px;
+      --space-2xl: 48px;
       --radius-none: 0px;
       --radius-sm:   2px;
-      --radius-md:   4px;
-      --duration-fast: 150ms;
-      --duration-mid:  200ms;
-      --ease-in-out:   cubic-bezier(0.645, 0.045, 0.355, 1);
+      --col-gap: 20px;
+      --page-max: 1200px;
+      --content-max: 720px;
     }
 
-    html, body {
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-font-smoothing: antialiased;
-    }
-
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
     body {
-      background: #f8f8f6;
+      background: var(--sp-paper);
       color: var(--sp-ink);
       font-family: var(--sp-font-ui);
       font-weight: 400;
       line-height: 1.5;
+      min-height: 100vh;
     }
 
+    /* ─── GRID ─── */
+    .page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--space-md); }
+    @media (min-width: 768px) { .page { padding: 0 var(--space-lg); } }
+    @media (min-width: 1024px) { .page { padding: 0 var(--space-xl); } }
+
     /* ─── HEADER ─── */
-    .dash-header {
-      padding: 16px 20px;
-      background: white;
-      border-bottom: 1px solid rgba(122,98,72,0.12);
+    .app-header {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--sp-border-soft);
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
     }
-    .dash-header h1 {
+    .app-header h1 {
       font-family: var(--sp-font-display);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-weight: 400;
       color: var(--sp-pine);
+      letter-spacing: -0.02em;
     }
-    .dash-header .sub {
-      font-size: 0.6rem;
+    .app-header .meta {
+      font-size: 0.65rem;
       color: var(--sp-muted);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-    .refresh-btn {
+    .header-actions { display: flex; gap: var(--space-xs); align-items: center; }
+    .btn-ghost {
       background: none;
-      border: 1px solid rgba(122,98,72,0.18);
+      border: 1px solid var(--sp-border);
       color: var(--sp-muted);
-      padding: 6px 12px;
-      border-radius: var(--radius-none);
+      padding: var(--space-xs) var(--space-sm);
       font-size: 0.6rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       cursor: pointer;
       font-family: var(--sp-font-ui);
+      transition: border-color var(--duration-fast);
     }
-    .refresh-btn:hover { border-color: var(--sp-warm); }
+    .btn-ghost:hover { border-color: var(--sp-warm); color: var(--sp-pine); }
+    .btn-ghost.danger { border-color: rgba(176,80,80,0.2); color: var(--sp-alert); }
 
-    /* ─── TAB BAR ─── */
-    .tab-bar {
+    /* ─── NAVIGATION (wayfinding) ─── */
+    .app-nav {
       display: flex;
-      background: white;
-      border-bottom: 1px solid rgba(122,98,72,0.12);
+      border-bottom: 1px solid var(--sp-border-soft);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .tab-bar::-webkit-scrollbar { display: none; }
-    .tab-btn {
-      padding: 12px 16px;
+    .app-nav::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      flex: 0 0 auto;
+      padding: var(--space-sm) var(--space-md);
       background: none;
       border: none;
       border-bottom: 2px solid transparent;
       cursor: pointer;
-      font-size: 0.58rem;
+      font-size: 0.6rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--sp-muted);
-      transition: all 0.2s;
-      white-space: nowrap;
       font-family: var(--sp-font-ui);
+      font-weight: 400;
+      transition: color var(--duration-fast);
+      white-space: nowrap;
     }
-    .tab-btn.active { border-bottom-color: var(--sp-warm); color: var(--sp-pine); font-weight: 500; }
-
-    .tab-content { display: none; padding: 16px; }
-    .tab-content.active { display: block; }
-
-    /* ─── STAT CARDS ─── */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .stat-card {
-      background: white;
-      border: 1px solid rgba(122,98,72,0.12);
-      border-radius: var(--radius-none);
-      padding: 14px;
-      text-align: center;
-    }
-    .stat-value {
-      font-family: var(--sp-font-display);
-      font-size: 1.6rem;
-      color: var(--sp-pine);
-    }
-    .stat-label {
+    .nav-btn .num {
+      color: var(--sp-faint);
+      margin-right: var(--space-xs);
+      font-family: var(--sp-font-mono);
       font-size: 0.55rem;
+    }
+    .nav-btn.active { border-bottom-color: var(--sp-pine); color: var(--sp-ink); font-weight: 500; }
+    .nav-btn.active .num { color: var(--sp-pine); }
+    .nav-btn:hover { color: var(--sp-body); }
+
+    /* ─── PANELS ─── */
+    .panel { display: none; padding: var(--space-lg) 0; }
+    .panel.active { display: block; }
+
+    /* ─── TYPOGRAPHY ─── */
+    .display {
+      font-family: var(--sp-font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--sp-ink);
+    }
+    .section-title {
+      font-family: var(--sp-font-ui);
+      font-size: 0.6rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--sp-muted);
-      margin-top: 4px;
+      padding-bottom: var(--space-xs);
+      margin-bottom: var(--space-md);
+      border-bottom: 1px solid var(--sp-border-soft);
     }
-    .stat-card.warning .stat-value { color: var(--sp-alert); }
-    .stat-card.success .stat-value { color: var(--sp-green); }
-    .stat-card.danger .stat-value { color: var(--sp-alert); }
+    .section-title .num {
+      font-family: var(--sp-font-mono);
+      color: var(--sp-faint);
+      margin-right: var(--space-xs);
+    }
+    .label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sp-muted);
+    }
+    .mono { font-family: var(--sp-font-mono); font-size: 0.8rem; letter-spacing: 0.04em; }
+    .mono-lg { font-size: 1.4rem; letter-spacing: 0.08em; }
 
-    /* ─── CARDS ─── */
-    .card {
-      background: white;
-      border: 1px solid rgba(122,98,72,0.12);
-      border-radius: var(--radius-none);
-      padding: 16px;
-      margin-bottom: 12px;
+    /* ─── PROPERTY OVERVIEW (replaces stat cards) ─── */
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--sp-border-soft);
+      border: 1px solid var(--sp-border-soft);
+      margin-bottom: var(--space-lg);
     }
-    .card-title {
+    @media (min-width: 600px) { .overview { grid-template-columns: repeat(4, 1fr); } }
+    .overview-cell {
+      background: white;
+      padding: var(--space-md);
+    }
+    .overview-value {
       font-family: var(--sp-font-display);
-      font-size: 0.95rem;
-      color: var(--sp-pine);
-      margin-bottom: 10px;
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--sp-ink);
     }
-    .card-subtitle { font-size: 0.65rem; color: var(--sp-muted); }
+    .overview-value.warn { color: var(--sp-alert); }
+    .overview-value.ok { color: var(--sp-green); }
+    .overview-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sp-muted);
+      margin-top: var(--space-xs);
+    }
 
-    /* ─── ROOM/BED GRID ─── */
-    .room-grid { display: flex; flex-direction: column; gap: 10px; }
-    .room-card {
-      background: white;
-      border: 1px solid rgba(122,98,72,0.12);
-      border-radius: var(--radius-none);
-      overflow: hidden;
+    /* ─── ROOM TABLE (replaces room cards) ─── */
+    .room-table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .room-header {
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
+    .room-table th {
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sp-muted);
+      font-weight: 500;
+      text-align: left;
+      padding: var(--space-xs) var(--space-sm);
+      border-bottom: 1px solid var(--sp-border-soft);
+      background: var(--sp-cream);
+    }
+    .room-table td {
+      padding: var(--space-sm) var(--space-sm);
+      border-bottom: 1px solid var(--sp-border-soft);
+      font-size: 0.85rem;
+      vertical-align: middle;
+    }
+    .room-table tr:last-child td { border-bottom: none; }
+    .room-table .room-name { font-weight: 500; color: var(--sp-ink); }
+    .room-table .room-type { font-size: 0.65rem; color: var(--sp-muted); }
+    .room-table .guest-name { color: var(--sp-ink); }
+    .room-table .vacant { color: var(--sp-faint); font-style: italic; }
+
+    /* ─── STATUS INDICATORS (geometric, no emoji) ─── */
+    .status {
+      display: inline-flex;
       align-items: center;
-      background: #f8f8f6;
-    }
-    .room-header .name { font-weight: 500; }
-    .room-header .type { font-size: 0.6rem; color: var(--sp-muted); letter-spacing: 0.1em; text-transform: uppercase; }
-    .room-header .badge {
-      font-size: 0.55rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-    }
-    .room-header .badge.occupied { background: rgba(176,80,80,0.12); color: var(--sp-alert); }
-    .room-header .badge.available { background: rgba(74,138,98,0.12); color: var(--sp-green); }
-    .beds-row {
-      padding: 8px 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .bed-chip {
-      padding: 5px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 0.72rem;
-      border: 1px solid rgba(122,98,72,0.12);
-    }
-    .bed-chip.occupied {
-      background: rgba(176,80,80,0.08);
-      border-color: rgba(176,80,80,0.2);
-      color: var(--sp-alert);
-    }
-    .bed-chip.free {
-      background: rgba(74,138,98,0.08);
-      border-color: rgba(74,138,98,0.2);
-      color: var(--sp-green);
-    }
-    .bed-chip .guest { font-size: 0.6rem; color: var(--sp-muted); display: block; }
-
-    /* ─── KITCHEN QUEUE ─── */
-    .order-card {
-      background: white;
-      border: 1px solid rgba(122,98,72,0.12);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      margin-bottom: 8px;
-      transition: all 0.3s;
-    }
-    .order-card.pending {
-      border-left: 3px solid #c45a5a;
-      animation: orderBlinkRed 1.5s ease-in-out infinite;
-    }
-    .order-card.preparing {
-      border-left: 3px solid #d4b880;
-      animation: orderPulseYellow 2s ease-in-out infinite;
-    }
-    .order-card.served { border-left: 3px solid #4a8a62; opacity: 0.6; }
-    .order-card.cancelled { border-left: 3px solid #888; opacity: 0.4; }
-
-    @keyframes orderBlinkRed {
-      0%, 100% { border-left-color: #c45a5a; box-shadow: 0 0 0 rgba(196,90,90,0); }
-      50% { border-left-color: #e06060; box-shadow: 0 0 12px rgba(196,90,90,0.3); }
-    }
-    @keyframes orderPulseYellow {
-      0%, 100% { border-left-color: #d4b880; }
-      50% { border-left-color: #e4c890; }
-    }
-
-    .order-status {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      font-size: 0.55rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .order-status.pending { background: rgba(196,90,90,0.15); color: #c45a5a; font-weight: 600; }
-    .order-status.preparing { background: rgba(212,184,128,0.15); color: #b89a50; font-weight: 600; }
-    .order-status.served { background: rgba(74,138,98,0.15); color: var(--sp-green); }
-    .order-status.cancelled { background: rgba(136,136,136,0.1); color: #888; }
-    .order-actions { display: flex; gap: 6px; margin-top: 8px; }
-    .order-actions button {
-      flex: 1;
-      padding: 8px;
-      border: none;
-      border-radius: var(--radius-sm);
+      gap: var(--space-xs);
       font-size: 0.6rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      font-weight: 500;
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.pending { background: var(--sp-alert); }
+    .status-dot.preparing { background: var(--sp-warm); }
+    .status-dot.served { background: var(--sp-green); }
+    .status-dot.cancelled { background: var(--sp-faint); }
+    .status-dot.occupied { background: var(--sp-alert); }
+    .status-dot.available { background: var(--sp-green); }
+
+    /* ─── KITCHEN QUEUE (dense, scannable) ─── */
+    .kitchen-list { list-style: none; }
+    .kitchen-item {
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--sp-border-soft);
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: var(--space-md);
+      align-items: start;
+    }
+    @media (min-width: 600px) { .kitchen-item { grid-template-columns: 100px 1fr 120px auto; } }
+    .kitchen-item:last-child { border-bottom: none; }
+    .kitchen-time {
+      font-family: var(--sp-font-mono);
+      font-size: 0.7rem;
+      color: var(--sp-muted);
+      padding-top: 2px;
+    }
+    .kitchen-room {
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--sp-ink);
+    }
+    .kitchen-items {
+      font-size: 0.8rem;
+      color: var(--sp-body);
+      line-height: 1.6;
+    }
+    .kitchen-items li { list-style: none; }
+    .kitchen-items .qty {
+      font-family: var(--sp-font-mono);
+      color: var(--sp-muted);
+      margin-right: var(--space-xs);
+    }
+    .kitchen-actions { display: flex; gap: var(--space-xs); align-items: center; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      padding: var(--space-xs) var(--space-sm);
+      border: none;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
       cursor: pointer;
       font-family: var(--sp-font-ui);
+      transition: all var(--duration-fast);
     }
-    .btn-start { background: var(--sp-warm); color: var(--sp-pine); }
+    .btn-start { background: var(--sp-warm); color: var(--sp-pine-deep); }
+    .btn-start:hover { background: var(--sp-pine); color: white; }
     .btn-serve { background: var(--sp-green); color: white; }
-    .btn-cancel { background: rgba(176,80,80,0.12); color: var(--sp-alert); }
+    .btn-serve:hover { background: var(--sp-pine-deep); }
+    .btn-cancel { background: none; border: 1px solid var(--sp-border); color: var(--sp-muted); }
+    .btn-cancel:hover { border-color: var(--sp-alert); color: var(--sp-alert); }
+    .btn-primary { background: var(--sp-pine); color: white; }
+    .btn-primary:hover { background: var(--sp-pine-deep); }
+    .btn-full { width: 100%; padding: var(--space-sm); }
 
-    /* ─── INVENTORY ─── */
-    .inv-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(122,98,72,0.08);
+    /* ─── INVENTORY TABLE ─── */
+    .inv-table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .inv-item:last-child { border-bottom: none; }
-    .inv-item .name { font-weight: 500; }
-    .inv-item .stock { font-size: 0.82rem; }
-    .inv-item .stock.low { color: var(--sp-alert); font-weight: 500; }
-    .inv-item .stock.ok { color: var(--sp-green); }
+    .inv-table th {
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sp-muted);
+      font-weight: 500;
+      text-align: left;
+      padding: var(--space-xs) var(--space-sm);
+      border-bottom: 1px solid var(--sp-border-soft);
+      background: var(--sp-cream);
+    }
+    .inv-table th:last-child { text-align: right; }
+    .inv-table td {
+      padding: var(--space-xs) var(--space-sm);
+      border-bottom: 1px solid var(--sp-border-soft);
+      font-size: 0.82rem;
+    }
+    .inv-table tr:last-child td { border-bottom: none; }
+    .inv-table .stock-low { color: var(--sp-alert); font-weight: 500; }
+    .inv-table .stock-ok { color: var(--sp-green); }
+    .inv-table .actions { text-align: right; white-space: nowrap; }
     .inv-btn {
-      padding: 4px 10px;
-      border: 1px solid rgba(122,98,72,0.18);
-      border-radius: var(--radius-sm);
+      padding: 2px var(--space-xs);
+      border: 1px solid var(--sp-border);
       background: none;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       cursor: pointer;
       color: var(--sp-muted);
       font-family: var(--sp-font-ui);
+      margin-left: var(--space-xs);
     }
     .inv-btn:hover { border-color: var(--sp-warm); color: var(--sp-pine); }
 
-    /* ─── SECTION ─── */
-    .section-label {
-      font-size: 0.55rem;
-      letter-spacing: 0.28em;
+    /* ─── ALERT BANNER ─── */
+    .alert-banner {
+      padding: var(--space-sm) var(--space-md);
+      border-left: 3px solid var(--sp-alert);
+      background: rgba(176,80,80,0.04);
+      margin-bottom: var(--space-lg);
+    }
+    .alert-banner .alert-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
+      color: var(--sp-alert);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+    .alert-banner .alert-item {
+      font-size: 0.8rem;
+      color: var(--sp-body);
+      padding: 2px 0;
+    }
+
+    /* ─── BUSY BAR ─── */
+    .busy-bar {
+      padding: var(--space-sm) var(--space-md);
+      border-left: 3px solid var(--sp-warm);
+      background: rgba(196,165,90,0.04);
+      margin-bottom: var(--space-lg);
+    }
+    .busy-bar .busy-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sp-warm);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+    .busy-bar .busy-items {
+      font-size: 0.8rem;
+      color: var(--sp-body);
+    }
+    .busy-bar .busy-eta {
+      font-family: var(--sp-font-mono);
+      font-size: 0.7rem;
       color: var(--sp-muted);
-      margin-bottom: 12px;
-      margin-top: 20px;
-      display: flex;
+      margin-top: var(--space-xs);
+    }
+
+    /* ─── CHECKOUT ─── */
+    .checkout-list { list-style: none; }
+    .checkout-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-md);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--sp-border-soft);
       align-items: center;
-      gap: 10px;
     }
-    .section-label:first-child { margin-top: 0; }
-    .section-label::before {
-      content: '';
-      width: 16px;
-      height: 1px;
-      background: var(--sp-muted);
-      opacity: 0.3;
-    }
-
-    /* ─── TOAST ─── */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--sp-pine);
-      color: var(--sp-cream);
-      padding: 12px 24px;
-      border-radius: var(--radius-md);
-      font-size: 0.82rem;
-      z-index: 1000;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 8px 32px rgba(19,26,18,0.2);
-    }
-    .toast.visible { transform: translateX(-50%) translateY(0); }
-
-    /* ─── LOADING ─── */
-    .loading { text-align: center; padding: 40px; color: var(--sp-muted); }
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid rgba(122,98,72,0.12);
-      border-top-color: var(--sp-warm);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 12px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .checkout-item:last-child { border-bottom: none; }
+    .checkout-guest { font-weight: 500; }
+    .checkout-meta { font-size: 0.75rem; color: var(--sp-muted); }
 
     /* ─── BILL ─── */
+    .bill {
+      border: 1px solid var(--sp-border);
+      padding: var(--space-lg);
+      margin-top: var(--space-md);
+    }
+    .bill-title {
+      font-family: var(--sp-font-display);
+      font-size: 1.1rem;
+      margin-bottom: var(--space-xs);
+    }
+    .bill-sub { font-size: 0.75rem; color: var(--sp-muted); margin-bottom: var(--space-md); }
     .bill-line {
       display: flex;
       justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(122,98,72,0.08);
-      font-size: 0.88rem;
+      padding: var(--space-xs) 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--sp-border-soft);
     }
     .bill-line:last-child { border-bottom: none; }
-    .bill-line .desc { color: var(--sp-ink); }
-    .bill-line .amount { font-weight: 500; }
-    .bill-line.payment .amount { color: var(--sp-green); }
+    .bill-line.payment .bill-amount { color: var(--sp-green); }
     .bill-total {
       display: flex;
       justify-content: space-between;
-      padding: 14px 0;
-      font-size: 1.1rem;
-      font-weight: 500;
-      border-top: 2px solid var(--sp-pine);
-      margin-top: 8px;
+      padding: var(--space-sm) 0 0;
+      margin-top: var(--space-xs);
+      border-top: 2px solid var(--sp-ink);
+      font-size: 1rem;
+      font-weight: 600;
     }
 
     /* ─── FORMS ─── */
-    .form-group { margin-bottom: 12px; }
+    .form-group { margin-bottom: var(--space-sm); }
     .form-label {
       display: block;
       font-size: 0.6rem;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--sp-muted);
-      margin-bottom: 6px;
+      margin-bottom: var(--space-xs);
     }
     .form-input, .form-select {
       width: 100%;
-      padding: 10px 14px;
-      border: 1px solid rgba(122,98,72,0.18);
-      border-radius: var(--radius-none);
-      font-size: 0.88rem;
+      padding: var(--space-xs) var(--space-sm);
+      border: 1px solid var(--sp-border);
+      font-size: 0.85rem;
       font-family: var(--sp-font-ui);
-      background: #f8f8f6;
+      background: white;
       color: var(--sp-ink);
       outline: none;
     }
     .form-input:focus, .form-select:focus { border-color: var(--sp-warm); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
 
-    .btn {
-      padding: 10px 16px;
-      border: none;
-      border-radius: var(--radius-none);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: var(--sp-font-ui);
-    }
-    .btn-primary { background: var(--sp-pine); color: white; }
-    .btn-primary:hover { background: var(--sp-pine-deep); }
-    .btn-success { background: var(--sp-green); color: white; }
-    .btn-warning { background: var(--sp-alert); color: white; }
-    .btn-danger { background: var(--sp-alert); color: white; }
-    .btn-full { width: 100%; }
-
-    /* ─── AUTH SCREEN ─── */
+    /* ─── AUTH ─── */
     .auth-screen {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 24px;
+      padding: var(--space-xl) var(--space-md);
       text-align: center;
       background: var(--sp-paper);
     }
-    .auth-logo {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 20px;
-    }
     .auth-title {
       font-family: var(--sp-font-display);
-      font-size: 24px;
+      font-size: 1.6rem;
       color: var(--sp-pine);
-      margin-bottom: 8px;
+      margin-bottom: var(--space-xs);
     }
     .auth-sub {
-      font-size: 14px;
+      font-size: 0.85rem;
       color: var(--sp-muted);
-      margin-bottom: 32px;
-      max-width: 280px;
-      line-height: 1.6;
+      margin-bottom: var(--space-xl);
     }
-    .auth-form {
-      width: 100%;
-      max-width: 320px;
-    }
-    .auth-form .form-group {
-      margin-bottom: 16px;
-    }
+    .auth-form { width: 100%; max-width: 280px; }
     .auth-form .pin-input {
       font-family: var(--sp-font-mono);
-      font-size: 28px;
+      font-size: 1.8rem;
       text-align: center;
-      letter-spacing: 8px;
-      padding: 16px;
-      border-radius: var(--radius-none);
+      letter-spacing: 0.5em;
+      padding: var(--space-sm);
     }
     .auth-error {
       color: var(--sp-alert);
-      font-size: 13px;
-      margin-top: 8px;
+      font-size: 0.8rem;
+      margin-top: var(--space-xs);
       display: none;
     }
     .auth-footer {
-      margin-top: 24px;
-      font-size: 12px;
+      margin-top: var(--space-xl);
+      font-size: 0.7rem;
       color: var(--sp-faint);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--sp-pine-deep);
+      color: var(--sp-paper);
+      padding: var(--space-xs) var(--space-md);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.visible { transform: translateX(-50%) translateY(0); }
+
+    /* ─── LOADING ─── */
+    .loading { text-align: center; padding: var(--space-2xl) 0; color: var(--sp-muted); }
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--sp-border-soft);
+      border-top-color: var(--sp-warm);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto var(--space-sm);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── EMPTY ─── */
+    .empty {
+      text-align: center;
+      padding: var(--space-2xl) 0;
+      color: var(--sp-faint);
+      font-size: 0.85rem;
     }
   </style>
 </head>
 <body>
 
-<!-- ─── AUTH SCREEN ─── -->
+<!-- ─── AUTH ─── -->
 <div id="auth-screen" class="auth-screen">
-  <svg class="auth-logo" viewBox="0 0 64 64" fill="none">
-    <circle cx="32" cy="32" r="30" stroke="#2d4030" stroke-width="2"/>
-    <path d="M32 10 L35 22 L48 22 L38 30 L42 42 L32 34 L22 42 L26 30 L16 22 L29 22Z" fill="#2d4030" opacity="0.8"/>
-  </svg>
   <div class="auth-title">Stars & Pines</div>
-  <div class="auth-sub">Family Dashboard — Staff Access</div>
+  <div class="auth-sub">Family Dashboard</div>
   <div class="auth-form">
     <div class="form-group">
       <label class="form-label" for="auth-staff-id">Staff ID</label>
@@ -490,475 +557,109 @@
     </div>
     <div class="form-group">
       <label class="form-label" for="auth-pin">PIN</label>
-      <input class="form-input pin-input" id="auth-pin" type="password" maxlength="4" placeholder="••••" autocomplete="off" />
+      <input class="form-input pin-input" id="auth-pin" type="password" maxlength="4" placeholder="" autocomplete="off" />
     </div>
-    <button class="btn btn-primary btn-full" onclick="staffLogin()">Enter Dashboard</button>
+    <button class="btn btn-primary btn-full" onclick="staffLogin()">Enter</button>
     <div class="auth-error" id="auth-error">Invalid Staff ID or PIN</div>
   </div>
-  <div class="auth-footer">Stars & Pines · Kasar Devi · Almora</div>
+  <div class="auth-footer">Kasar Devi, Almora</div>
 </div>
 
-<!-- ─── DASHBOARD (hidden until authenticated) ─── -->
+<!-- ─── APP ─── -->
 <div id="dashboard-app" style="display:none">
 
-<!-- ─── HEADER ─── -->
-<div class="dash-header">
+<div class="page">
+
+<!-- HEADER -->
+<header class="app-header">
   <div>
     <h1>Stars & Pines</h1>
-    <div class="sub">Family Dashboard · <span id="staff-display-name">Staff</span></div>
+    <div class="meta" id="staff-display-name">Staff</div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <button class="refresh-btn" onclick="refreshAll()">Refresh</button>
-    <button class="refresh-btn" onclick="staffLogout()" style="color:var(--sp-alert);border-color:rgba(176,80,80,0.2)">Logout</button>
+  <div class="header-actions">
+    <button class="btn-ghost" onclick="refreshAll()">Refresh</button>
+    <button class="btn-ghost danger" onclick="staffLogout()">Out</button>
   </div>
-</div>
+</header>
 
-<!-- ─── TAB BAR ─── -->
-<div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('dashboard', this)">Dashboard</button>
-  <button class="tab-btn" onclick="switchTab('kitchen', this)">Kitchen</button>
-  <button class="tab-btn" onclick="switchTab('inventory', this)">Inventory</button>
-  <button class="tab-btn" onclick="switchTab('checkout', this)">Checkout</button>
-</div>
+<!-- NAV -->
+<nav class="app-nav">
+  <button class="nav-btn active" onclick="switchTab('property', this)"><span class="num">01</span>Property</button>
+  <button class="nav-btn" onclick="switchTab('kitchen', this)"><span class="num">02</span>Kitchen</button>
+  <button class="nav-btn" onclick="switchTab('inventory', this)"><span class="num">03</span>Inventory</button>
+  <button class="nav-btn" onclick="switchTab('checkout', this)"><span class="num">04</span>Checkout</button>
+</nav>
 
-<!-- ─── DASHBOARD TAB ─── -->
-<div class="tab-content active" id="panel-dashboard">
-  <div class="stats-row" id="stats-row">
+<!-- 01 PROPERTY -->
+<div class="panel active" id="panel-property">
+  <div id="overview-block">
     <div class="loading"><div class="spinner"></div></div>
   </div>
 
-  <div class="section-label">Room & Bed Grid</div>
-  <div class="room-grid" id="room-grid">
-    <div class="loading"><div class="spinner"></div>Loading rooms...</div>
+  <div class="section-title"><span class="num">01.1</span>Rooms</div>
+  <div id="room-block">
+    <div class="loading"><div class="spinner"></div></div>
   </div>
 
-  <div class="section-label">Active Stays</div>
-  <div id="active-stays">
+  <div class="section-title" style="margin-top:var(--space-lg)"><span class="num">01.2</span>Current Stays</div>
+  <div id="stays-block">
     <div class="loading"><div class="spinner"></div></div>
   </div>
 </div>
 
-<!-- ─── KITCHEN TAB ─── -->
-<div class="tab-content" id="panel-kitchen">
-  <div class="stats-row" id="kitchen-stats">
+<!-- 02 KITCHEN -->
+<div class="panel" id="panel-kitchen">
+  <div id="kitchen-overview"></div>
+  <div id="kitchen-busy-block"></div>
+  <div class="section-title"><span class="num">02.1</span>Orders</div>
+  <div id="kitchen-block">
     <div class="loading"><div class="spinner"></div></div>
   </div>
+</div>
 
-  <div class="section-label">Kitchen Queue</div>
-  <div id="kitchen-busy-bar" style="display:none"></div>
-  <div id="kitchen-queue">
-    <div class="loading"><div class="spinner"></div>Loading orders...</div>
+<!-- 03 INVENTORY -->
+<div class="panel" id="panel-inventory">
+  <div id="inv-alert-block"></div>
+  <div id="inv-block">
+    <div class="loading"><div class="spinner"></div></div>
   </div>
 </div>
 
-<!-- ─── INVENTORY TAB ─── -->
-<div class="tab-content" id="panel-inventory">
-  <div id="inventory-content">
-    <div class="loading"><div class="spinner"></div>Loading inventory...</div>
+<!-- 04 CHECKOUT -->
+<div class="panel" id="panel-checkout">
+  <div class="section-title"><span class="num">04.1</span>Active Stays</div>
+  <div id="checkout-block">
+    <div class="loading"><div class="spinner"></div></div>
   </div>
+  <div id="checkout-bill-block" style="display:none"></div>
 </div>
 
-<!-- ─── CHECKOUT TAB ─── -->
-<div class="tab-content" id="panel-checkout">
-  <div class="section-label">Active Stays</div>
-  <div id="checkout-stays">
-    <div class="loading"><div class="spinner"></div>Loading...</div>
-  </div>
-  <div id="checkout-bill" style="display:none"></div>
-</div>
+</div><!-- .page -->
+</div><!-- #dashboard-app -->
 
-</div><!-- end dashboard-app -->
-
-<!-- ─── TOAST ─── -->
 <div class="toast" id="toast"></div>
 
 <script src="../shared/api.js"></script>
 <script>
-// ─── STATE ───
 let dashboardData = null;
 let refreshInterval = null;
-
-// ─── INIT ───
-// Auth gate controls when refreshAll starts — see staffLogin()
-
-// ─── TABS ───
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  btn.classList.add('active');
-  if (name === 'checkout') loadCheckoutStays();
-}
-
-// ─── REFRESH ALL ───
-async function refreshAll() {
-  try {
-    dashboardData = await API.getDashboard();
-    renderDashboard();
-    renderKitchen();
-    renderInventory();
-  } catch (e) {
-    // Silently fail on refresh
-  }
-}
-
-// ─── DASHBOARD ───
-function renderDashboard() {
-  const d = dashboardData;
-  if (!d) return;
-
-  const occ = d.occupancy?.property || {};
-  const rev = d.revenue || {};
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card">
-      <div class="stat-value">${occ.occupancy_rate || 0}%</div>
-      <div class="stat-label">Occupancy</div>
-    </div>
-    <div class="stat-card success">
-      <div class="stat-value">${occ.occupied_beds || 0}/${occ.total_beds || 0}</div>
-      <div class="stat-label">Beds</div>
-    </div>
-    <div class="stat-card warning">
-      <div class="stat-value">₹${(rev.food_orders?.total || 0).toFixed(0)}</div>
-      <div class="stat-label">Food</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">₹${(rev.payments_received?.total || 0).toFixed(0)}</div>
-      <div class="stat-label">Payments</div>
-    </div>
-    ${d.inventory?.low_stock_count > 0 ? `
-    <div class="stat-card danger">
-      <div class="stat-value">${d.inventory.low_stock_count}</div>
-      <div class="stat-label">Low Stock</div>
-    </div>` : ''}
-  `;
-
-  // Room grid
-  const rooms = d.occupancy?.rooms || [];
-  document.getElementById('room-grid').innerHTML = rooms.map(r => {
-    const bedsHtml = r.beds && r.beds.length > 0
-      ? r.beds.map(b => `
-          <div class="bed-chip ${b.is_occupied ? 'occupied' : 'free'}">
-            ${b.label}
-            ${b.guest_name ? `<span class="guest">${b.guest_name}</span>` : ''}
-          </div>
-        `).join('')
-      : (r.guest ? `<div class="bed-chip occupied">${r.guest.guest_name || 'Guest'}</div>` : '<div class="bed-chip free">Vacant</div>');
-
-    return `
-      <div class="room-card">
-        <div class="room-header">
-          <div>
-            <div class="name">${r.name}</div>
-            <div class="type">${r.type} · ₹${r.base_price}</div>
-          </div>
-          <span class="badge ${r.is_occupied ? 'occupied' : 'available'}">
-            ${r.is_occupied ? `${r.occupied_beds}/${r.total_beds}` : 'Vacant'}
-          </span>
-        </div>
-        <div class="beds-row">${bedsHtml}</div>
-      </div>
-    `;
-  }).join('');
-
-  // Active stays
-  const stays = d.departures || [];
-  document.getElementById('active-stays').innerHTML = stays.length > 0
-    ? stays.map(s => `
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div class="card-title">${s.guest_name}</div>
-              <div class="card-subtitle">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''} · ${s.guest_phone}</div>
-            </div>
-          </div>
-        </div>
-      `).join('')
-    : '<div style="text-align:center;padding:20px;color:var(--sp-muted)">No active stays</div>';
-}
-
-// ─── KITCHEN ───
-function renderKitchen() {
-  const d = dashboardData;
-  if (!d) return;
-
-  const stats = d.kitchen?.stats || {};
-  document.getElementById('kitchen-stats').innerHTML = `
-    <div class="stat-card warning">
-      <div class="stat-value">${stats.pending || 0}</div>
-      <div class="stat-label">Pending</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${stats.preparing || 0}</div>
-      <div class="stat-label">Preparing</div>
-    </div>
-    <div class="stat-card success">
-      <div class="stat-value">${stats.served || 0}</div>
-      <div class="stat-label">Served</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">₹${(stats.total_revenue || 0).toFixed(0)}</div>
-      <div class="stat-label">Revenue</div>
-    </div>
-  `;
-
-  const queue = d.kitchen?.queue || [];
-  const activeOrders = queue.filter(o => o.status === 'pending' || o.status === 'preparing');
-
-  // Persistent busy bar
-  const busyBar = document.getElementById('kitchen-busy-bar');
-  if (activeOrders.length > 0) {
-    const items = [];
-    activeOrders.forEach(o => {
-      (o.items || []).forEach(i => {
-        items.push(`${i.quantity}x ${i.item_name}`);
-      });
-    });
-    busyBar.style.display = 'block';
-    busyBar.innerHTML = `
-      <div class="card" style="border-color:rgba(196,90,90,0.3);background:rgba(196,90,90,0.05);">
-        <div class="card-title" style="color:#c45a5a;">🍳 Kitchen Busy — ${activeOrders.length} order${activeOrders.length > 1 ? 's' : ''}</div>
-        <div style="font-size:0.82rem;color:var(--sp-muted);">${items.join(', ')}</div>
-        <div style="font-size:0.72rem;color:var(--sp-warm);margin-top:4px;">ETA: ~${activeOrders.some(o => o.status === 'pending') ? '30' : '15'} min</div>
-      </div>
-    `;
-  } else {
-    busyBar.style.display = 'none';
-  }
-
-  document.getElementById('kitchen-queue').innerHTML = queue.length > 0
-    ? queue.map(o => {
-        const created = new Date(o.created_at);
-        const elapsed = Math.round((Date.now() - created.getTime()) / 60000);
-        const eta = o.status === 'pending' ? '~30 min' : o.status === 'preparing' ? '~15 min' : '';
-        return `
-        <div class="order-card ${o.status}">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <div>
-              <div style="font-weight:500;">${o.table_label || o.room_name || 'Walk-in'}</div>
-              <div style="font-size:0.65rem;color:var(--sp-muted);">${created.toLocaleTimeString()} · ${elapsed}m ago${eta ? ' · ETA ' + eta : ''}</div>
-            </div>
-            <span class="order-status ${o.status}">${o.status === 'pending' ? '🔴 Placed' : o.status === 'preparing' ? '🟡 Processing' : o.status === 'served' ? '🟢 Done' : o.status}</span>
-          </div>
-          ${o.items.map(i => `
-            <div style="font-size:0.82rem;padding:2px 0;">${i.quantity}x ${i.item_name}${i.notes ? ' (' + i.notes + ')' : ''}</div>
-          `).join('')}
-          <div class="order-actions">
-            ${o.status === 'pending' ? `<button class="btn-start" onclick="updateOrder('${o.id}', 'preparing')">Start</button>` : ''}
-            ${o.status === 'preparing' ? `<button class="btn-serve" onclick="updateOrder('${o.id}', 'served')">Served</button>` : ''}
-            <button class="btn-cancel" onclick="updateOrder('${o.id}', 'cancelled')">Cancel</button>
-          </div>
-        </div>
-      `;
-    }).join('')
-    : '<div style="text-align:center;padding:40px;color:var(--sp-muted)">No pending orders</div>';
-}
-
-async function updateOrder(orderId, status) {
-  try {
-    await API.updateOrderStatus(orderId, status, 'Staff');
-    showToast(`Order ${status}`);
-    refreshAll();
-  } catch (e) {
-    showToast(`Failed: ${e.message}`);
-  }
-}
-
-// ─── INVENTORY ───
-function renderInventory() {
-  const d = dashboardData;
-  if (!d) return;
-
-  const inv = d.inventory || {};
-  let html = '';
-
-  if (inv.low_stock_count > 0) {
-    html += `<div class="card" style="border-color:rgba(176,80,80,0.3);">
-      <div class="card-title" style="color:var(--sp-alert);">⚠ Low Stock (${inv.low_stock_count})</div>
-      ${inv.low_stock.map(i => `
-        <div class="inv-item">
-          <div class="name">${i.name}</div>
-          <div class="stock low">${i.current_stock} / ${i.threshold} ${i.unit}</div>
-        </div>
-      `).join('')}
-    </div>`;
-  }
-
-  for (const [catName, catData] of Object.entries(inv.categories || {})) {
-    html += `<div class="card">
-      <div class="card-title">${catName}</div>
-      ${catData.items.map(i => `
-        <div class="inv-item">
-          <div>
-            <div class="name">${i.name}</div>
-            <div style="font-size:0.65rem;color:var(--sp-muted);">${i.current_stock} ${i.unit} (min: ${i.threshold})</div>
-          </div>
-          <div style="display:flex;gap:4px;">
-            <button class="inv-btn" onclick="restockItem('${i.id}', '${i.name}')">+ Restock</button>
-            <button class="inv-btn" onclick="consumeItem('${i.id}', '${i.name}')">- Use</button>
-          </div>
-        </div>
-      `).join('')}
-    </div>`;
-  }
-
-  document.getElementById('inventory-content').innerHTML = html || '<div style="text-align:center;padding:40px;color:var(--sp-muted)">No inventory data</div>';
-}
-
-async function restockItem(itemId, itemName) {
-  const qty = prompt(`Restock ${itemName} — quantity?`);
-  if (!qty || isNaN(qty)) return;
-  try {
-    await API.restockItem({ item_id: itemId, quantity: parseFloat(qty), logged_by: 'Staff' });
-    showToast(`${itemName} restocked +${qty}`);
-    refreshAll();
-  } catch (e) {
-    showToast(`Failed: ${e.message}`);
-  }
-}
-
-async function consumeItem(itemId, itemName) {
-  const qty = prompt(`Consume ${itemName} — quantity?`);
-  if (!qty || isNaN(qty)) return;
-  try {
-    await API.consumeItem({ item_id: itemId, quantity: parseFloat(qty), logged_by: 'Staff' });
-    showToast(`${itemName} consumed -${qty}`);
-    refreshAll();
-  } catch (e) {
-    showToast(`Failed: ${e.message}`);
-  }
-}
-
-// ─── CHECKOUT ───
-async function loadCheckoutStays() {
-  try {
-    const data = await API.getDepartures();
-    const container = document.getElementById('checkout-stays');
-    if (data.length === 0) {
-      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sp-muted)">No active stays</div>';
-      return;
-    }
-    container.innerHTML = data.map(s => `
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <div class="card-title">${s.guest_name}</div>
-            <div class="card-subtitle">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''} · Since ${new Date(s.check_in).toLocaleDateString()}</div>
-          </div>
-          <button class="btn btn-warning" onclick="showCheckoutBill('${s.id}', '${s.guest_name}')">Checkout</button>
-        </div>
-      </div>
-    `).join('');
-  } catch (e) {
-    document.getElementById('checkout-stays').innerHTML = '<div style="color:var(--sp-alert)">Failed to load stays</div>';
-  }
-}
-
-async function showCheckoutBill(stayId, guestName) {
-  try {
-    const bill = await API.getBill(stayId);
-    const container = document.getElementById('checkout-bill');
-    container.style.display = 'block';
-
-    let lines = bill.entries.map(e => `
-      <div class="bill-line ${e.entry_type === 'payment' ? 'payment' : ''}">
-        <span class="desc">${e.description}</span>
-        <span class="amount">${e.amount >= 0 ? '₹' + e.amount.toFixed(0) : '-₹' + Math.abs(e.amount).toFixed(0)}</span>
-      </div>
-    `).join('');
-
-    container.innerHTML = `
-      <div class="card">
-        <div class="card-title">Bill — ${guestName}</div>
-        <div class="section-label">Ledger</div>
-        ${lines || '<div style="color:var(--sp-muted);font-size:0.82rem">No entries yet</div>'}
-        <div class="bill-total">
-          <span>Balance</span>
-          <span>₹${bill.balance.toFixed(0)}</span>
-        </div>
-        <div class="section-label">Record Payment</div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Amount</label>
-            <input class="form-input" id="pay-amount" type="number" value="${bill.balance}" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Method</label>
-            <select class="form-select" id="pay-method">
-              <option value="cash">Cash</option>
-              <option value="upi">UPI</option>
-              <option value="card">Card</option>
-            </select>
-          </div>
-        </div>
-        <button class="btn btn-success btn-full" onclick="recordPayment('${stayId}')">Record Payment</button>
-        <div style="margin-top:10px">
-          <button class="btn btn-danger btn-full" onclick="confirmCheckout('${stayId}', '${guestName}')">Complete Checkout</button>
-        </div>
-      </div>
-    `;
-  } catch (e) {
-    showToast(`Failed to load bill: ${e.message}`);
-  }
-}
-
-async function recordPayment(stayId) {
-  const amount = parseFloat(document.getElementById('pay-amount').value);
-  const method = document.getElementById('pay-method').value;
-  try {
-    await API.recordPayment({ stay_id: stayId, amount, method, collected_by: 'Staff' });
-    showToast('Payment recorded');
-    showCheckoutBill(stayId, '');
-  } catch (e) {
-    showToast(`Payment failed: ${e.message}`);
-  }
-}
-
-function confirmCheckout(stayId, guestName) {
-  if (!confirm(`Checkout ${guestName}? This will close the stay and deactivate their portal.`)) return;
-  API.checkout(stayId, 'Staff').then(() => {
-    showToast(`${guestName} checked out`);
-    document.getElementById('checkout-bill').style.display = 'none';
-    loadCheckoutStays();
-    refreshAll();
-  }).catch(e => showToast(`Checkout failed: ${e.message}`));
-}
-
-// ─── TOAST ───
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('visible');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('visible'), 3000);
-}
-
-// ─── AUTH ───
 let currentStaff = null;
 
+// ─── AUTH ───
 function staffLogin() {
-  const staffId = document.getElementById('auth-staff-id').value.trim();
+  const sid = document.getElementById('auth-staff-id').value.trim();
   const pin = document.getElementById('auth-pin').value.trim();
-  const errorEl = document.getElementById('auth-error');
-
-  if (!staffId || !pin) {
-    errorEl.textContent = 'Enter Staff ID and PIN';
-    errorEl.style.display = 'block';
-    return;
-  }
-
-  API.staffLogin(staffId, pin).then(function(staff) {
-    currentStaff = staff;
+  const err = document.getElementById('auth-error');
+  if (!sid || !pin) { err.textContent = 'Enter Staff ID and PIN'; err.style.display = 'block'; return; }
+  API.staffLogin(sid, pin).then(function(s) {
+    currentStaff = s;
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('dashboard-app').style.display = 'block';
-    document.getElementById('staff-display-name').textContent = staff.name;
-    errorEl.style.display = 'none';
+    document.getElementById('staff-display-name').textContent = s.name;
+    err.style.display = 'none';
     refreshAll();
     refreshInterval = setInterval(refreshAll, 30000);
-  }).catch(function() {
-    errorEl.textContent = 'Invalid Staff ID or PIN';
-    errorEl.style.display = 'block';
-  });
+  }).catch(function() { err.textContent = 'Invalid Staff ID or PIN'; err.style.display = 'block'; });
 }
 
 function staffLogout() {
@@ -971,17 +672,326 @@ function staffLogout() {
   document.getElementById('auth-error').style.display = 'none';
 }
 
-// Enter key on PIN field
-document.getElementById('auth-pin').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') staffLogin();
-});
+document.getElementById('auth-pin').addEventListener('keydown', function(e) { if (e.key === 'Enter') staffLogin(); });
 
-// Check for existing session
-(function() {
-  // No persistent session for now — require login each time
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('dashboard-app').style.display = 'none';
-})();
+// ─── NAV ───
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'checkout') loadCheckout();
+}
+
+// ─── REFRESH ───
+async function refreshAll() {
+  try {
+    dashboardData = await API.getDashboard();
+    renderProperty();
+    renderKitchen();
+    renderInventory();
+  } catch (e) {}
+}
+
+// ─── 01 PROPERTY ───
+function renderProperty() {
+  const d = dashboardData;
+  if (!d) return;
+  const occ = d.occupancy?.property || {};
+  const rev = d.revenue || {};
+
+  document.getElementById('overview-block').innerHTML = `
+    <div class="overview">
+      <div class="overview-cell">
+        <div class="overview-value">${occ.occupancy_rate || 0}%</div>
+        <div class="overview-label">Occupancy</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value ${occ.occupied_beds > 0 ? 'ok' : ''}">${occ.occupied_beds || 0} / ${occ.total_beds || 0}</div>
+        <div class="overview-label">Beds occupied</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value">₹${(rev.food_orders?.total || 0).toFixed(0)}</div>
+        <div class="overview-label">Food revenue</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value ${d.inventory?.low_stock_count > 0 ? 'warn' : ''}">${d.inventory?.low_stock_count || 0}</div>
+        <div class="overview-label">Low stock</div>
+      </div>
+    </div>
+  `;
+
+  const rooms = d.occupancy?.rooms || [];
+  let roomHtml = '<table class="room-table"><thead><tr><th>Room</th><th>Type</th><th>Status</th><th>Guest</th></tr></thead><tbody>';
+  rooms.forEach(r => {
+    const beds = r.beds && r.beds.length > 0 ? r.beds : (r.guest ? [{label: 'Room', is_occupied: true, guest_name: r.guest.guest_name}] : [{label: 'Room', is_occupied: false}]);
+    const occupied = beds.filter(b => b.is_occupied).length;
+    const total = beds.length;
+    const guestNames = beds.filter(b => b.is_occupied && b.guest_name).map(b => b.guest_name).join(', ');
+    roomHtml += `<tr>
+      <td><span class="room-name">${r.name}</span></td>
+      <td><span class="room-type">${r.type} · ₹${r.base_price}</span></td>
+      <td><span class="status"><span class="status-dot ${occupied > 0 ? 'occupied' : 'available'}"></span>${occupied}/${total}</span></td>
+      <td>${guestNames ? `<span class="guest-name">${guestNames}</span>` : '<span class="vacant">Vacant</span>'}</td>
+    </tr>`;
+  });
+  roomHtml += '</tbody></table>';
+  document.getElementById('room-block').innerHTML = roomHtml;
+
+  const stays = d.departures || [];
+  if (stays.length === 0) {
+    document.getElementById('stays-block').innerHTML = '<div class="empty">No active stays</div>';
+  } else {
+    let stayHtml = '<table class="room-table"><thead><tr><th>Guest</th><th>Room</th><th>Phone</th></tr></thead><tbody>';
+    stays.forEach(s => {
+      stayHtml += `<tr>
+        <td><span class="guest-name">${s.guest_name}</span></td>
+        <td><span class="room-type">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''}</span></td>
+        <td><span class="mono">${s.guest_phone || '—'}</span></td>
+      </tr>`;
+    });
+    stayHtml += '</tbody></table>';
+    document.getElementById('stays-block').innerHTML = stayHtml;
+  }
+}
+
+// ─── 02 KITCHEN ───
+function renderKitchen() {
+  const d = dashboardData;
+  if (!d) return;
+  const stats = d.kitchen?.stats || {};
+  document.getElementById('kitchen-overview').innerHTML = `
+    <div class="overview" style="margin-bottom:var(--space-lg)">
+      <div class="overview-cell">
+        <div class="overview-value warn">${stats.pending || 0}</div>
+        <div class="overview-label">Pending</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value">${stats.preparing || 0}</div>
+        <div class="overview-label">Preparing</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value ok">${stats.served || 0}</div>
+        <div class="overview-label">Served</div>
+      </div>
+      <div class="overview-cell">
+        <div class="overview-value">₹${(stats.total_revenue || 0).toFixed(0)}</div>
+        <div class="overview-label">Revenue</div>
+      </div>
+    </div>
+  `;
+
+  const queue = d.kitchen?.queue || [];
+  const active = queue.filter(o => o.status === 'pending' || o.status === 'preparing');
+
+  if (active.length > 0) {
+    const items = [];
+    active.forEach(o => { (o.items || []).forEach(i => items.push(`${i.quantity}x ${i.item_name}`)); });
+    const eta = active.some(o => o.status === 'pending') ? '~30 min' : '~15 min';
+    document.getElementById('kitchen-busy-block').innerHTML = `
+      <div class="busy-bar">
+        <div class="busy-title">Kitchen busy — ${active.length} order${active.length > 1 ? 's' : ''}</div>
+        <div class="busy-items">${items.join(', ')}</div>
+        <div class="busy-eta">ETA: ${eta}</div>
+      </div>
+    `;
+  } else {
+    document.getElementById('kitchen-busy-block').innerHTML = '';
+  }
+
+  if (queue.length === 0) {
+    document.getElementById('kitchen-block').innerHTML = '<div class="empty">No orders</div>';
+    return;
+  }
+
+  let html = '<ul class="kitchen-list">';
+  queue.forEach(o => {
+    const created = new Date(o.created_at);
+    const elapsed = Math.round((Date.now() - created.getTime()) / 60000);
+    const timeStr = created.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    const statusLabel = o.status === 'pending' ? 'Pending' : o.status === 'preparing' ? 'Preparing' : o.status === 'served' ? 'Complete' : o.status;
+    html += `<li class="kitchen-item">
+      <div class="kitchen-time">${timeStr}<br/>${elapsed}m</div>
+      <div>
+        <div class="kitchen-room">${o.table_label || o.room_name || 'Walk-in'}</div>
+        <ul class="kitchen-items">
+          ${(o.items || []).map(i => `<li><span class="qty">${i.quantity}x</span>${i.item_name}${i.notes ? ' (' + i.notes + ')' : ''}</li>`).join('')}
+        </ul>
+      </div>
+      <div><span class="status"><span class="status-dot ${o.status}"></span>${statusLabel}</span></div>
+      <div class="kitchen-actions">
+        ${o.status === 'pending' ? `<button class="btn btn-start" onclick="updateOrder('${o.id}','preparing')">Start</button>` : ''}
+        ${o.status === 'preparing' ? `<button class="btn btn-serve" onclick="updateOrder('${o.id}','served')">Serve</button>` : ''}
+        ${o.status !== 'served' && o.status !== 'cancelled' ? `<button class="btn btn-cancel" onclick="updateOrder('${o.id}','cancelled')">Void</button>` : ''}
+      </div>
+    </li>`;
+  });
+  html += '</ul>';
+  document.getElementById('kitchen-block').innerHTML = html;
+}
+
+async function updateOrder(id, status) {
+  try {
+    await API.updateOrderStatus(id, status, 'Staff');
+    showToast('Order ' + status);
+    refreshAll();
+  } catch (e) { showToast('Failed: ' + e.message); }
+}
+
+// ─── 03 INVENTORY ───
+function renderInventory() {
+  const d = dashboardData;
+  if (!d) return;
+  const inv = d.inventory || {};
+
+  if (inv.low_stock_count > 0) {
+    let alertHtml = `<div class="alert-banner"><div class="alert-title">Low Stock — ${inv.low_stock_count} item${inv.low_stock_count > 1 ? 's' : ''}</div>`;
+    inv.low_stock.forEach(i => { alertHtml += `<div class="alert-item">${i.name}: ${i.current_stock} / ${i.threshold} ${i.unit}</div>`; });
+    alertHtml += '</div>';
+    document.getElementById('inv-alert-block').innerHTML = alertHtml;
+  } else {
+    document.getElementById('inv-alert-block').innerHTML = '';
+  }
+
+  let html = '';
+  for (const [catName, catData] of Object.entries(inv.categories || {})) {
+    html += `<div class="section-title" style="margin-top:var(--space-lg)">${catName}</div>`;
+    html += '<table class="inv-table"><thead><tr><th>Item</th><th>Stock</th><th class="actions">Actions</th></tr></thead><tbody>';
+    catData.items.forEach(i => {
+      const stockClass = i.current_stock <= i.threshold ? 'stock-low' : 'stock-ok';
+      html += `<tr>
+        <td>${i.name}</td>
+        <td class="${stockClass}">${i.current_stock} ${i.unit} <span style="color:var(--sp-faint)">(min ${i.threshold})</span></td>
+        <td class="actions">
+          <button class="inv-btn" onclick="restockItem('${i.id}','${i.name}')">+ In</button>
+          <button class="inv-btn" onclick="consumeItem('${i.id}','${i.name}')">− Out</button>
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+  }
+  document.getElementById('inv-block').innerHTML = html || '<div class="empty">No inventory data</div>';
+}
+
+async function restockItem(id, name) {
+  const qty = prompt('Restock ' + name + ' — quantity?');
+  if (!qty || isNaN(qty)) return;
+  try {
+    await API.restockItem({ item_id: id, quantity: parseFloat(qty), logged_by: 'Staff' });
+    showToast(name + ' + ' + qty);
+    refreshAll();
+  } catch (e) { showToast('Failed: ' + e.message); }
+}
+
+async function consumeItem(id, name) {
+  const qty = prompt('Consume ' + name + ' — quantity?');
+  if (!qty || isNaN(qty)) return;
+  try {
+    await API.consumeItem({ item_id: id, quantity: parseFloat(qty), logged_by: 'Staff' });
+    showToast(name + ' − ' + qty);
+    refreshAll();
+  } catch (e) { showToast('Failed: ' + e.message); }
+}
+
+// ─── 04 CHECKOUT ───
+async function loadCheckout() {
+  try {
+    const data = await API.getDepartures();
+    if (data.length === 0) {
+      document.getElementById('checkout-block').innerHTML = '<div class="empty">No active stays</div>';
+      return;
+    }
+    let html = '<ul class="checkout-list">';
+    data.forEach(s => {
+      const since = new Date(s.check_in).toLocaleDateString();
+      html += `<li class="checkout-item">
+        <div>
+          <div class="checkout-guest">${s.guest_name}</div>
+          <div class="checkout-meta">${s.room_name}${s.bed_label ? ' · ' + s.bed_label : ''} · Since ${since}</div>
+        </div>
+        <button class="btn btn-primary" onclick="showBill('${s.id}','${s.guest_name}')">Bill</button>
+      </li>`;
+    });
+    html += '</ul>';
+    document.getElementById('checkout-block').innerHTML = html;
+  } catch (e) {
+    document.getElementById('checkout-block').innerHTML = '<div class="empty" style="color:var(--sp-alert)">Failed to load</div>';
+  }
+}
+
+async function showBill(stayId, guestName) {
+  try {
+    const bill = await API.getBill(stayId);
+    const block = document.getElementById('checkout-bill-block');
+    block.style.display = 'block';
+
+    let lines = bill.entries.map(e =>
+      `<div class="bill-line ${e.entry_type === 'payment' ? 'payment' : ''}">
+        <span class="bill-desc">${e.description}</span>
+        <span class="bill-amount">${e.amount >= 0 ? '₹' + e.amount.toFixed(0) : '−₹' + Math.abs(e.amount).toFixed(0)}</span>
+      </div>`
+    ).join('');
+
+    block.innerHTML = `
+      <div class="bill">
+        <div class="bill-title">${guestName}</div>
+        <div class="bill-sub">Ledger</div>
+        ${lines || '<div class="empty">No entries</div>'}
+        <div class="bill-total">
+          <span>Balance</span>
+          <span>₹${bill.balance.toFixed(0)}</span>
+        </div>
+        <div style="margin-top:var(--space-md)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <input class="form-input" id="pay-amount" type="number" value="${bill.balance}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Method</label>
+              <select class="form-select" id="pay-method">
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <option value="card">Card</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="recordPayment('${stayId}')">Record Payment</button>
+          <button class="btn btn-full" style="margin-top:var(--space-xs);background:var(--sp-alert);color:white" onclick="confirmCheckout('${stayId}','${guestName}')">Complete Checkout</button>
+        </div>
+      </div>
+    `;
+  } catch (e) { showToast('Failed: ' + e.message); }
+}
+
+async function recordPayment(stayId) {
+  const amount = parseFloat(document.getElementById('pay-amount').value);
+  const method = document.getElementById('pay-method').value;
+  try {
+    await API.recordPayment({ stay_id: stayId, amount, method, collected_by: 'Staff' });
+    showToast('Payment recorded');
+    showBill(stayId, '');
+  } catch (e) { showToast('Failed: ' + e.message); }
+}
+
+function confirmCheckout(stayId, guestName) {
+  if (!confirm('Checkout ' + guestName + '?')) return;
+  API.checkout(stayId, 'Staff').then(() => {
+    showToast(guestName + ' checked out');
+    document.getElementById('checkout-bill-block').style.display = 'none';
+    loadCheckout();
+    refreshAll();
+  }).catch(e => showToast('Failed: ' + e.message));
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('visible'), 2500);
+}
 </script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Stars & Pines — Guest Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,210 +22,190 @@
   --space-xxs:4px;--space-xs:8px;--space-sm:12px;--space-md:16px;
   --space-lg:24px;--space-xl:32px;--space-2xl:48px;
   --radius-none:0px;--radius-sm:2px;--radius-md:4px;
-  --duration-fast:150ms;--duration-mid:200ms;--duration-slow:300ms;
-  --ease-out:cubic-bezier(0.215,0.61,0.355,1);
-  --ease-in-out:cubic-bezier(0.645,0.045,0.355,1);
 }
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:var(--sp-font-ui);background:var(--sp-night);color:var(--sp-mist);min-height:100vh;min-height:100dvh;overflow-x:hidden}
-h1,h2,h3{font-family:var(--sp-font-display);font-weight:600}
-.serif{font-family:var(--sp-font-body)}
-button{font-family:inherit;cursor:pointer;border:none;outline:none}
-input,select,textarea{font-family:inherit;font-size:16px;background:var(--sp-forest);color:var(--sp-mist);border:1px solid rgba(196,165,90,0.2);border-radius:var(--radius-none);padding:12px 16px;width:100%;outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--sp-warm)}
-label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
 
-/* ─── Access Screen ─── */
+/* ─── ACCESS ─── */
 .access-screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
-.access-logo{width:64px;height:64px;margin-bottom:20px}
-.access-title{font-family:var(--sp-font-display);font-size:24px;color:var(--sp-warm);margin-bottom:8px}
-.access-sub{font-size:14px;color:rgba(232,226,216,0.6);margin-bottom:32px;max-width:280px;line-height:1.6}
-.access-form{width:100%;max-width:320px}
-.access-form .form-group{margin-bottom:16px}
-.access-form .code-input{font-family:var(--sp-font-mono);font-size:28px;text-align:center;letter-spacing:8px;text-transform:uppercase;padding:16px;border-radius:var(--radius-none)}
+.access-title{font-family:var(--sp-font-display);font-size:1.6rem;color:var(--sp-warm);margin-bottom:var(--space-xs)}
+.access-sub{font-size:0.85rem;color:rgba(232,226,216,0.6);margin-bottom:var(--space-xl)}
+.access-form{width:100%;max-width:280px}
+.access-form .form-group{margin-bottom:var(--space-md)}
+.access-form .code-input{font-family:var(--sp-font-mono);font-size:1.8rem;text-align:center;letter-spacing:0.5em;padding:var(--space-sm);background:var(--sp-forest);color:var(--sp-mist);border:1px solid rgba(196,165,90,0.2);border-radius:var(--radius-none);width:100%;outline:none}
+.access-form .code-input:focus{border-color:var(--sp-warm)}
+.access-footer{margin-top:var(--space-xl);font-size:0.7rem;color:var(--sp-faint);letter-spacing:0.1em}
 
-/* ─── Portal Screen ─── */
+/* ─── PORTAL ─── */
 .portal-screen{display:none;padding-bottom:80px}
 .portal-screen.active{display:block}
 
-/* ─── Header ─── */
-.portal-header{padding:24px 16px 16px;text-align:center;border-bottom:1px solid rgba(196,165,90,0.2)}
-.portal-greeting{font-family:var(--sp-font-body);font-size:22px;color:var(--sp-warm);font-style:italic;margin-bottom:4px}
-.portal-room{font-size:14px;color:var(--sp-mist)}
-.portal-code{font-family:var(--sp-font-mono);font-size:12px;color:var(--sp-mist);margin-top:4px;opacity:0.6}
+/* ─── HEADER ─── */
+.portal-header{padding:var(--space-lg) var(--space-md) var(--space-md);text-align:center;border-bottom:1px solid rgba(196,165,90,0.15)}
+.portal-greeting{font-family:var(--sp-font-body);font-size:1.3rem;color:var(--sp-warm);font-style:italic;margin-bottom:var(--space-xs)}
+.portal-room{font-size:0.85rem;color:var(--sp-muted)}
+.portal-code{font-family:var(--sp-font-mono);font-size:0.7rem;color:var(--sp-muted);margin-top:var(--space-xs);opacity:0.5;letter-spacing:0.15em}
 
-/* ─── Tab Bar ─── */
-.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--sp-night);border-top:1px solid rgba(196,165,90,0.2);display:flex;overflow-x:auto;padding:6px 0 env(safe-area-inset-bottom,6px);-webkit-overflow-scrolling:touch}
+/* ─── TAB BAR (numbered wayfinding) ─── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--sp-night);border-top:1px solid rgba(196,165,90,0.15);display:flex;overflow-x:auto;padding:6px 0 env(safe-area-inset-bottom,6px);-webkit-overflow-scrolling:touch}
 .tab-bar::-webkit-scrollbar{display:none}
-.tab-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;background:none;color:rgba(232,226,216,0.6);font-size:9px;transition:color 0.2s;white-space:nowrap}
+.tab-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;background:none;color:rgba(232,226,216,0.5);font-size:0.5rem;letter-spacing:0.08em;transition:color 0.2s;white-space:nowrap;text-transform:uppercase;font-family:var(--sp-font-ui);font-weight:400}
+.tab-btn .num{font-family:var(--sp-font-mono);font-size:0.45rem;color:rgba(232,226,216,0.3)}
 .tab-btn.active{color:var(--sp-warm)}
-.tab-btn .tab-icon{font-size:18px}
+.tab-btn.active .num{color:var(--sp-warm)}
 
-/* ─── Tab Content ─── */
-.tab-content{display:none;padding:16px}
+/* ─── TAB CONTENT ─── */
+.tab-content{display:none;padding:var(--space-md)}
 .tab-content.active{display:block}
 
-/* ─── Cards ─── */
-.card{background:var(--sp-forest);border-radius:var(--radius-none);padding:16px;margin-bottom:12px;border:1px solid rgba(196,165,90,0.2)}
-.card-title{font-size:16px;font-weight:600;color:var(--sp-mist);margin-bottom:8px}
-.card-body{font-size:14px;color:var(--sp-mist);line-height:1.5}
-.card-meta{font-size:12px;color:rgba(232,226,216,0.6);margin-top:8px}
-.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+/* ─── SECTION LABELS ─── */
+.section-label{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(196,165,90,0.6);margin:var(--space-lg) 0 var(--space-sm);font-weight:500}
+.section-label:first-child{margin-top:0}
 
-/* ─── Badges ─── */
-.badge{display:inline-block;padding:3px 10px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;text-transform:uppercase}
-.badge-paid,.badge-resolved,.badge-completed{background:rgba(74,138,98,0.2);color:var(--sp-green)}
-.badge-pending,.badge-acknowledged,.badge-preparing{background:rgba(196,165,90,0.2);color:var(--sp-warm)}
-.badge-overdue,.badge-open,.badge-requested{background:rgba(176,80,80,0.2);color:var(--sp-alert)}
-.badge-delivered,.badge-in_progress{background:rgba(74,138,98,0.2);color:var(--sp-green)}
-.badge-dismissed,.badge-cancelled{background:rgba(176,168,152,0.15);color:rgba(232,226,216,0.6)}
+/* ─── LISTS (replaces cards) ─── */
+.list-item{padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.1)}
+.list-item:last-child{border-bottom:none}
+.list-label{font-size:0.85rem;color:var(--sp-mist)}
+.list-value{font-size:0.85rem;color:var(--sp-mist);font-weight:500}
+.list-meta{font-size:0.7rem;color:rgba(232,226,216,0.5);margin-top:2px}
 
-/* ─── Buttons ─── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:var(--radius-none);font-size:14px;font-weight:600;transition:all 0.2s;min-height:44px}
+/* ─── MENU ─── */
+.menu-cat-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sp-warm);font-weight:500;padding-bottom:var(--space-xs);margin-bottom:var(--space-sm);border-bottom:1px solid rgba(196,165,90,0.15)}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.08);cursor:pointer}
+.menu-item:last-child{border-bottom:none}
+.menu-item-name{font-size:0.85rem;font-weight:500;color:var(--sp-mist)}
+.menu-item-desc{font-size:0.7rem;color:rgba(232,226,216,0.5);margin-top:2px}
+.menu-item-time{font-family:var(--sp-font-mono);font-size:0.6rem;color:rgba(232,226,216,0.35);margin-top:2px}
+.menu-item-price{font-family:var(--sp-font-mono);font-size:0.85rem;color:var(--sp-warm);white-space:nowrap}
+.menu-item-qty{display:flex;align-items:center;gap:var(--space-xs)}
+.qty-btn{width:28px;height:28px;border-radius:var(--radius-none);background:var(--sp-forest);color:var(--sp-warm);font-size:1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(196,165,90,0.15);cursor:pointer}
+
+/* ─── CART BAR ─── */
+.cart-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:99;background:var(--sp-warm);color:var(--sp-night);padding:var(--space-sm) var(--space-md);display:none;align-items:center;justify-content:space-between;font-weight:600;font-size:0.8rem}
+.cart-bar.visible{display:flex}
+
+/* ─── REQUESTS ─── */
+.request-item{display:flex;justify-content:space-between;align-items:center;padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.08);cursor:pointer}
+.request-item:last-child{border-bottom:none}
+.request-name{font-size:0.85rem;font-weight:500;color:var(--sp-mist)}
+.request-eta{font-family:var(--sp-font-mono);font-size:0.65rem;color:rgba(232,226,216,0.4);margin-top:2px}
+
+/* ─── BADGES ─── */
+.badge{display:inline-block;padding:2px 8px;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
+.badge-success{color:var(--sp-green)}
+.badge-warning{color:var(--sp-warm)}
+.badge-error{color:var(--sp-alert)}
+.badge-neutral{color:var(--sp-muted)}
+
+/* ─── STATUS ─── */
+.status{display:inline-flex;align-items:center;gap:var(--space-xs);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.pending{background:var(--sp-alert)}
+.status-dot.preparing{background:var(--sp-warm)}
+.status-dot.served{background:var(--sp-green)}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:var(--space-sm) var(--space-md);border-radius:var(--radius-none);font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.2s;min-height:40px;cursor:pointer;font-family:var(--sp-font-ui);border:none}
 .btn-primary{background:var(--sp-warm);color:var(--sp-night)}
 .btn-primary:active{background:#b8944e}
 .btn-secondary{background:transparent;border:1px solid var(--sp-warm);color:var(--sp-warm)}
-.btn-danger{background:var(--sp-alert);color:#fff}
-.btn-sm{padding:8px 14px;font-size:12px;min-height:36px}
 .btn-block{width:100%}
-.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.btn-sm{padding:var(--space-xs) var(--space-sm);font-size:0.55rem;min-height:32px}
 
-/* ─── Running Bill ─── */
-.bill-summary{background:var(--sp-forest);border-radius:var(--radius-none);padding:20px;margin-bottom:16px;border:1px solid rgba(196,165,90,0.2)}
-.bill-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(196,165,90,0.2);font-size:14px}
+/* ─── BILL ─── */
+.bill-summary{padding:var(--space-md);border:1px solid rgba(196,165,90,0.15);margin-bottom:var(--space-md)}
+.bill-line{display:flex;justify-content:space-between;padding:var(--space-xs) 0;border-bottom:1px solid rgba(196,165,90,0.1);font-size:0.85rem}
 .bill-line:last-child{border-bottom:none}
-.bill-label{color:var(--sp-mist)}
-.bill-value{color:var(--sp-mist);font-weight:600}
-.bill-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--sp-warm);font-size:18px;font-weight:700}
+.bill-label{color:var(--sp-muted)}
+.bill-value{color:var(--sp-mist);font-weight:500}
+.bill-total{display:flex;justify-content:space-between;padding:var(--space-sm) 0 0;margin-top:var(--space-xs);border-top:2px solid var(--sp-warm);font-size:1rem;font-weight:600}
 .bill-total .bill-label{color:var(--sp-warm)}
 .bill-total .bill-value{color:var(--sp-warm)}
-.bill-outstanding{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--sp-alert);font-size:20px;font-weight:700}
+.bill-outstanding{display:flex;justify-content:space-between;padding:var(--space-sm) 0 0;margin-top:var(--space-xs);border-top:2px solid var(--sp-alert);font-size:1.1rem;font-weight:600}
 .bill-outstanding .bill-label{color:var(--sp-alert)}
 .bill-outstanding .bill-value{color:var(--sp-alert)}
 
-/* ─── Menu ─── */
-.menu-category{margin-bottom:20px}
-.menu-cat-title{font-size:16px;font-weight:600;color:var(--sp-warm);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(196,165,90,0.2)}
-.menu-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:8px;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
-.menu-item:active{background:rgba(45,64,48,0.5)}
-.menu-item-name{font-size:14px;font-weight:500;color:var(--sp-mist)}
-.menu-item-desc{font-size:12px;color:rgba(232,226,216,0.6);margin-top:2px}
-.menu-item-price{font-size:14px;font-weight:600;color:var(--sp-warm);white-space:nowrap;margin-left:12px}
-.menu-item-qty{display:flex;align-items:center;gap:8px}
-.qty-btn{width:32px;height:32px;border-radius:var(--radius-none);background:var(--sp-forest);color:var(--sp-warm);font-size:18px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(196,165,90,0.2)}
+/* ─── PAYMENT OPTIONS ─── */
+.payment-option{display:flex;align-items:center;gap:var(--space-md);padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.1);cursor:pointer}
+.payment-option:last-child{border-bottom:none}
+.payment-option .po-label{font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sp-muted);font-weight:500}
+.payment-option .po-name{font-size:0.85rem;font-weight:500;color:var(--sp-mist)}
+.payment-option .po-desc{font-size:0.7rem;color:rgba(232,226,216,0.5)}
 
-/* ─── Cart Bar ─── */
-.cart-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:99;background:var(--sp-warm);color:var(--sp-night);border-radius:var(--radius-none);padding:12px 16px;display:none;align-items:center;justify-content:space-between;font-weight:600}
-.cart-bar.visible{display:flex}
+/* ─── NOTIFICATIONS ─── */
+.notif-item{display:flex;gap:var(--space-sm);padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.08)}
+.notif-item:last-child{border-bottom:none}
+.notif-item.unread{border-left:2px solid var(--sp-alert);padding-left:var(--space-sm)}
+.notif-text{font-size:0.85rem;color:var(--sp-mist);flex:1}
+.notif-time{font-family:var(--sp-font-mono);font-size:0.6rem;color:rgba(232,226,216,0.4);white-space:nowrap}
 
-/* ─── Grievance Types ─── */
-.grievance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.grievance-type-btn{padding:16px 12px;background:var(--sp-forest);border-radius:var(--radius-none);text-align:center;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
-.grievance-type-btn.selected{border-color:var(--sp-warm);background:rgba(45,64,48,0.5)}
-.grievance-type-btn .gt-icon{font-size:24px;margin-bottom:4px}
-.grievance-type-btn .gt-name{font-size:12px;color:var(--sp-mist)}
+/* ─── PLACES ─── */
+.place-item{padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.08)}
+.place-item:last-child{border-bottom:none}
+.place-name{font-size:0.9rem;font-weight:500;color:var(--sp-mist);margin-bottom:2px}
+.place-desc{font-size:0.75rem;color:rgba(232,226,216,0.5);margin-bottom:var(--space-xs);line-height:1.4}
+.place-meta{display:flex;gap:var(--space-xs);flex-wrap:wrap}
+.place-tag{font-size:0.55rem;padding:2px 6px;background:rgba(196,165,90,0.1);color:var(--sp-warm);letter-spacing:0.05em}
+.place-tag.taxi{background:rgba(74,138,98,0.1);color:var(--sp-green)}
+.place-tag.bike{background:rgba(176,80,80,0.1);color:var(--sp-alert)}
 
-/* ─── Payment Options ─── */
-.payment-option{display:flex;align-items:center;gap:12px;padding:16px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:8px;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
-.payment-option:active{border-color:var(--sp-warm)}
-.payment-option .po-icon{font-size:24px}
-.payment-option .po-name{font-size:15px;font-weight:600;color:var(--sp-mist)}
-.payment-option .po-desc{font-size:12px;color:rgba(232,226,216,0.6)}
+/* ─── PEROOL ─── */
+.perool-header{text-align:center;padding:var(--space-lg) 0 var(--space-md);border-bottom:1px solid rgba(196,165,90,0.15);margin-bottom:var(--space-md)}
+.perool-brand{font-family:var(--sp-font-display);font-size:1.4rem;color:var(--sp-warm);margin-bottom:var(--space-xs)}
+.perool-tagline{font-size:0.75rem;color:rgba(232,226,216,0.5);font-style:italic}
+.perool-cat-title{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sp-warm);font-weight:500;padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.1);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.perool-items{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xs);padding:var(--space-sm) 0}
+.perool-item{padding:var(--space-sm);border:1px solid rgba(196,165,90,0.1);text-align:center}
+.perool-item-name{font-size:0.75rem;font-weight:500;color:var(--sp-mist)}
+.perool-item-desc{font-size:0.65rem;color:rgba(232,226,216,0.4);margin-top:2px}
+.perool-item-price{font-family:var(--sp-font-mono);font-size:0.7rem;color:var(--sp-warm);margin-top:var(--space-xs)}
+.perool-item-enquiry{font-size:0.6rem;color:rgba(232,226,216,0.3);margin-top:var(--space-xs)}
 
-/* ─── QR Payment ─── */
-.qr-payment{text-align:center;padding:24px}
-.qr-placeholder{width:200px;height:200px;margin:16px auto;background:var(--sp-forest);border-radius:var(--radius-none);display:flex;align-items:center;justify-content:center;border:2px dashed rgba(196,165,90,0.2)}
-.qr-placeholder span{font-size:14px;color:rgba(232,226,216,0.6)}
+/* ─── CONTACTS ─── */
+.contact-item{padding:var(--space-sm) 0;border-bottom:1px solid rgba(196,165,90,0.08)}
+.contact-item:last-child{border-bottom:none}
+.contact-name{font-size:0.9rem;font-weight:500;color:var(--sp-mist)}
+.contact-role{font-size:0.7rem;color:var(--sp-warm);margin-top:2px}
+.contact-links{font-size:0.75rem;color:rgba(232,226,216,0.5);margin-top:var(--space-xs)}
+.contact-links a{color:var(--sp-warm);text-decoration:none}
+.contact-links a:hover{text-decoration:underline}
 
-/* ─── Invoice ─── */
-.invoice{background:var(--sp-cream);color:var(--sp-night);border-radius:var(--radius-none);padding:24px;margin-bottom:16px}
-.invoice h3{font-family:var(--sp-font-display);font-size:20px;color:var(--sp-night);margin-bottom:4px}
-.invoice .inv-sub{font-size:12px;color:#666;margin-bottom:16px}
-.invoice .inv-line{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid #eee}
-.invoice .inv-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--sp-night);font-size:18px;font-weight:700}
+/* ─── GRIEVANCE TYPES ─── */
+.grievance-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xs);margin-bottom:var(--space-md)}
+.grievance-type-btn{padding:var(--space-sm);border:1px solid rgba(196,165,90,0.1);text-align:center;cursor:pointer;transition:all 0.2s}
+.grievance-type-btn.selected{border-color:var(--sp-warm);background:rgba(45,64,48,0.3)}
+.grievance-type-btn .gt-label{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sp-muted);font-weight:500}
 
-/* ─── Section Headers ─── */
-.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--sp-warm);margin:20px 0 12px;font-weight:600}
+/* ─── FORM ─── */
+textarea{width:100%;padding:var(--space-sm);background:var(--sp-forest);color:var(--sp-mist);border:1px solid rgba(196,165,90,0.15);border-radius:var(--radius-none);font-family:var(--sp-font-ui);font-size:0.85rem;outline:none;resize:vertical;min-height:80px}
+textarea:focus{border-color:var(--sp-warm)}
 
-/* ─── Empty State ─── */
-.empty-state{text-align:center;padding:40px 20px;color:rgba(232,226,216,0.6)}
-.empty-state .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
-.empty-state p{font-size:14px}
+/* ─── EMPTY ─── */
+.empty{text-align:center;padding:var(--space-xl) 0;color:rgba(232,226,216,0.4);font-size:0.8rem}
 
-/* ─── Notifications ─── */
-.notif-item{display:flex;gap:12px;padding:12px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:8px;border-left:3px solid var(--sp-warm)}
-.notif-item.unread{border-left-color:var(--sp-alert)}
-.notif-text{font-size:14px;color:var(--sp-mist);flex:1}
-.notif-time{font-size:11px;color:rgba(232,226,216,0.6);white-space:nowrap}
+/* ─── KITCHEN BUSY TOAST ─── */
+.kitchen-busy-toast{position:fixed;top:70px;left:12px;right:12px;z-index:150;background:rgba(176,80,80,0.9);color:var(--sp-mist);padding:var(--space-sm) var(--space-md);font-size:0.75rem;text-align:center;border:1px solid rgba(224,96,96,0.2);animation:fadeIn 0.3s ease}
+.kitchen-busy-toast .eta{font-weight:600;color:var(--sp-warm);margin-top:var(--space-xs);font-family:var(--sp-font-mono);font-size:0.7rem}
 
-/* ─── House Requests / Service Items ─── */
-.request-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:8px;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
-.request-item:active{background:rgba(45,64,48,0.5)}
+/* ─── PERSISTENT ORDER NOTIF ─── */
+.persistent-order-notif{position:fixed;top:120px;left:12px;right:12px;z-index:149;background:var(--sp-forest);color:var(--sp-mist);padding:var(--space-sm) var(--space-md);font-size:0.75rem;border:1px solid rgba(196,165,90,0.15);animation:fadeIn 0.3s ease}
+.persistent-order-notif .order-item{display:flex;justify-content:space-between;align-items:center;padding:var(--space-xs) 0;border-bottom:1px solid rgba(196,165,90,0.08)}
+.persistent-order-notif .order-item:last-child{border-bottom:none}
+.persistent-order-notif .order-item .eta{font-family:var(--sp-font-mono);font-size:0.65rem;font-weight:500}
 
-/* ─── Animations ─── */
-@keyframes spFadeIn{from{opacity:0}to{opacity:1}}
-@keyframes spSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@keyframes spBlinkRed{0%,100%{opacity:1;border-left-color:var(--sp-alert);box-shadow:0 0 8px rgba(176,80,80,0.3)}50%{opacity:0.7;border-left-color:#c06060;box-shadow:0 0 16px rgba(176,80,80,0.6)}}
-@keyframes spPulseYellow{0%,100%{border-left-color:var(--sp-warm)}50%{border-left-color:#d4c090}}
+/* ─── INVOICE ─── */
+.invoice{background:var(--sp-cream);color:var(--sp-night);padding:var(--space-lg);margin-bottom:var(--space-md);border:1px solid var(--sp-border)}
+.invoice h3{font-family:var(--sp-font-display);font-size:1.2rem;color:var(--sp-night);margin-bottom:var(--space-xs)}
+.inv-sub{font-size:0.7rem;color:#666;margin-bottom:var(--space-md)}
+.inv-line{display:flex;justify-content:space-between;padding:var(--space-xs) 0;font-size:0.85rem;border-bottom:1px solid #eee}
+.inv-total{display:flex;justify-content:space-between;padding:var(--space-sm) 0 0;margin-top:var(--space-xs);border-top:2px solid var(--sp-night);font-size:1rem;font-weight:600}
 
-/* ─── Order Status Colours ─── */
-.order-status-placed{border-left:3px solid var(--sp-alert);animation:spBlinkRed 1.5s ease-in-out infinite}
-.order-status-preparing{border-left:3px solid var(--sp-warm);animation:spPulseYellow 2s ease-in-out infinite}
-.order-status-served{border-left:3px solid var(--sp-green)}
-.order-status-cancelled{border-left:3px solid #888;opacity:0.5}
+/* ─── ANIMATIONS ─── */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ─── Kitchen Busy Toast ─── */
-.kitchen-busy-toast{position:fixed;top:70px;left:12px;right:12px;z-index:150;background:rgba(176,80,80,0.95);color:var(--sp-mist);padding:12px 16px;border-radius:var(--radius-none);font-size:13px;text-align:center;border:1px solid rgba(224,96,96,0.3);animation:spFadeIn 0.3s ease}
-.kitchen-busy-toast .eta{font-weight:600;color:var(--sp-warm);margin-top:4px}
-
-/* ─── Persistent Order Notification ─── */
-.persistent-order-notif{position:fixed;top:130px;left:12px;right:12px;z-index:149;background:var(--sp-forest);color:var(--sp-mist);padding:12px 16px;border-radius:var(--radius-none);font-size:13px;border:1px solid rgba(196,165,90,0.2);animation:spFadeIn 0.3s ease}
-.persistent-order-notif .order-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
-.persistent-order-notif .order-item .eta{color:var(--sp-warm);font-weight:600}
-
-/* ─── Places Guide ─── */
-.place-card{display:flex;gap:12px;padding:14px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:10px;border:1px solid rgba(196,165,90,0.2);transition:all 0.2s}
-.place-card:active{background:rgba(45,64,48,0.5)}
-.place-icon{width:48px;height:48px;border-radius:var(--radius-none);background:rgba(45,64,48,0.5);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.place-info{flex:1}
-.place-name{font-size:15px;font-weight:600;color:var(--sp-mist);margin-bottom:2px}
-.place-desc{font-size:12px;color:rgba(232,226,216,0.6);margin-bottom:6px;line-height:1.4}
-.place-meta{display:flex;gap:8px;flex-wrap:wrap}
-.place-tag{font-size:10px;padding:3px 8px;border-radius:var(--radius-sm);background:rgba(196,165,90,0.15);color:var(--sp-warm)}
-.place-tag.taxi{background:rgba(74,138,98,0.15);color:var(--sp-green)}
-.place-tag.bike{background:rgba(212,136,90,0.15);color:var(--sp-alert)}
-
-/* ─── Perool Store ─── */
-.perool-header{text-align:center;padding:20px 0;margin-bottom:16px}
-.perool-header .brand{font-family:var(--sp-font-display);font-size:24px;color:var(--sp-warm);margin-bottom:4px}
-.perool-header .tagline{font-size:12px;color:rgba(232,226,216,0.6);font-style:italic}
-.perool-header .insta{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 14px;background:var(--sp-forest);border-radius:var(--radius-sm);font-size:12px;color:var(--sp-warm);text-decoration:none}
-.perool-cat{margin-bottom:20px}
-.perool-cat-title{font-size:14px;font-weight:600;color:var(--sp-warm);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(196,165,90,0.2);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.perool-cat-title .arrow{transition:transform 0.2s}
-.perool-cat-title.collapsed .arrow{transform:rotate(-90deg)}
-.perool-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.perool-item{padding:12px;background:var(--sp-forest);border-radius:var(--radius-none);text-align:center;border:1px solid rgba(196,165,90,0.2);transition:all 0.2s}
-.perool-item:active{background:rgba(45,64,48,0.5);border-color:var(--sp-warm)}
-.perool-item .item-icon{font-size:28px;margin-bottom:6px}
-.perool-item .item-name{font-size:13px;font-weight:500;color:var(--sp-mist)}
-.perool-item .item-desc{font-size:11px;color:rgba(232,226,216,0.6);margin-top:2px}
-.perool-whatsapp{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:rgba(37,210,95,0.15);border:1px solid rgba(37,210,95,0.3);border-radius:var(--radius-none);margin-top:16px;color:#25d366;font-size:14px;font-weight:600;text-decoration:none}
-
-/* ─── Staff Contacts ─── */
-.staff-card{display:flex;gap:14px;padding:16px;background:var(--sp-forest);border-radius:var(--radius-none);margin-bottom:10px;border:1px solid rgba(196,165,90,0.2)}
-.staff-avatar{width:56px;height:56px;border-radius:50%;background:var(--sp-forest);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden}
-.staff-avatar img{width:100%;height:100%;object-fit:cover}
-.staff-info{flex:1}
-.staff-name{font-size:16px;font-weight:600;color:var(--sp-mist);margin-bottom:2px}
-.staff-role{font-size:12px;color:var(--sp-warm);margin-bottom:6px}
-.staff-contact{font-size:12px;color:rgba(232,226,216,0.6)}
-.staff-contact a{color:var(--sp-warm);text-decoration:none}
-.staff-contact a:hover{text-decoration:underline}
-
-/* ─── Responsive ─── */
+/* ─── RESPONSIVE ─── */
 @media(min-width:480px){
-  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%);border-radius:var(--radius-md) var(--radius-md) 0 0}
+  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%)}
 }
 </style>
 </head>
@@ -236,22 +216,15 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
 ═══════════════════════════════════════ -->
 <div class="screen active" id="screen-access">
   <div class="access-screen">
-    <svg class="access-logo" viewBox="0 0 64 64" fill="none">
-      <circle cx="32" cy="32" r="30" stroke="#c4a55a" stroke-width="2"/>
-      <path d="M32 10 L35 22 L48 22 L38 30 L42 42 L32 34 L22 42 L26 30 L16 22 L29 22Z" fill="#c4a55a" opacity="0.8"/>
-    </svg>
     <div class="access-title">Stars & Pines</div>
-    <div class="access-sub">Enter your access code to enter the portal.</div>
+    <div class="access-sub">Enter your access code</div>
     <div class="access-form">
       <div class="form-group">
-        <label>Access Code</label>
         <input type="text" class="code-input" id="access-code" maxlength="6" placeholder="ABC123" autocomplete="off" />
       </div>
-      <button class="btn btn-primary btn-block" onclick="validateAccess()" style="margin-top:8px">Enter Portal</button>
+      <button class="btn btn-primary btn-block" onclick="validateAccess()">Enter</button>
     </div>
-    <div style="margin-top:24px;font-size:12px;color:rgba(232,226,216,0.6)">
-      Stars & Pines · Kasar Devi · Almora
-    </div>
+    <div class="access-footer">Kasar Devi, Almora</div>
   </div>
 </div>
 
@@ -265,139 +238,122 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
     <div class="portal-code" id="portal-code-display"></div>
   </div>
 
-  <!-- TAB: Food Orders (default) -->
+  <!-- 01 MENU -->
   <div class="tab-content active" id="tab-food">
     <div id="menu-container"></div>
   </div>
 
-  <!-- TAB: My Booking -->
+  <!-- 02 BOOKING -->
   <div class="tab-content" id="tab-booking">
-    <div class="card">
-      <div class="card-title">My Booking</div>
-      <div class="card-body" id="booking-details"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">WiFi</div>
-      <div class="card-body">
-        <div class="bill-line"><span class="bill-label">Network</span><span class="bill-value">StarsAndPines_Guest</span></div>
-        <div class="bill-line"><span class="bill-label">Password</span><span class="bill-value">pines2024</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Emergency Contacts</div>
-      <div class="card-body">
-        <div class="bill-line"><span class="bill-label">Front Desk</span><span class="bill-value">+91 79825 23582</span></div>
-        <div class="bill-line"><span class="bill-label">Ambulance</span><span class="bill-value">108</span></div>
-        <div class="bill-line"><span class="bill-label">Police</span><span class="bill-value">100</span></div>
-      </div>
-    </div>
+    <div class="section-label">Stay Details</div>
+    <div id="booking-details"></div>
+    <div class="section-label">WiFi</div>
+    <div class="list-item"><span class="list-label">Network</span><span class="list-value">StarsAndPines_Guest</span></div>
+    <div class="list-item"><span class="list-label">Password</span><span class="list-value">pines2024</span></div>
+    <div class="section-label">Emergency</div>
+    <div class="list-item"><span class="list-label">Front Desk</span><span class="list-value">+91 79825 23582</span></div>
+    <div class="list-item"><span class="list-label">Ambulance</span><span class="list-value"><a href="tel:108" style="color:var(--sp-warm);text-decoration:none">108</a></span></div>
+    <div class="list-item"><span class="list-label">Police</span><span class="list-value"><a href="tel:100" style="color:var(--sp-warm);text-decoration:none">100</a></span></div>
   </div>
 
-  <!-- TAB: Service Requests -->
+  <!-- 03 SERVICES -->
   <div class="tab-content" id="tab-services">
-    <div class="section-header">House Requests</div>
+    <div class="section-label">House Requests</div>
     <div id="house-requests"></div>
-    <div class="section-header">Experiences</div>
+    <div class="section-label">Experiences</div>
     <div id="experiences"></div>
-    <div class="section-header">Concierge</div>
+    <div class="section-label">Concierge</div>
     <div id="concierge"></div>
   </div>
 
-  <!-- TAB: Places Guide -->
+  <!-- 04 PLACES -->
   <div class="tab-content" id="tab-places">
-    <div class="section-header">Around the Ridge</div>
+    <div class="section-label">Around the Ridge</div>
     <div id="places-guide"></div>
   </div>
 
-  <!-- TAB: Perool -->
+  <!-- 05 PEROOL -->
   <div class="tab-content" id="tab-perool">
-    <div class="section-header">Perool — Clothing & Craft</div>
     <div id="perool-store"></div>
   </div>
 
-  <!-- TAB: Staff & Contacts -->
+  <!-- 06 CONTACTS -->
   <div class="tab-content" id="tab-contacts">
-    <div class="section-header">Stars Family</div>
+    <div class="section-label">Stars Family</div>
     <div id="staff-contacts"></div>
-    <div class="section-header">Emergency</div>
+    <div class="section-label">Emergency</div>
     <div id="emergency-contacts"></div>
   </div>
 
-  <!-- TAB: Notifications -->
+  <!-- 07 ALERTS -->
   <div class="tab-content" id="tab-notifications">
     <div id="notifications-list"></div>
   </div>
 
-  <!-- TAB: Grievances -->
+  <!-- 08 CONCERNS -->
   <div class="tab-content" id="tab-grievances">
-    <div class="section-header">Submit a Concern</div>
-    <div class="card">
-      <div class="grievance-grid" id="grievance-types"></div>
-      <div class="form-group">
-        <label>Describe your concern</label>
-        <textarea id="grievance-message" rows="3" placeholder="Please describe the issue..." style="resize:vertical;min-height:80px"></textarea>
-      </div>
-      <button class="btn btn-primary btn-block" onclick="submitGrievance()">Submit Concern</button>
-    </div>
-    <div class="section-header">Your Concerns</div>
+    <div class="section-label">Submit a Concern</div>
+    <div class="grievance-grid" id="grievance-types"></div>
+    <textarea id="grievance-message" placeholder="Describe your concern..."></textarea>
+    <button class="btn btn-primary btn-block" style="margin-top:var(--space-md)" onclick="submitGrievance()">Submit</button>
+    <div class="section-label">Your Concerns</div>
     <div id="my-grievances"></div>
   </div>
 
-  <!-- TAB: Pay (Bill + Payment) -->
+  <!-- 09 BILL -->
   <div class="tab-content" id="tab-pay">
-    <div class="section-header">Your Bill</div>
+    <div class="section-label">Your Bill</div>
     <div class="bill-summary" id="pay-bill-summary"></div>
-    <div class="section-header">Payment Methods</div>
+    <div class="section-label">Payment</div>
     <div class="payment-option" onclick="payWithRazorpay()">
-      <div class="po-icon">💳</div>
-      <div><div class="po-name">Pay Online</div><div class="po-desc">Credit/Debit Card, UPI, Net Banking</div></div>
+      <div><div class="po-label">Online</div><div class="po-name">Card / UPI / Net Banking</div></div>
     </div>
     <div class="payment-option" onclick="showQRPayment()">
-      <div class="po-icon">📱</div>
-      <div><div class="po-name">Scan QR to Pay</div><div class="po-desc">UPI QR Code</div></div>
+      <div><div class="po-label">QR</div><div class="po-name">Scan UPI code</div></div>
     </div>
     <div class="payment-option" onclick="payLater()">
-      <div class="po-icon">📝</div>
-      <div><div class="po-name">Pay Later</div><div class="po-desc">Settle at checkout</div></div>
+      <div><div class="po-label">Later</div><div class="po-name">Settle at checkout</div></div>
     </div>
     <div id="qr-payment-area" style="display:none">
-      <div class="card qr-payment">
-        <div class="card-title">Scan to Pay</div>
-        <div class="qr-placeholder"><span>UPI QR Code<br/>(Place your QR image here)</span></div>
-        <div style="margin-top:12px;font-size:13px;color:rgba(232,226,216,0.6)">After payment, inform the staff to confirm.</div>
+      <div style="text-align:center;padding:var(--space-lg);border:1px solid rgba(196,165,90,0.15);margin-top:var(--space-md)">
+        <div style="font-size:0.75rem;color:rgba(232,226,216,0.5)">UPI QR Code</div>
+        <div style="font-size:0.65rem;color:rgba(232,226,216,0.35);margin-top:var(--space-xs)">Place your QR image here</div>
       </div>
+      <div style="font-size:0.7rem;color:rgba(232,226,216,0.4);text-align:center;margin-top:var(--space-xs)">After payment, inform the staff to confirm.</div>
     </div>
   </div>
 
-  <!-- TAB: Checkout -->
+  <!-- 10 CHECKOUT -->
   <div class="tab-content" id="tab-checkout">
-    <div class="card">
-      <div class="card-title">Request Checkout</div>
-      <div class="card-body">When you're ready to check out, we'll generate your final invoice. All outstanding charges must be settled before departure.</div>
-      <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="requestCheckout()">Request Checkout</button>
+    <div class="section-label">Request Checkout</div>
+    <div class="list-item">
+      <div>
+        <div class="list-label">When you're ready to check out, we'll generate your final invoice. All outstanding charges must be settled before departure.</div>
+      </div>
     </div>
+    <button class="btn btn-primary btn-block" style="margin-top:var(--space-md)" onclick="requestCheckout()">Request Checkout</button>
     <div id="checkout-invoice" style="display:none"></div>
   </div>
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('food')" data-tab="food"><span class="tab-icon">🍽</span>Menu</button>
-    <button class="tab-btn" onclick="switchTab('booking')" data-tab="booking"><span class="tab-icon">📋</span>Booking</button>
-    <button class="tab-btn" onclick="switchTab('pay')" data-tab="pay"><span class="tab-icon">💰</span>Pay</button>
-    <button class="tab-btn" onclick="switchTab('services')" data-tab="services"><span class="tab-icon">🛎</span>Services</button>
-    <button class="tab-btn" onclick="switchTab('places')" data-tab="places"><span class="tab-icon">🗺</span>Places</button>
-    <button class="tab-btn" onclick="switchTab('perool')" data-tab="perool"><span class="tab-icon">🧵</span>Perool</button>
-    <button class="tab-btn" onclick="switchTab('contacts')" data-tab="contacts"><span class="tab-icon">👤</span>Contacts</button>
-    <button class="tab-btn" onclick="switchTab('notifications')" data-tab="notifications"><span class="tab-icon">🔔</span>Alerts</button>
-    <button class="tab-btn" onclick="switchTab('grievances')" data-tab="grievances"><span class="tab-icon">⚠</span>Concerns</button>
-    <button class="tab-btn" onclick="switchTab('checkout')" data-tab="checkout"><span class="tab-icon">🚪</span>Checkout</button>
+    <button class="tab-btn active" onclick="switchTab('food')" data-tab="food"><span class="num">01</span>Menu</button>
+    <button class="tab-btn" onclick="switchTab('booking')" data-tab="booking"><span class="num">02</span>Stay</button>
+    <button class="tab-btn" onclick="switchTab('pay')" data-tab="pay"><span class="num">03</span>Bill</button>
+    <button class="tab-btn" onclick="switchTab('services')" data-tab="services"><span class="num">04</span>Service</button>
+    <button class="tab-btn" onclick="switchTab('places')" data-tab="places"><span class="num">05</span>Places</button>
+    <button class="tab-btn" onclick="switchTab('perool')" data-tab="perool"><span class="num">06</span>Perool</button>
+    <button class="tab-btn" onclick="switchTab('contacts')" data-tab="contacts"><span class="num">07</span>Contacts</button>
+    <button class="tab-btn" onclick="switchTab('notifications')" data-tab="notifications"><span class="num">08</span>Alerts</button>
+    <button class="tab-btn" onclick="switchTab('grievances')" data-tab="grievances"><span class="num">09</span>Concerns</button>
+    <button class="tab-btn" onclick="switchTab('checkout')" data-tab="checkout"><span class="num">10</span>Out</button>
   </div>
 
   <!-- Cart Bar -->
   <div class="cart-bar" id="cart-bar">
     <span id="cart-count">0 items</span>
     <span id="cart-total">₹0</span>
-    <button class="btn btn-sm" style="background:var(--sp-night);color:var(--sp-warm)" onclick="submitOrder()">Send to Kitchen</button>
+    <button class="btn btn-sm" style="background:var(--sp-night);color:var(--sp-warm)" onclick="submitOrder()">Send</button>
   </div>
 </div>
 
@@ -422,57 +378,53 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
         });
       }
       renderMenu();
-    }).catch(function() {
-      // Fallback: empty menu
-      MENU = {};
-      renderMenu();
-    });
+    }).catch(function() { MENU = {}; renderMenu(); });
   }
 
-  // ─── House Requests with ETA ───
+  // ─── House Requests ───
   var HOUSE_REQUESTS = [
-    { type: 'extra_towels', icon: '🛁', name: 'Extra Towels', message: 'Extra towels coming right up.', eta: '10 min' },
-    { type: 'extra_blanket', icon: '🧣', name: 'Extra Blanket', message: 'An extra blanket coming right up.', eta: '10 min' },
-    { type: 'water_refill', icon: '💧', name: 'Water Refill', message: 'Water refill on the way.', eta: '5 min' },
-    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning', message: 'Room cleaning requested.', eta: '~2 hrs (please request early when possible)' },
-    { type: 'firepit_setup', icon: '🔥', name: 'Firepit Setup', message: 'Firepit setup requested.', eta: '30 min' },
-    { type: 'tea_to_room', icon: '☕', name: 'Tea to Room', message: 'Tea to room requested.', eta: '15 min' }
+    { type: 'extra_towels', name: 'Extra Towels', message: 'Extra towels coming right up.', eta: '10 min' },
+    { type: 'extra_blanket', name: 'Extra Blanket', message: 'An extra blanket coming right up.', eta: '10 min' },
+    { type: 'water_refill', name: 'Water Refill', message: 'Water refill on the way.', eta: '5 min' },
+    { type: 'room_cleaning', name: 'Room Cleaning', message: 'Room cleaning requested.', eta: '~2 hrs (please request early when possible)' },
+    { type: 'firepit_setup', name: 'Firepit Setup', message: 'Firepit setup requested.', eta: '30 min' },
+    { type: 'tea_to_room', name: 'Tea to Room', message: 'Tea to room requested.', eta: '15 min' }
   ];
 
   var EXPERIENCES = [
-    { type: 'bonfire', icon: '🔥', name: 'Bonfire Night' },
-    { type: 'local_guide', icon: '🗺', name: 'Local Guide' },
-    { type: 'photography', icon: '📷', name: 'Photography Session' },
-    { type: 'village_walk', icon: '🚶', name: 'Village Walk' },
-    { type: 'bird_watching', icon: '🐦', name: 'Bird Watching' },
-    { type: 'stargazing', icon: '⭐', name: 'Stargazing' },
-    { type: 'transportation', icon: '🚗', name: 'Transportation' },
-    { type: 'special_meal', icon: '🍳', name: 'Special Meal' }
+    { type: 'bonfire', name: 'Bonfire Night' },
+    { type: 'local_guide', name: 'Local Guide' },
+    { type: 'photography', name: 'Photography Session' },
+    { type: 'village_walk', name: 'Village Walk' },
+    { type: 'bird_watching', name: 'Bird Watching' },
+    { type: 'stargazing', name: 'Stargazing' },
+    { type: 'transportation', name: 'Transportation' },
+    { type: 'special_meal', name: 'Special Meal' }
   ];
 
   var CONCIERGE = [
-    { type: 'extra_blankets', icon: '🧣', name: 'Extra Blankets' },
-    { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning' },
-    { type: 'hot_water', icon: '🚿', name: 'Hot Water' },
-    { type: 'laundry', icon: '👕', name: 'Laundry' },
-    { type: 'taxi', icon: '🚕', name: 'Taxi Booking' },
-    { type: 'wake_up_call', icon: '⏰', name: 'Wake-up Call' },
-    { type: 'medical_help', icon: '🏥', name: 'Medical Help' },
-    { type: 'luggage_assistance', icon: '🧳', name: 'Luggage Help' }
+    { type: 'extra_blankets', name: 'Extra Blankets' },
+    { type: 'room_cleaning', name: 'Room Cleaning' },
+    { type: 'hot_water', name: 'Hot Water' },
+    { type: 'laundry', name: 'Laundry' },
+    { type: 'taxi', name: 'Taxi Booking' },
+    { type: 'wake_up_call', name: 'Wake-up Call' },
+    { type: 'medical_help', name: 'Medical Help' },
+    { type: 'luggage_assistance', name: 'Luggage Help' }
   ];
 
   var GRIEVANCE_TYPES = [
-    { type: 'room', icon: '🏠', name: 'Room' },
-    { type: 'housekeeping', icon: '🧹', name: 'Housekeeping' },
-    { type: 'food', icon: '🍽', name: 'Food' },
-    { type: 'staff', icon: '👤', name: 'Staff' },
-    { type: 'water', icon: '💧', name: 'Water' },
-    { type: 'electricity', icon: '⚡', name: 'Electricity' },
-    { type: 'noise', icon: '🔊', name: 'Noise' },
-    { type: 'other', icon: '📝', name: 'Other' }
+    { type: 'room', name: 'Room' },
+    { type: 'housekeeping', name: 'Housekeeping' },
+    { type: 'food', name: 'Food' },
+    { type: 'staff', name: 'Staff' },
+    { type: 'water', name: 'Water' },
+    { type: 'electricity', name: 'Electricity' },
+    { type: 'noise', name: 'Noise' },
+    { type: 'other', name: 'Other' }
   ];
 
-  // ─── Initialize ──────────────────────────────────────────────────
+  // ─── Initialize ───
   function init() {
     var params = new URLSearchParams(window.location.search);
     var codeFromUrl = params.get('token');
@@ -492,122 +444,91 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
     startOrderPolling();
   }
 
-  // ─── Access Validation ───────────────────────────────────────────
+  // ─── Access Validation ───
   window.validateAccess = function() {
     var code = document.getElementById('access-code').value.trim().toUpperCase();
     if (!code || code.length < 4) { showToast('Enter your access code'); return; }
-
     API.validateToken(code).then(function(data) {
-      guestData = {
-        guestName: data.guest_name,
-        room: data.room_name,
-        token: code,
-        stayId: data.stay_id,
-        roomId: data.room_id,
-      };
+      guestData = { guestName: data.guest_name, room: data.room_name, token: code, stayId: data.stay_id, roomId: data.room_id };
       enterPortal();
-    }).catch(function() {
-      showToast('Invalid access code. Please check with the front desk.');
-    });
+    }).catch(function() { showToast('Invalid access code. Please check with the front desk.'); });
   };
 
   function enterPortal() {
-    document.getElementById('screen-access').classList.remove('active');
     document.getElementById('screen-access').style.display = 'none';
     document.getElementById('screen-portal').classList.add('active');
     document.getElementById('screen-portal').style.display = 'block';
-
     document.getElementById('portal-greeting').textContent = 'Welcome, ' + (guestData.guestName || 'Guest');
     document.getElementById('portal-room').textContent = guestData.room || '';
     document.getElementById('portal-code-display').textContent = 'Code: ' + (guestData.token || '');
-
     loadBookingDetails();
     loadPayBill();
     loadMyGrievances();
     loadNotifications();
   }
 
-  // ─── Tab Switching ───────────────────────────────────────────────
+  // ─── Tab Switching ───
   window.switchTab = function(tab) {
     document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
     document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
     document.getElementById('tab-' + tab).classList.add('active');
     var btn = document.querySelector('[data-tab="' + tab + '"]');
     if (btn) btn.classList.add('active');
-
     if (tab === 'pay') loadPayBill();
   };
 
-  // ─── Booking Details ─────────────────────────────────────────────
+  // ─── Booking Details ───
   function loadBookingDetails() {
-    var container = document.getElementById('booking-details');
-    if (!container) return;
-    container.innerHTML =
-      '<div class="bill-line"><span class="bill-label">Guest</span><span class="bill-value">' + escHtml(guestData.guestName) + '</span></div>' +
-      '<div class="bill-line"><span class="bill-label">Room</span><span class="bill-value">' + escHtml(guestData.room) + '</span></div>' +
-      '<div class="bill-line"><span class="bill-label">Access Code</span><span class="bill-value" style="font-family:var(--sp-font-mono);font-size:12px">' + escHtml(guestData.token) + '</span></div>';
+    var c = document.getElementById('booking-details');
+    if (!c) return;
+    c.innerHTML = '<div class="list-item"><span class="list-label">Guest</span><span class="list-value">' + escHtml(guestData.guestName) + '</span></div>' +
+      '<div class="list-item"><span class="list-label">Room</span><span class="list-value">' + escHtml(guestData.room) + '</span></div>' +
+      '<div class="list-item"><span class="list-label">Code</span><span class="list-value" style="font-family:var(--sp-font-mono);letter-spacing:0.15em">' + escHtml(guestData.token) + '</span></div>';
   }
 
-  // ─── Pay Tab (Bill + Payment) ────────────────────────────────────
+  // ─── Bill ───
   function loadPayBill() {
     if (!guestData || !guestData.token) return;
-
     API.getPortalBill(guestData.token).then(function(bill) {
       var charges = bill.entries.filter(function(e) { return e.amount > 0; });
       var payments = bill.entries.filter(function(e) { return e.amount < 0; });
-
       var totalCharges = charges.reduce(function(s, e) { return s + e.amount; }, 0);
       var totalPayments = payments.reduce(function(s, e) { return s + Math.abs(e.amount); }, 0);
       var outstanding = Math.max(0, bill.balance);
-
       var html = '';
-      charges.forEach(function(e) {
-        html += '<div class="bill-line"><span class="bill-label">' + escHtml(e.description) + '</span><span class="bill-value">₹' + e.amount.toFixed(0) + '</span></div>';
-      });
-      payments.forEach(function(e) {
-        html += '<div class="bill-line"><span class="bill-label">Payment</span><span class="bill-value" style="color:var(--sp-green)">-₹' + Math.abs(e.amount).toFixed(0) + '</span></div>';
-      });
-
+      charges.forEach(function(e) { html += '<div class="bill-line"><span class="bill-label">' + escHtml(e.description) + '</span><span class="bill-value">₹' + e.amount.toFixed(0) + '</span></div>'; });
+      payments.forEach(function(e) { html += '<div class="bill-line"><span class="bill-label">Payment</span><span class="bill-value" style="color:var(--sp-green)">-₹' + Math.abs(e.amount).toFixed(0) + '</span></div>'; });
       html += '<div class="bill-total"><span class="bill-label">Total</span><span class="bill-value">₹' + totalCharges.toFixed(0) + '</span></div>';
-      if (totalPayments > 0) {
-        html += '<div class="bill-line"><span class="bill-label">Paid</span><span class="bill-value" style="color:var(--sp-green)">-₹' + totalPayments.toFixed(0) + '</span></div>';
-      }
-      html += '<div class="bill-outstanding"><span class="bill-label">Amount Due</span><span class="bill-value">₹' + outstanding.toFixed(0) + '</span></div>';
-
+      if (totalPayments > 0) html += '<div class="bill-line"><span class="bill-label">Paid</span><span class="bill-value" style="color:var(--sp-green)">-₹' + totalPayments.toFixed(0) + '</span></div>';
+      html += '<div class="bill-outstanding"><span class="bill-label">Due</span><span class="bill-value">₹' + outstanding.toFixed(0) + '</span></div>';
       document.getElementById('pay-bill-summary').innerHTML = html;
-    }).catch(function() {
-      document.getElementById('pay-bill-summary').innerHTML = '<div class="empty-state"><p>No charges yet</p></div>';
-    });
+    }).catch(function() { document.getElementById('pay-bill-summary').innerHTML = '<div class="empty">No charges yet</div>'; });
   }
 
-  // ─── Menu & Ordering ─────────────────────────────────────────────
+  // ─── Menu ───
   function renderMenu() {
-    var container = document.getElementById('menu-container');
+    var c = document.getElementById('menu-container');
     var html = '';
-
     for (var category in MENU) {
       if (!MENU.hasOwnProperty(category)) continue;
-      html += '<div class="menu-category"><div class="menu-cat-title">' + escHtml(category) + '</div>';
+      html += '<div class="menu-cat-title">' + escHtml(category) + '</div>';
       MENU[category].forEach(function(item) {
         var qty = cart[item.id] ? cart[item.id].qty : 0;
         html += '<div class="menu-item" onclick="toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">' +
           '<div style="flex:1">' +
             '<div class="menu-item-name">' + escHtml(item.name) + '</div>' +
             (item.desc ? '<div class="menu-item-desc">' + escHtml(item.desc) + '</div>' : '') +
-            (item.prepTime ? '<div style="font-size:11px;color:rgba(232,226,216,0.4);margin-top:2px">~' + item.prepTime + ' min</div>' : '') +
+            (item.prepTime ? '<div class="menu-item-time">~' + item.prepTime + ' min</div>' : '') +
           '</div>' +
           '<div class="menu-item-qty">' +
             (qty > 0 ? '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">−</span>' +
-              '<span style="min-width:20px;text-align:center">' + qty + '</span>' +
+              '<span style="min-width:20px;text-align:center;font-family:var(--sp-font-mono);font-size:0.8rem">' + qty + '</span>' +
               '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">+</span>' :
               '<span class="menu-item-price">₹' + item.price + '</span>') +
-          '</div>' +
-        '</div>';
+          '</div></div>';
       });
-      html += '</div>';
     }
-
-    container.innerHTML = html;
+    c.innerHTML = html;
   }
 
   window.toggleCartItem = function(id, name, price) {
@@ -619,145 +540,81 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
   };
 
   function updateCart() {
-    var totalItems = 0;
-    var totalPrice = 0;
-    for (var id in cart) {
-      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
-        totalItems += cart[id].qty;
-        totalPrice += cart[id].qty * cart[id].price;
-      }
-    }
-
+    var totalItems = 0, totalPrice = 0;
+    for (var id in cart) { if (cart.hasOwnProperty(id) && cart[id].qty > 0) { totalItems += cart[id].qty; totalPrice += cart[id].qty * cart[id].price; } }
     var bar = document.getElementById('cart-bar');
-    if (totalItems > 0) {
-      bar.classList.add('visible');
-      document.getElementById('cart-count').textContent = totalItems + ' item' + (totalItems > 1 ? 's' : '');
-      document.getElementById('cart-total').textContent = '₹' + totalPrice;
-    } else {
-      bar.classList.remove('visible');
-    }
+    if (totalItems > 0) { bar.classList.add('visible'); document.getElementById('cart-count').textContent = totalItems + ' item' + (totalItems > 1 ? 's' : ''); document.getElementById('cart-total').textContent = '₹' + totalPrice; }
+    else { bar.classList.remove('visible'); }
   }
 
   window.submitOrder = function() {
     var items = [];
-    for (var id in cart) {
-      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
-        items.push({ menu_item_id: id, quantity: cart[id].qty });
-      }
-    }
-
+    for (var id in cart) { if (cart.hasOwnProperty(id) && cart[id].qty > 0) { items.push({ menu_item_id: id, quantity: cart[id].qty }); } }
     if (items.length === 0) return;
-
-    API.createOrder({
-      order_type: 'room',
-      stay_id: guestData.stayId,
-      table_label: guestData.room,
-      items: items,
-    }).then(function() {
-      cart = {};
-      updateCart();
-      renderMenu();
-      showToast('Order sent to the kitchen');
-    }).catch(function(err) {
-      showToast('Failed to place order: ' + err.message);
-    });
+    API.createOrder({ order_type: 'room', stay_id: guestData.stayId, table_label: guestData.room, items: items }).then(function() {
+      cart = {}; updateCart(); renderMenu(); showToast('Order sent to the kitchen');
+    }).catch(function(err) { showToast('Failed: ' + err.message); });
   };
 
-  // ─── House Requests ──────────────────────────────────────────────
+  // ─── House Requests ───
   function renderHouseRequests() {
-    var container = document.getElementById('house-requests');
-    container.innerHTML = HOUSE_REQUESTS.map(function(r) {
+    var c = document.getElementById('house-requests');
+    c.innerHTML = HOUSE_REQUESTS.map(function(r) {
       return '<div class="request-item" onclick="sendHouseRequest(\'' + r.type + '\', \'' + escHtml(r.message) + '\')">' +
-        '<div><span style="font-size:20px;margin-right:8px">' + r.icon + '</span><span class="menu-item-name">' + escHtml(r.name) + '</span>' +
-        '<div style="font-size:11px;color:rgba(232,226,216,0.6);margin-top:2px">ETA: ' + r.eta + '</div></div>' +
-        '<span class="badge badge-pending" id="hr-' + r.type + '" style="display:none">Sent</span>' +
-      '</div>';
+        '<div><div class="request-name">' + escHtml(r.name) + '</div><div class="request-eta">ETA: ' + r.eta + '</div></div>' +
+        '<span class="badge badge-warning" id="hr-' + r.type + '" style="display:none">Sent</span></div>';
     }).join('');
   }
 
   window.sendHouseRequest = function(type, message) {
-    API.createCleaning({
-      stay_id: guestData.stayId,
-      room_id: guestData.roomId,
-      notes: message,
-    }).then(function() {
+    API.createCleaning({ stay_id: guestData.stayId, room_id: guestData.roomId, notes: message }).then(function() {
       var badge = document.getElementById('hr-' + type);
-      if (badge) {
-        badge.style.display = 'inline-block';
-        setTimeout(function() { badge.style.display = 'none'; }, 4000);
-      }
+      if (badge) { badge.style.display = 'inline-block'; setTimeout(function() { badge.style.display = 'none'; }, 4000); }
       showToast(message.split(' ')[0] + ' noted');
-    }).catch(function() {
-      showToast('Request failed');
-    });
+    }).catch(function() { showToast('Request failed'); });
   };
 
-  // ─── Experiences ─────────────────────────────────────────────────
+  // ─── Experiences ───
   function renderExperiences() {
-    var container = document.getElementById('experiences');
-    container.innerHTML = EXPERIENCES.map(function(e) {
+    var c = document.getElementById('experiences');
+    c.innerHTML = EXPERIENCES.map(function(e) {
       return '<div class="request-item" onclick="requestExperience(\'' + e.type + '\', \'' + escHtml(e.name) + '\')">' +
-        '<div><span style="font-size:20px;margin-right:8px">' + e.icon + '</span><span class="menu-item-name">' + escHtml(e.name) + '</span></div>' +
-        '<span class="badge badge-pending" id="exp-' + e.type + '" style="display:none">Requested</span>' +
-      '</div>';
+        '<div class="request-name">' + escHtml(e.name) + '</div>' +
+        '<span class="badge badge-warning" id="exp-' + e.type + '" style="display:none">Requested</span></div>';
     }).join('');
   }
 
   window.requestExperience = function(type, name) {
-    API.createServiceRequest({
-      stay_id: guestData.stayId,
-      request_type: 'experience',
-      type: type,
-      notes: name,
-    }).then(function() {
+    API.createServiceRequest({ stay_id: guestData.stayId, request_type: 'experience', type: type, notes: name }).then(function() {
       var badge = document.getElementById('exp-' + type);
-      if (badge) {
-        badge.style.display = 'inline-block';
-        setTimeout(function() { badge.style.display = 'none'; }, 4000);
-      }
+      if (badge) { badge.style.display = 'inline-block'; setTimeout(function() { badge.style.display = 'none'; }, 4000); }
       showToast(name + ' requested');
-    }).catch(function() {
-      showToast('Request failed');
-    });
+    }).catch(function() { showToast('Request failed'); });
   };
 
-  // ─── Concierge ───────────────────────────────────────────────────
+  // ─── Concierge ───
   function renderConcierge() {
-    var container = document.getElementById('concierge');
-    container.innerHTML = CONCIERGE.map(function(c) {
+    var c = document.getElementById('concierge');
+    c.innerHTML = CONCIERGE.map(function(c) {
       return '<div class="request-item" onclick="requestConcierge(\'' + c.type + '\', \'' + escHtml(c.name) + '\')">' +
-        '<div><span style="font-size:20px;margin-right:8px">' + c.icon + '</span><span class="menu-item-name">' + escHtml(c.name) + '</span></div>' +
-        '<span class="badge badge-pending" id="conc-' + c.type + '" style="display:none">Requested</span>' +
-      '</div>';
+        '<div class="request-name">' + escHtml(c.name) + '</div>' +
+        '<span class="badge badge-warning" id="conc-' + c.type + '" style="display:none">Requested</span></div>';
     }).join('');
   }
 
   window.requestConcierge = function(type, name) {
-    API.createServiceRequest({
-      stay_id: guestData.stayId,
-      request_type: 'concierge',
-      type: type,
-      notes: name,
-    }).then(function() {
+    API.createServiceRequest({ stay_id: guestData.stayId, request_type: 'concierge', type: type, notes: name }).then(function() {
       var badge = document.getElementById('conc-' + type);
-      if (badge) {
-        badge.style.display = 'inline-block';
-        setTimeout(function() { badge.style.display = 'none'; }, 4000);
-      }
+      if (badge) { badge.style.display = 'inline-block'; setTimeout(function() { badge.style.display = 'none'; }, 4000); }
       showToast(name + ' requested');
-    }).catch(function() {
-      showToast('Request failed');
-    });
+    }).catch(function() { showToast('Request failed'); });
   };
 
-  // ─── Grievances ──────────────────────────────────────────────────
+  // ─── Grievances ───
   function renderGrievanceTypes() {
-    var container = document.getElementById('grievance-types');
-    container.innerHTML = GRIEVANCE_TYPES.map(function(t) {
-      return '<div class="grievance-type-btn" onclick="selectGrievanceType(this, \'' + t.type + '\')">' +
-        '<div class="gt-icon">' + t.icon + '</div>' +
-        '<div class="gt-name">' + escHtml(t.name) + '</div>' +
-      '</div>';
+    var c = document.getElementById('grievance-types');
+    c.innerHTML = GRIEVANCE_TYPES.map(function(t) {
+      return '<div class="grievance-type-btn" onclick="selectGrievanceType(this, \'' + t.type + '\')"><div class="gt-label">' + escHtml(t.name) + '</div></div>';
     }).join('');
   }
 
@@ -771,415 +628,199 @@ label{font-size:13px;color:var(--sp-mist);margin-bottom:4px;display:block}
     if (!selectedGrievanceType) { showToast('Select a concern type'); return; }
     var message = document.getElementById('grievance-message').value.trim();
     if (!message) { showToast('Describe your concern'); return; }
-
-    API.createGrievance({
-      stay_id: guestData.stayId,
-      type: selectedGrievanceType,
-      message: message,
-      severity: 'medium',
-    }).then(function() {
+    API.createGrievance({ stay_id: guestData.stayId, type: selectedGrievanceType, message: message, severity: 'medium' }).then(function() {
       document.getElementById('grievance-message').value = '';
       document.querySelectorAll('.grievance-type-btn').forEach(function(b) { b.classList.remove('selected'); });
       selectedGrievanceType = null;
       showToast('Your concern has been noted');
       loadMyGrievances();
-    }).catch(function() {
-      showToast('Failed to submit concern');
-    });
+    }).catch(function() { showToast('Failed to submit concern'); });
   };
 
   function loadMyGrievances() {
     if (!guestData) return;
-
     API.getGrievances(guestData.stayId).then(function(grievances) {
-      var container = document.getElementById('my-grievances');
-      if (grievances.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>No concerns raised</p></div>';
-        return;
-      }
-
-      container.innerHTML = grievances.map(function(g) {
-        var statusBadge = g.status === 'open' ? 'badge-open' :
-                          g.status === 'acknowledged' ? 'badge-acknowledged' :
-                          g.status === 'resolved' ? 'badge-resolved' : 'badge-dismissed';
-        return '<div class="card">' +
-          '<div class="card-header">' +
-            '<div class="card-title">' + escHtml(g.type) + '</div>' +
-            '<span class="badge ' + statusBadge + '">' + escHtml(g.status) + '</span>' +
-          '</div>' +
-          '<div class="card-body">' + escHtml(g.message) + '</div>' +
-          '<div class="card-meta">' + formatDateTime(g.created_at) + '</div>' +
-        '</div>';
+      var c = document.getElementById('my-grievances');
+      if (grievances.length === 0) { c.innerHTML = '<div class="empty">No concerns raised</div>'; return; }
+      c.innerHTML = grievances.map(function(g) {
+        var statusClass = g.status === 'open' ? 'badge-error' : g.status === 'acknowledged' ? 'badge-warning' : g.status === 'resolved' ? 'badge-success' : 'badge-neutral';
+        return '<div class="list-item"><div style="display:flex;justify-content:space-between;align-items:center"><div class="list-label">' + escHtml(g.type) + '</div><span class="badge ' + statusClass + '">' + escHtml(g.status) + '</span></div><div class="list-meta">' + escHtml(g.message) + '</div><div class="list-meta">' + formatDateTime(g.created_at) + '</div></div>';
       }).join('');
-    }).catch(function() {
-      document.getElementById('my-grievances').innerHTML = '<div class="empty-state"><p>Unable to load concerns</p></div>';
-    });
+    }).catch(function() { document.getElementById('my-grievances').innerHTML = '<div class="empty">Unable to load concerns</div>'; });
   }
 
-  // ─── Notifications ───────────────────────────────────────────────
+  // ─── Notifications ───
   function loadNotifications() {
     if (!guestData) return;
-
     API.getNotifications(guestData.stayId).then(function(notifs) {
-      var container = document.getElementById('notifications-list');
-      if (notifs.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔔</div><p>No notifications</p></div>';
-        return;
-      }
-
-      container.innerHTML = notifs.map(function(n) {
-        return '<div class="notif-item' + (n.is_read ? '' : ' unread') + '">' +
-          '<div class="notif-text">' + escHtml(n.message) + '</div>' +
-          '<div class="notif-time">' + formatTime(n.created_at) + '</div>' +
-        '</div>';
+      var c = document.getElementById('notifications-list');
+      if (notifs.length === 0) { c.innerHTML = '<div class="empty">No notifications</div>'; return; }
+      c.innerHTML = notifs.map(function(n) {
+        return '<div class="notif-item' + (n.is_read ? '' : ' unread') + '"><div class="notif-text">' + escHtml(n.message) + '</div><div class="notif-time">' + formatTime(n.created_at) + '</div></div>';
       }).join('');
-    }).catch(function() {
-      document.getElementById('notifications-list').innerHTML = '<div class="empty-state"><p>Unable to load notifications</p></div>';
-    });
+    }).catch(function() { document.getElementById('notifications-list').innerHTML = '<div class="empty">Unable to load notifications</div>'; });
   }
 
+  // ─── Payment ───
   window.payWithRazorpay = function() {
-    if (typeof Razorpay === 'undefined') {
-      showToast('Online payment not available. Please use QR or Pay Later.');
-      return;
-    }
-
+    if (typeof Razorpay === 'undefined') { showToast('Online payment not available. Please use QR or Pay Later.'); return; }
     API.getPortalBill(guestData.token).then(function(bill) {
       var outstanding = Math.max(0, bill.balance);
       if (outstanding <= 0) { showToast('No outstanding balance'); return; }
-
-      var options = {
-        key: 'REPLACE_WITH_RAZORPAY_KEY_ID',
-        amount: outstanding * 100,
-        currency: 'INR',
-        name: 'Stars & Pines',
-        description: 'Stay Payment — ' + guestData.token,
-        handler: function(response) {
-          API.portalPayment(guestData.token, {
-            stay_id: guestData.stayId,
-            amount: outstanding,
-            method: 'upi',
-            notes: 'Razorpay: ' + response.razorpay_payment_id,
-          }).then(function() {
-            showToast('Payment successful! ₹' + outstanding);
-            loadPayBill();
-          }).catch(function() {
-            showToast('Payment recorded but confirmation failed. Please inform staff.');
-          });
-        },
-        prefill: { name: guestData.guestName || '' },
-        theme: { color: '#1f2f1d' }
-      };
-
-      var rzp = new Razorpay(options);
-      rzp.open();
+      var options = { key: 'REPLACE_WITH_RAZORPAY_KEY_ID', amount: outstanding * 100, currency: 'INR', name: 'Stars & Pines', description: 'Stay Payment — ' + guestData.token, handler: function(response) { API.portalPayment(guestData.token, { stay_id: guestData.stayId, amount: outstanding, method: 'upi', notes: 'Razorpay: ' + response.razorpay_payment_id }).then(function() { showToast('Payment successful! ₹' + outstanding); loadPayBill(); }).catch(function() { showToast('Payment recorded but confirmation failed. Please inform staff.'); }); }, prefill: { name: guestData.guestName || '' }, theme: { color: '#1f2f1d' } };
+      var rzp = new Razorpay(options); rzp.open();
     });
   };
 
-  window.showQRPayment = function() {
-    var area = document.getElementById('qr-payment-area');
-    area.style.display = area.style.display === 'none' ? 'block' : 'none';
-  };
+  window.showQRPayment = function() { var a = document.getElementById('qr-payment-area'); a.style.display = a.style.display === 'none' ? 'block' : 'none'; };
 
   window.payLater = function() {
     API.getPortalBill(guestData.token).then(function(bill) {
       var outstanding = Math.max(0, bill.balance);
       if (outstanding <= 0) { showToast('No outstanding balance'); return; }
-
-      API.portalPayment(guestData.token, {
-        stay_id: guestData.stayId,
-        amount: outstanding,
-        method: 'pay_later',
-        notes: 'Pay later — guest selected at portal',
-      }).then(function() {
-        showToast('Payment deferred to checkout');
-        loadPayBill();
-      }).catch(function() {
-        showToast('Failed to defer payment');
-      });
+      API.portalPayment(guestData.token, { stay_id: guestData.stayId, amount: outstanding, method: 'pay_later', notes: 'Pay later' }).then(function() { showToast('Payment deferred to checkout'); loadPayBill(); }).catch(function() { showToast('Failed to defer payment'); });
     });
   };
 
-  // ─── Checkout ────────────────────────────────────────────────────
+  // ─── Checkout ───
   window.requestCheckout = function() {
     if (!guestData) return;
-
     API.getPortalBill(guestData.token).then(function(bill) {
       var charges = bill.entries.filter(function(e) { return e.amount > 0; });
       var payments = bill.entries.filter(function(e) { return e.amount < 0; });
       var totalCharges = charges.reduce(function(s, e) { return s + e.amount; }, 0);
       var totalPayments = payments.reduce(function(s, e) { return s + Math.abs(e.amount); }, 0);
       var outstanding = Math.max(0, bill.balance);
-
       var foodEntries = charges.filter(function(e) { return e.entry_type === 'food'; });
-      var orderLines = foodEntries.map(function(e) {
-        return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>';
-      }).join('');
-
+      var orderLines = foodEntries.map(function(e) { return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>'; }).join('');
       var roomEntries = charges.filter(function(e) { return e.entry_type === 'room'; });
-      var roomLines = roomEntries.map(function(e) {
-        return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>';
-      }).join('');
-
-      var invoiceDiv = document.getElementById('checkout-invoice');
-      invoiceDiv.style.display = 'block';
-      invoiceDiv.innerHTML =
-        '<div class="invoice">' +
-          '<h3>Stars & Pines</h3>' +
-          '<div class="inv-sub">Invoice for ' + escHtml(guestData.guestName) + ' · ' + escHtml(guestData.room) + '</div>' +
-          (roomLines || '<div class="inv-line"><span>Room Charges</span><span>—</span></div>') +
-          (orderLines || '') +
-          '<div class="inv-line"><span>Deposits / Payments</span><span>- ₹' + totalPayments.toFixed(0) + '</span></div>' +
-          '<div class="inv-total"><span>Total Due</span><span>₹' + outstanding.toFixed(0) + '</span></div>' +
-        '</div>' +
-        '<div class="btn-group">' +
-          '<button class="btn btn-primary btn-block" onclick="confirmCheckout()">Confirm Checkout</button>' +
-        '</div>';
+      var roomLines = roomEntries.map(function(e) { return '<div class="inv-line"><span>' + escHtml(e.description) + '</span><span>₹' + e.amount.toFixed(0) + '</span></div>'; }).join('');
+      var d = document.getElementById('checkout-invoice');
+      d.style.display = 'block';
+      d.innerHTML = '<div class="invoice"><h3>Stars & Pines</h3><div class="inv-sub">Invoice for ' + escHtml(guestData.guestName) + ' · ' + escHtml(guestData.room) + '</div>' + (roomLines || '<div class="inv-line"><span>Room Charges</span><span>—</span></div>') + (orderLines || '') + '<div class="inv-line"><span>Deposits / Payments</span><span>- ₹' + totalPayments.toFixed(0) + '</span></div><div class="inv-total"><span>Total Due</span><span>₹' + outstanding.toFixed(0) + '</span></div></div><button class="btn btn-primary btn-block" onclick="confirmCheckout()">Confirm Checkout</button>';
     });
   };
 
   window.confirmCheckout = function() {
     if (!confirm('Are you sure you want to check out? This will close your stay.')) return;
-
     API.checkout(guestData.stayId, 'Guest Portal').then(function() {
       showToast('Checkout complete. Thank you for staying with us!');
       document.getElementById('screen-portal').style.display = 'none';
       document.getElementById('screen-access').style.display = 'flex';
       document.getElementById('screen-access').classList.add('active');
       document.getElementById('access-code').value = '';
-    }).catch(function(err) {
-      showToast('Checkout failed: ' + err.message);
-    });
+    }).catch(function(err) { showToast('Checkout failed: ' + err.message); });
   };
 
-  // ─── Places Guide ────────────────────────────────────────────────
+  // ─── Places Guide ───
   function renderPlacesGuide() {
-    var container = document.getElementById('places-guide');
-    if (!container) return;
-
+    var c = document.getElementById('places-guide');
+    if (!c) return;
     API.getPlaces().then(function(places) {
-      if (places.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>No places available yet</p></div>';
-        return;
-      }
-      container.innerHTML = places.map(function(p) {
+      if (places.length === 0) { c.innerHTML = '<div class="empty">No places available yet</div>'; return; }
+      c.innerHTML = places.map(function(p) {
         var tags = (p.tags ? JSON.parse(p.tags) : []).map(function(t) { return '<span class="place-tag">' + t + '</span>'; }).join('');
-        return '<div class="place-card">' +
-          '<div class="place-icon">' + (p.icon || '📍') + '</div>' +
-          '<div class="place-info">' +
-            '<div class="place-name">' + escHtml(p.name) + '</div>' +
-            '<div class="place-desc">' + escHtml(p.description) + '</div>' +
-            '<div class="place-meta">' +
-              (p.distance_text ? '<span class="place-tag">' + p.distance_text + '</span>' : '') +
-              (p.taxi_time_min ? '<span class="place-tag taxi">🚕 ' + p.taxi_time_min + ' min</span>' : '') +
-              (p.bike_time_min ? '<span class="place-tag bike">🏍 ' + p.bike_time_min + ' min</span>' : '') +
-              tags +
-            '</div>' +
-          '</div>' +
-        '</div>';
+        return '<div class="place-item"><div class="place-name">' + escHtml(p.name) + '</div><div class="place-desc">' + escHtml(p.description) + '</div><div class="place-meta">' +
+          (p.distance_text ? '<span class="place-tag">' + p.distance_text + '</span>' : '') +
+          (p.taxi_time_min ? '<span class="place-tag taxi">Taxi ' + p.taxi_time_min + ' min</span>' : '') +
+          (p.bike_time_min ? '<span class="place-tag bike">Bike ' + p.bike_time_min + ' min</span>' : '') + tags + '</div></div>';
       }).join('');
-    }).catch(function() {
-      container.innerHTML = '<div class="empty-state"><p>Unable to load places</p></div>';
-    });
+    }).catch(function() { c.innerHTML = '<div class="empty">Unable to load places</div>'; });
   }
 
-  // ─── Perool Store ────────────────────────────────────────────────
+  // ─── Perool Store ───
   function renderPeroolStore() {
-    var container = document.getElementById('perool-store');
-    if (!container) return;
-
+    var c = document.getElementById('perool-store');
+    if (!c) return;
     API.getPeroolCategories().then(function(categories) {
-      if (categories.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>Perool store coming soon</p></div>';
-        return;
-      }
-
-      var html = '<div class="perool-header">' +
-        '<div class="brand">Perool</div>' +
-        '<div class="tagline">Clothing & Craft from the Ridge</div>' +
-        '<a class="insta" href="https://instagram.com/perool_clothing_craft" target="_blank">📸 @perool_clothing_craft</a>' +
-      '</div>';
-
+      if (categories.length === 0) { c.innerHTML = '<div class="empty">Perool store coming soon</div>'; return; }
+      var html = '<div class="perool-header"><div class="perool-brand">Perool</div><div class="perool-tagline">Clothing & Craft from the Ridge</div><a href="https://instagram.com/perool_clothing_craft" target="_blank" style="font-size:0.7rem;color:var(--sp-warm);text-decoration:none;margin-top:var(--space-xs);display:inline-block">@perool_clothing_craft</a></div>';
       categories.forEach(function(cat, idx) {
-        html += '<div class="perool-cat">' +
-          '<div class="perool-cat-title" onclick="togglePeroolCat(this, ' + idx + ')">' +
-            '<span>' + (cat.icon || '📦') + ' ' + escHtml(cat.name) + '</span>' +
-            '<span class="arrow">▼</span>' +
-          '</div>' +
-          '<div class="perool-items" id="perool-cat-' + idx + '"><div class="empty-state"><p>Loading…</p></div></div>' +
-        '</div>';
-
+        html += '<div class="perool-cat-title" onclick="togglePeroolCat(this, ' + idx + ')"><span>' + escHtml(cat.name) + '</span><span style="font-size:0.5rem">▼</span></div><div class="perool-items" id="perool-cat-' + idx + '"><div class="empty">Loading…</div></div>';
         API.getPeroolProducts(cat.id).then(function(products) {
           var itemsDiv = document.getElementById('perool-cat-' + idx);
-          if (products.length === 0) {
-            itemsDiv.innerHTML = '<div class="empty-state"><p>No products yet</p></div>';
-            return;
-          }
+          if (products.length === 0) { itemsDiv.innerHTML = '<div class="empty">No products yet</div>'; return; }
           itemsDiv.innerHTML = products.map(function(item) {
-            return '<div class="perool-item">' +
-              '<div class="item-icon">' + (item.icon || '📦') + '</div>' +
-              '<div class="item-name">' + escHtml(item.name) + '</div>' +
-              (item.description ? '<div class="item-desc">' + escHtml(item.description) + '</div>' : '') +
-              (item.price ? '<div style="font-size:12px;color:var(--sp-warm);margin-top:4px">₹' + item.price + '</div>' : '<div style="font-size:11px;color:rgba(232,226,216,0.4);margin-top:4px">Enquiry</div>') +
-            '</div>';
+            return '<div class="perool-item"><div class="perool-item-name">' + escHtml(item.name) + '</div>' +
+              (item.description ? '<div class="perool-item-desc">' + escHtml(item.description) + '</div>' : '') +
+              (item.price ? '<div class="perool-item-price">₹' + item.price + '</div>' : '<div class="perool-item-enquiry">Enquiry</div>') + '</div>';
           }).join('');
         });
       });
-
-      html += '<a class="perool-whatsapp" href="https://wa.me/918979720455?text=Hi!%20I%27m%20a%20guest%20at%20Stars%20%26%20Pines.%20I%27d%20like%20to%20know%20more%20about%20Perool%20products." target="_blank">' +
-        '💬 Order on WhatsApp' +
-      '</a>';
-
-      container.innerHTML = html;
-    }).catch(function() {
-      container.innerHTML = '<div class="empty-state"><p>Unable to load store</p></div>';
-    });
+      html += '<a href="https://wa.me/918979720455?text=Hi!%20I%27m%20a%20guest%20at%20Stars%20%26%20Pines.%20I%27d%20like%20to%20know%20more%20about%20Perool%20products." target="_blank" style="display:block;text-align:center;padding:var(--space-sm);border:1px solid rgba(37,210,95,0.2);color:#25d366;font-size:0.75rem;text-decoration:none;margin-top:var(--space-md)">Order on WhatsApp</a>';
+      c.innerHTML = html;
+    }).catch(function() { c.innerHTML = '<div class="empty">Unable to load store</div>'; });
   }
 
   window.togglePeroolCat = function(el, idx) {
     var items = document.getElementById('perool-cat-' + idx);
-    if (el.classList.contains('collapsed')) {
-      el.classList.remove('collapsed');
-      items.style.display = 'grid';
-    } else {
-      el.classList.add('collapsed');
-      items.style.display = 'none';
-    }
+    if (el.classList.contains('collapsed')) { el.classList.remove('collapsed'); items.style.display = 'grid'; }
+    else { el.classList.add('collapsed'); items.style.display = 'none'; }
   };
 
-  // ─── Staff Contacts ──────────────────────────────────────────────
+  // ─── Staff Contacts ───
   function renderStaffContacts() {
-    var container = document.getElementById('staff-contacts');
-    if (!container) return;
-
+    var c = document.getElementById('staff-contacts');
+    if (!c) return;
     API.getStaffContacts().then(function(staffList) {
-      if (staffList.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>No contacts available</p></div>';
-        return;
-      }
-      container.innerHTML = staffList.map(function(s) {
-        return '<div class="staff-card">' +
-          '<div class="staff-avatar">' + (s.photo_url ? '<img src="' + s.photo_url + '" alt="' + escHtml(s.name) + '" />' : '👤') + '</div>' +
-          '<div class="staff-info">' +
-            '<div class="staff-name">' + escHtml(s.name) + '</div>' +
-            '<div class="staff-role">' + escHtml(s.role) + '</div>' +
-            '<div class="staff-contact">' +
-              (s.phone ? '<a href="tel:' + s.phone.replace(/[^0-9+]/g, '') + '">' + s.phone + '</a>' : '') +
-              (s.whatsapp ? ' · <a href="https://wa.me/' + s.whatsapp + '" target="_blank">WhatsApp</a>' : '') +
-            '</div>' +
-          '</div>' +
-        '</div>';
+      if (staffList.length === 0) { c.innerHTML = '<div class="empty">No contacts available</div>'; return; }
+      c.innerHTML = staffList.map(function(s) {
+        return '<div class="contact-item"><div class="contact-name">' + escHtml(s.name) + '</div><div class="contact-role">' + escHtml(s.role) + '</div><div class="contact-links">' +
+          (s.phone ? '<a href="tel:' + s.phone.replace(/[^0-9+]/g, '') + '">' + s.phone + '</a>' : '') +
+          (s.whatsapp ? ' · <a href="https://wa.me/' + s.whatsapp + '" target="_blank">WhatsApp</a>' : '') + '</div></div>';
       }).join('');
-    }).catch(function() {
-      container.innerHTML = '<div class="empty-state"><p>Unable to load contacts</p></div>';
-    });
+    }).catch(function() { c.innerHTML = '<div class="empty">Unable to load contacts</div>'; });
   }
 
   function renderEmergencyContacts() {
-    var container = document.getElementById('emergency-contacts');
-    if (!container) return;
-    container.innerHTML =
-      '<div class="card">' +
-        '<div class="bill-line"><span class="bill-label">Ambulance</span><span class="bill-value"><a href="tel:108" style="color:var(--sp-warm)">108</a></span></div>' +
-        '<div class="bill-line"><span class="bill-label">Police</span><span class="bill-value"><a href="tel:100" style="color:var(--sp-warm)">100</a></span></div>' +
-        '<div class="bill-line"><span class="bill-label">Fire</span><span class="bill-value"><a href="tel:101" style="color:var(--sp-warm)">101</a></span></div>' +
-      '</div>';
+    var c = document.getElementById('emergency-contacts');
+    if (!c) return;
+    c.innerHTML = '<div class="list-item"><span class="list-label">Ambulance</span><span class="list-value"><a href="tel:108" style="color:var(--sp-warm);text-decoration:none">108</a></span></div>' +
+      '<div class="list-item"><span class="list-label">Police</span><span class="list-value"><a href="tel:100" style="color:var(--sp-warm);text-decoration:none">100</a></span></div>' +
+      '<div class="list-item"><span class="list-label">Fire</span><span class="list-value"><a href="tel:101" style="color:var(--sp-warm);text-decoration:none">101</a></span></div>';
   }
 
-  // ─── Order Polling & Kitchen Status ──────────────────────────────
+  // ─── Order Polling ───
   var orderPollInterval = null;
-
   function startOrderPolling() {
     if (orderPollInterval) clearInterval(orderPollInterval);
     orderPollInterval = setInterval(function() {
       if (!guestData || !guestData.stayId) return;
-      API.getPortalOrders(guestData.token).then(function(orders) {
-        updateKitchenStatus(orders);
-      }).catch(function() {});
+      API.getPortalOrders(guestData.token).then(function(orders) { updateKitchenStatus(orders); }).catch(function() {});
     }, 15000);
   }
 
   function updateKitchenStatus(orders) {
-    var activeOrders = orders.filter(function(o) {
-      return o.status === 'pending' || o.status === 'preparing';
-    });
-
-    // Kitchen busy toast
+    var activeOrders = orders.filter(function(o) { return o.status === 'pending' || o.status === 'preparing'; });
     var existingToast = document.getElementById('kitchen-busy-toast');
     if (activeOrders.length > 0) {
-      if (!existingToast) {
-        var toast = document.createElement('div');
-        toast.id = 'kitchen-busy-toast';
-        toast.className = 'kitchen-busy-toast';
-        document.body.appendChild(toast);
-      }
+      if (!existingToast) { var t = document.createElement('div'); t.id = 'kitchen-busy-toast'; t.className = 'kitchen-busy-toast'; document.body.appendChild(t); }
       var toast = document.getElementById('kitchen-busy-toast');
-      var items = [];
-      activeOrders.forEach(function(o) {
-        (o.items || []).forEach(function(i) {
-          items.push(i.item_name);
-        });
-      });
+      var items = []; activeOrders.forEach(function(o) { (o.items || []).forEach(function(i) { items.push(i.item_name); }); });
       var eta = activeOrders.some(function(o) { return o.status === 'pending'; }) ? '~30 min' : '~15 min';
-      toast.innerHTML = '<div>🍳 Kitchen is busy</div><div class="eta">' + items.join(', ') + ' — ETA: ' + eta + '</div>';
-    } else if (existingToast) {
-      existingToast.remove();
-    }
+      toast.innerHTML = '<div>Kitchen is busy</div><div class="eta">' + items.join(', ') + ' — ETA: ' + eta + '</div>';
+    } else if (existingToast) { existingToast.remove(); }
 
-    // Persistent order notifications
     var existingNotif = document.getElementById('persistent-order-notif');
     if (activeOrders.length > 0) {
-      if (!existingNotif) {
-        var notif = document.createElement('div');
-        notif.id = 'persistent-order-notif';
-        notif.className = 'persistent-order-notif';
-        document.body.appendChild(notif);
-      }
+      if (!existingNotif) { var n = document.createElement('div'); n.id = 'persistent-order-notif'; n.className = 'persistent-order-notif'; document.body.appendChild(n); }
       var notif = document.getElementById('persistent-order-notif');
-      var html = '<div style="font-weight:600;margin-bottom:6px;color:var(--sp-warm)">Your Orders</div>';
+      var html = '<div style="font-weight:600;margin-bottom:var(--space-xs);color:var(--sp-warm);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase">Your Orders</div>';
       activeOrders.forEach(function(o) {
         var statusColor = o.status === 'pending' ? 'var(--sp-alert)' : 'var(--sp-warm)';
-        var statusText = o.status === 'pending' ? '🔴 Placed' : '🟡 Preparing';
-        html += '<div class="order-item">' +
-          '<span>' + (o.items || []).map(function(i) { return i.quantity + 'x ' + i.item_name; }).join(', ') + '</span>' +
-          '<span class="eta" style="color:' + statusColor + '">' + statusText + '</span>' +
-        '</div>';
+        var statusText = o.status === 'pending' ? 'Pending' : 'Preparing';
+        html += '<div class="order-item"><span>' + (o.items || []).map(function(i) { return i.quantity + 'x ' + i.item_name; }).join(', ') + '</span><span class="eta" style="color:' + statusColor + '"><span class="status-dot ' + o.status + '" style="display:inline-block;vertical-align:middle;margin-right:4px"></span>' + statusText + '</span></div>';
       });
       notif.innerHTML = html;
-    } else if (existingNotif) {
-      existingNotif.remove();
-    }
+    } else if (existingNotif) { existingNotif.remove(); }
   }
 
-  // ─── Helpers ─────────────────────────────────────────────────────
-  function escHtml(str) {
-    if (!str) return '';
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
+  // ─── Helpers ───
+  function escHtml(str) { if (!str) return ''; var div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+  function formatDateTime(iso) { if (!iso) return ''; var d = new Date(iso); return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+  function formatTime(iso) { if (!iso) return ''; var d = new Date(iso); return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+  function showToast(msg) { var t = document.createElement('div'); t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--sp-forest);color:var(--sp-mist);padding:10px 20px;font-size:13px;z-index:200;border:1px solid rgba(196,165,90,0.15);'; t.textContent = msg; document.body.appendChild(t); setTimeout(function() { t.remove(); }, 2500); }
 
-  function formatDateTime(iso) {
-    if (!iso) return '';
-    var d = new Date(iso);
-    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  }
-
-  function formatTime(iso) {
-    if (!iso) return '';
-    var d = new Date(iso);
-    return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  }
-
-  function showToast(msg) {
-    var t = document.createElement('div');
-    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--sp-forest);color:var(--sp-mist);padding:10px 20px;border-radius:var(--radius-md);font-size:13px;z-index:200;border:1px solid rgba(196,165,90,0.2);';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(function() { t.remove(); }, 2500);
-  }
-
-  // ─── Start ───────────────────────────────────────────────────────
   init();
 })();
 </script>
