@@ -1076,6 +1076,7 @@ The design source files are under `pict/`:
 | `pict/DESIGN-MANIFEST.json` | Design manifest |
 | `DESIGN-IMPLEMENTATION-PLAN.md` | Current redesign surface map and implementation plan |
 | `DESIGN-AUDIT.md` | Visual and accessibility audit findings |
+| `OPERATIONS-PLAYBOOK.md` | Daily operating procedures, rollout plan, contingencies, and recovery guides |
 
 The visual system favors:
 
