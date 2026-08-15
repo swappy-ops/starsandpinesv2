@@ -82,6 +82,15 @@
       text-transform: uppercase;
     }
     .header-actions { display: flex; gap: var(--space-xs); align-items: center; }
+    .operator-picker { display: flex; align-items: center; gap: var(--space-xs); }
+    .operator-picker select {
+      min-height: 32px;
+      padding: 4px 28px 4px 8px;
+      border: 1px solid var(--sp-border);
+      background: var(--sp-paper);
+      color: var(--sp-ink);
+      font: 500 0.65rem var(--sp-font-ui);
+    }
     .btn-ghost {
       background: none;
       border: 1px solid var(--sp-border);
@@ -542,31 +551,43 @@
       color: var(--sp-faint);
       font-size: 0.85rem;
     }
-  </style>
+     /* ─── FIGMA PMS SHELL ─── */
+     :root { --pms-canvas:#f5f5f5; --pms-rail:#13251f; --pms-rail-soft:#203b32; --pms-gold:#c4a55a; --pms-card:#fff; --pms-line:#e2e2df; }
+     #dashboard-app { background:var(--pms-canvas); min-height:100vh; }
+     #dashboard-app .page { max-width:none; min-height:100vh; padding:0 32px 48px 212px; position:relative; }
+     #dashboard-app .app-header { padding:28px 0 20px; border-bottom:1px solid var(--pms-line); align-items:center; }
+     #dashboard-app .app-header h1 { color:var(--sp-ink); font:600 20px var(--sp-font-ui); letter-spacing:-.03em; }
+     #dashboard-app .app-header .meta { color:var(--sp-muted); font-size:10px; }
+     #dashboard-app .app-nav { position:absolute; inset:0 auto 0 0; width:180px; min-height:100vh; padding:26px 16px; display:flex; flex-direction:column; align-items:stretch; gap:3px; background:var(--pms-rail); border:0; }
+     #dashboard-app .app-nav::before { content:'STARS & PINES\A OPERATIONS'; white-space:pre; color:#f4f1e9; font:600 10px/1.7 var(--sp-font-ui); letter-spacing:.09em; padding:0 12px 36px; }
+     #dashboard-app .nav-btn { width:100%; padding:11px 12px; text-align:left; color:rgba(245,245,245,.7); border:0; font-size:10px; letter-spacing:.05em; text-transform:none; }
+     #dashboard-app .nav-btn .num { display:none; }
+     #dashboard-app .nav-btn.active { background:var(--pms-gold); color:var(--pms-rail); font-weight:600; }
+     #dashboard-app .nav-btn:hover { background:var(--pms-rail-soft); color:#fff; }
+     #dashboard-app .nav-btn.active:hover { background:var(--pms-gold); color:var(--pms-rail); }
+     #dashboard-app .panel { padding:28px 0 0; }
+     #dashboard-app .display { font-size:28px; font-weight:600; letter-spacing:-.04em; }
+     #dashboard-app .section-title { color:var(--sp-ink-soft); border-color:var(--pms-line); font-size:10px; letter-spacing:.08em; }
+     #dashboard-app .overview, #dashboard-app .overview-cell, #dashboard-app .room-table, #dashboard-app .stays-table, #dashboard-app .kitchen-list, #dashboard-app .inventory-table, #dashboard-app .bill-card { background:var(--pms-card); border-color:var(--pms-line); }
+     #dashboard-app .overview-cell { padding:18px; }
+     #dashboard-app .overview-value { color:var(--sp-ink); font-weight:600; }
+     #dashboard-app .overview-value.warn { color:var(--pms-gold); }
+     #dashboard-app .btn-primary, #dashboard-app .btn-start, #dashboard-app .btn-serve { background:var(--pms-rail); color:#fff; }
+     #dashboard-app .btn-primary:hover, #dashboard-app .btn-start:hover, #dashboard-app .btn-serve:hover { background:var(--pms-rail-soft); }
+     #dashboard-app .btn-ghost { color:var(--sp-body); border-color:var(--pms-line); }
+     #dashboard-app .busy-bar { background:#ebe7db; border-color:var(--pms-gold); }
+     @media(max-width:767px){
+       #dashboard-app .page { padding:0 16px 32px; }
+       #dashboard-app .app-nav { position:static; width:auto; min-height:0; padding:0; flex-direction:row; overflow-x:auto; background:var(--pms-rail); }
+       #dashboard-app .app-nav::before { display:none; }
+       #dashboard-app .nav-btn { width:auto; flex:0 0 auto; }
+     }
+   </style>
 </head>
 <body>
 
-<!-- ─── AUTH ─── -->
-<div id="auth-screen" class="auth-screen">
-  <div class="auth-title">Stars & Pines</div>
-  <div class="auth-sub">Family Dashboard</div>
-  <div class="auth-form">
-    <div class="form-group">
-      <label class="form-label" for="auth-staff-id">Staff ID</label>
-      <input class="form-input" id="auth-staff-id" type="text" placeholder="S02" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="auth-pin">PIN</label>
-      <input class="form-input pin-input" id="auth-pin" type="password" maxlength="4" placeholder="" autocomplete="off" />
-    </div>
-    <button class="btn btn-primary btn-full" onclick="staffLogin()">Enter</button>
-    <div class="auth-error" id="auth-error">Invalid Staff ID or PIN</div>
-  </div>
-  <div class="auth-footer">Kasar Devi, Almora</div>
-</div>
-
 <!-- ─── APP ─── -->
-<div id="dashboard-app" style="display:none">
+<div id="dashboard-app">
 
 <div class="page">
 
@@ -574,11 +595,18 @@
 <header class="app-header">
   <div>
     <h1>Stars & Pines</h1>
-    <div class="meta" id="staff-display-name">Staff</div>
+    <div class="meta">Family Dashboard · Kasar Devi, Almora</div>
   </div>
   <div class="header-actions">
+    <label class="operator-picker" for="operator-select">
+      <span class="meta">On duty</span>
+      <select id="operator-select" onchange="setOperator(this.value)">
+        <option value="Amrit">Amrit</option>
+        <option value="Raman">Raman</option>
+        <option value="Mona">Mona</option>
+      </select>
+    </label>
     <button class="btn-ghost" onclick="refreshAll()">Refresh</button>
-    <button class="btn-ghost danger" onclick="staffLogout()">Out</button>
   </div>
 </header>
 
@@ -643,36 +671,11 @@
 <script>
 let dashboardData = null;
 let refreshInterval = null;
-let currentStaff = null;
+let currentStaff = { name: 'Amrit' };
 
-// ─── AUTH ───
-function staffLogin() {
-  const sid = document.getElementById('auth-staff-id').value.trim();
-  const pin = document.getElementById('auth-pin').value.trim();
-  const err = document.getElementById('auth-error');
-  if (!sid || !pin) { err.textContent = 'Enter Staff ID and PIN'; err.style.display = 'block'; return; }
-  API.staffLogin(sid, pin).then(function(s) {
-    currentStaff = s;
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('dashboard-app').style.display = 'block';
-    document.getElementById('staff-display-name').textContent = s.name;
-    err.style.display = 'none';
-    refreshAll();
-    refreshInterval = setInterval(refreshAll, 30000);
-  }).catch(function() { err.textContent = 'Invalid Staff ID or PIN'; err.style.display = 'block'; });
+function setOperator(name) {
+  currentStaff = { name: name };
 }
-
-function staffLogout() {
-  currentStaff = null;
-  if (refreshInterval) clearInterval(refreshInterval);
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('dashboard-app').style.display = 'none';
-  document.getElementById('auth-staff-id').value = '';
-  document.getElementById('auth-pin').value = '';
-  document.getElementById('auth-error').style.display = 'none';
-}
-
-document.getElementById('auth-pin').addEventListener('keydown', function(e) { if (e.key === 'Enter') staffLogin(); });
 
 // ─── NAV ───
 function switchTab(name, btn) {
@@ -832,7 +835,7 @@ function renderKitchen() {
 
 async function updateOrder(id, status) {
   try {
-    await API.updateOrderStatus(id, status, 'Staff');
+    await API.updateOrderStatus(id, status, currentStaff.name);
     showToast('Order ' + status);
     refreshAll();
   } catch (e) { showToast('Failed: ' + e.message); }
@@ -877,7 +880,7 @@ async function restockItem(id, name) {
   const qty = prompt('Restock ' + name + ' — quantity?');
   if (!qty || isNaN(qty)) return;
   try {
-    await API.restockItem({ item_id: id, quantity: parseFloat(qty), logged_by: 'Staff' });
+    await API.restockItem({ item_id: id, quantity: parseFloat(qty), logged_by: currentStaff.name });
     showToast(name + ' + ' + qty);
     refreshAll();
   } catch (e) { showToast('Failed: ' + e.message); }
@@ -887,7 +890,7 @@ async function consumeItem(id, name) {
   const qty = prompt('Consume ' + name + ' — quantity?');
   if (!qty || isNaN(qty)) return;
   try {
-    await API.consumeItem({ item_id: id, quantity: parseFloat(qty), logged_by: 'Staff' });
+    await API.consumeItem({ item_id: id, quantity: parseFloat(qty), logged_by: currentStaff.name });
     showToast(name + ' − ' + qty);
     refreshAll();
   } catch (e) { showToast('Failed: ' + e.message); }
@@ -968,7 +971,7 @@ async function recordPayment(stayId) {
   const amount = parseFloat(document.getElementById('pay-amount').value);
   const method = document.getElementById('pay-method').value;
   try {
-    await API.recordPayment({ stay_id: stayId, amount, method, collected_by: 'Staff' });
+    await API.recordPayment({ stay_id: stayId, amount, method, collected_by: currentStaff.name });
     showToast('Payment recorded');
     showBill(stayId, '');
   } catch (e) { showToast('Failed: ' + e.message); }
@@ -976,13 +979,16 @@ async function recordPayment(stayId) {
 
 function confirmCheckout(stayId, guestName) {
   if (!confirm('Checkout ' + guestName + '?')) return;
-  API.checkout(stayId, 'Staff').then(() => {
+  API.checkout(stayId, currentStaff.name).then(() => {
     showToast(guestName + ' checked out');
     document.getElementById('checkout-bill-block').style.display = 'none';
     loadCheckout();
     refreshAll();
   }).catch(e => showToast('Failed: ' + e.message));
 }
+
+refreshAll();
+refreshInterval = setInterval(refreshAll, 30000);
 
 // ─── TOAST ───
 function showToast(msg) {
